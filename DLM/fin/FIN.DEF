@@ -1,0 +1,14 @@
+// FIN.DEF
+ddAddField("Memo","M",10,0)
+ddAddSpecial({|| ActExec("FINAPPND") },\
+  "~Copy to new document  [Alt-F6]",\
+  -35, \
+  {||.t.} \
+)
+ddAddSpecial(\
+  {||DlgExec("JNLIDDOC")}, \
+  "~Letzte Dokumentnummer setzen  ",\
+  NIL,{||"S"$UsrAttrib()}\
+)
+ddAddSpecial({||FinRename()}, NIL, -31, {||"E"$UsrAttrib()} )
+

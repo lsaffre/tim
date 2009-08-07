@@ -1,0 +1,10 @@
+# use glob syntax.
+syntax: glob
+
+*.old
+*.OLT
+*.ntx
+*.NTX
+*~
+dist
+log

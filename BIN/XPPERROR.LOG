@@ -1,0 +1,35 @@
+
+------------------------------------------------------------------------------
+ERROR LOG of "T:\svnwork\tim\trunk\BIN\TIM4.EXE" Date: 21.03.08 13:02:54
+
+Xbase++ version     : Xbase++ (R) Version 1.90.331
+Operating system    : Windows XP 05.01 Build 02600 Service Pack 2
+------------------------------------------------------------------------------
+oError:args         :
+oError:canDefault   : N
+oError:canRetry     : N
+oError:canSubstitute: Y
+oError:cargo        : NIL
+oError:description  : Function is not declared
+oError:filename     : 
+oError:genCode      :         21
+oError:operation    : ODLP
+oError:osCode       :          0
+oError:severity     :          2
+oError:subCode      :       2002
+oError:subSystem    : BASE
+oError:thread       :          1
+oError:tries        :          0
+------------------------------------------------------------------------------
+CALLSTACK:
+------------------------------------------------------------------------------
+Called from XPARSE(778)
+Called from MREADLINE(250)
+Called from FILEEXEC(359)
+Called from MNUEXEC(688)
+Called from MNULOAD(213)
+Called from APPREFRESH(392)
+Called from (B)XPARSE(0)
+Called from VMENU(432)
+Called from HMENU(171)
+Called from MAIN(178)

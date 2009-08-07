@@ -1,0 +1,10 @@
+// VNALINE.ACT - leere VNA->Line fllen
+Confirm(\
+  "Neues Feld VNA->Line nach upgrade 20060825 fllen",\
+  MsgSure(),"N"\
+)
+DbfScan(\
+  {oVna()},0,"",".t.","empty(VNA->Line)",\
+  "TryRecLock(cblock('"+'(VNA->Line:=right(VNA->Match,3))!=NIL'+"'))"\
+)
+SetMsg(MsgDone())

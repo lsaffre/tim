@@ -1,0 +1,106 @@
+before SetMntFormat("S12")
+header1 trim1(LngExpr("DCL->Name"))
+header2 tr("Fiscal years ", "Steuerjahre ","Ann‚es fiscales ",NIL,"Aruande perioodid ") \
+        + trim(DlgValue("range1")) \
+        + tr(" and ", " und "," et ", NIL, " ja ") + trim(DlgValue("range2")) \
+        + if(empty(getvar("range3")),"",\
+             tr(" and ", " und "," et ", NIL, " ja ") + trim(DlgValue("range3")))
+
+header3 tr("Amounts in ","Betr„ge in ","Montants en ",NIL,"Valuuta: ")+SetDevise()
+area { oDcf() }
+order 1
+start DCL->IdDcl
+while {||DCF->IdDcl==DCL->IdDcl}
+#exec setvar("decpos",2)
+
+// ValidateRecord {||setvar("values",\
+  DcfValues(getvar("range1"),getvar("range2"),getvar("range3"),\
+  getvar("decpos")))}
+ValidateRecord {||setvar("values",\
+  DcfValues(getvar("range1"),getvar("range2"),getvar("range3")))}
+
+// filter {|| !"H"$DCF->Attrib }
+// filter {|| empty(DCF->Type).or."A"$DCF->Attrib
+filter {|| "A"$DCF->Attrib\
+           .or.!is0(getvara("values",1,0))\
+           .or.!is0(getvara("values",2,0))\
+           .or.!is0(getvara("values",3,0))\
+       }
+
+//  before={||rwriteln(trim(eval(getvar("bcDcfHeader"),0))+":")} \
+
+
+#exec setvar("bcDcfHeader",{|| \
+  iif(\
+    len(trim(DCF->IdDcf)) <= len(RptGrpKey()),\
+    NIL,\
+    DbfPeek(oDcf(),\
+      DCF->IdDcl+padr(RptGrpKey(),LenIdDcf()),\
+      "padr(RptGrpKey(),LenIdDcf()+1)+space(len(trim(DCF->IdDcf))-1)+trim(LngExpr('DCF->Name'))",\
+      NIL))})
+
+group key={||left(DCF->IdDcf,4) } \
+  text=getvar("bcDcfHeader") \
+  when={|nCount,nDtlCount|nDtlCount>1} \
+  header={|cText|rwriteln(trim(cText)+":")} \
+  afterTotals={||rwriteln()}\
+  format="B"
+
+group key={||left(DCF->IdDcf,3) } \
+  text=getvar("bcDcfHeader") \
+  when={|nCount,nDtlCount|nDtlCount>1} \
+  header={|cText|rwriteln(trim(cText)+":")} \
+  afterTotals={||rwriteln()}\
+  format="B"
+
+group key={||left(DCF->IdDcf,2) } \
+  text=getvar("bcDcfHeader") \
+  when={|nCount,nDtlCount|nDtlCount>1} \
+  header={|cText|rwriteln(trim(cText)+":")} \
+  afterTotals={||rwriteln()}\
+  format="B"
+
+group key={||left(DCF->IdDcf,1) } \
+  text=getvar("bcDcfHeader") \
+  when={|nCount,nDtlCount|nDtlCount>0} \
+  header={|cText|rwriteln(trim(cText)+":")} \
+  after={||RptTit2()}\
+  afterTotals={||rwriteln()}\
+  format="B"
+
+// group text={|x|"Gesamt"} when={||.t.}
+
+#if .t..or.!empty(getvar("TechInfo"))
+column header=tr("Item","Art.","Code","","") width=LenIdDcf() \
+       text={||DCF->IdDcf}
+#endif
+column header=tr("Description","Bezeichnung",\
+       "Description","Omschrijving","") width=43 \
+       text={||padr(space(len(trim(DCF->IdDcf))-1)+DcfName(NIL,TplLang()),43)}
+// column header="Sel" width=LenIdBil() text={||DCF->IdBil}
+#if !empty(getvar("TechInfo"))
+column header="Gen" width=LenIdGen() text={||DCF->IdGen}
+#endif
+column header=padl(trim(getvar("range1")),LenMntF()) \
+       width=LenMntF() \
+       value={||getvara("values",1,0)} \
+       type="T" decpos=getvar("decpos")
+column header=padl(trim(getvar("range2")),LenMntF()) \
+       width=LenMntF() \
+       value={||getvara("values",2,0)} \
+       type="T" decpos=getvar("decpos")
+
+#if !empty(getvar("range3"))
+column header=padl(trim(getvar("range3")),LenMntF()) \
+       width=LenMntF() \
+       value={||getvara("values",3,0)} \
+       type="T" decpos=getvar("decpos")
+#endif
+
+
+// column header="Sel" width=4 text={||DCF->DclSel}
+// column header="Type" width=4 text={||DCF->Type+"  "}
+// column header="D/C" width=3 text={||" "+DCF->DC+" "}
+
+total text={||tr("Total","Summe","Total","Total","kokku")+" "} \
+      when={||.t.}

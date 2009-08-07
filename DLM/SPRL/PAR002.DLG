@@ -1,0 +1,20 @@
+// Partnerliste nach Umsatz
+#include "PERIODE.DLG"
+
+field name="IdCtr" \
+    caption="Zentralisierungsart " \
+    picture="@!" \
+    value="V" \
+    pick={|x| PickCtr(x)}
+field name="ParAttr" \
+    caption="Nur Partner mit Attribut " \
+    picture="!" \
+    value=" " \
+    pick={|x| PickDbcCode("PRA.DBC")}
+
+#include "PREVIEW.DLG"
+#include "TOCSV.DLG"
+before setvar("PRN2PDF.out",padr(AppRoot()+"\pdf\par002.pdf",200))
+#include "ASPDF.DLG"
+
+after AppSaveMem()

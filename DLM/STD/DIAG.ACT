@@ -1,0 +1,3 @@
+SetTplIni("LISTE")
+DlgExec("DIAG")
+fprint("diag.lst","[]",NIL,NIL,NIL,NIL,NIL,NIL,SetAsPdf(),SetAsMail())

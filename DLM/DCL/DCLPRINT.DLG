@@ -1,0 +1,16 @@
+title "Print "+trim(LngExpr("DCL->Name"))
+
+#include "RANGES.DLG"
+
+field name="Detail" \
+    caption2=utr(" detailed history"," detaillierte Historik"," historique d‚taill‚") \
+    default=" " \
+    reader={|g|CbxReader(g)}
+      
+#include "PREVIEW.DLG"
+before setvar("PRN2PDF.out",padr(AppRoot()+"\pdf\dcl"+DCL->IdDcl+".pdf",200))
+#include "ASPDF.DLG"
+#include "TOCSV.DLG"
+
+after AppSaveMem()
+

@@ -1,0 +1,28 @@
+Integrit„tstest 21.03.08 13:02:36
+GEN : 392 records. 
+Generalkonten : OK
+ART : 29 records. 
+Artikel : OK
+PRJ : 0 records. 
+Projekte : OK
+VEN : 1 records. 
+Fakturationsdokumente : OK
+VNL : 1 records. 
+Fakturationsdokumente Inhalt : OK
+
+[1] DIV 000001 (Dokument nicht registriert)
+FIN : 2 records. 
+Finanzdokumente : 1 warnings
+
+[2] FNL-> DIV 000001.003 : 550200 : unbekanntes Generalkonto.
+FNL : 10 records. 
+Finanzdokumente Inhalt : 1 warnings
+PAR : 48 records. 
+Partnerstammdaten : OK
+
+[3] HST-> SAL 010001 : 0104 : unbekannte Periode
+[4] HST-> SAL 010001 : 0104 : unbekannte Periode
+HST : 4 records. 
+Historik Buchhaltung : 2 warnings
+4 warnings in 9 of 9 tests.
+Done after 0.60 seconds.

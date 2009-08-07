@@ -1,0 +1,40 @@
+8
+
+dir
+124
+svn+ssh://svn.berlios.de/svnroot/repos/opentim/trunk/cust/fg
+svn+ssh://svn.berlios.de/svnroot/repos/opentim
+
+
+
+2008-03-16T13:56:09.845765Z
+61
+lsaffre
+
+
+svn:special svn:externals svn:needs-lock
+
+CUST.CH
+file
+
+
+
+
+2007-11-20T14:57:28.000000Z
+324a6e04537bab92ea4a66583819b9e7
+2008-03-16T13:56:09.845765Z
+61
+lsaffre
+
+MK.BAT
+file
+
+
+
+
+2008-03-13T20:10:48.000000Z
+89d5de2bf69b36044b9932e66484db60
+2008-03-16T13:56:09.845765Z
+61
+lsaffre
+

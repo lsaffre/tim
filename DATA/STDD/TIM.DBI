@@ -1,0 +1,42 @@
+// OnLogin LoadColor("COLOR4")
+do SetCmdTags("[","]")
+
+// FixY2K .t. : Jahr 2000 als Buchungsperiode "A0" darstellen.
+// FixY2K .f. : Jahr 2000 als Buchungsperiode "00" darstellen.
+// Bei Installationen, die keine Buchungen aus dem vorigen
+// Jahrhundert enthalten, sollte es auf .f. gesetzt sein.
+FixY2K .f.
+
+LoadDlm "SPRL"
+LoadDlm "HST"
+LoadDlm "VEN"
+LoadDlm "FIN"
+LoadDlm "ART"
+LoadDlm "BIL"
+// LoadDlm "MSG"
+LoadDlm "CHRON"
+LoadDlm "TRM"
+LoadDlm "IBAN"
+LoadDlm "TESTS"
+
+#include "NEWETAT.INI"   // DOC->Etat
+#include "NEWIDART.INI"  // ART->IdArt ohne fhrende Nullen
+
+// do SetKeepReport(.t.)
+do SetActiveMenus(.t.)
+
+// Grundw„hrung 1 und 2 
+DevDefault { "BEF" , "EUR" }
+
+// DevToggle bestimmt, ab wann von GW1 nach GW2 umgeschaltet wird
+PerToggle if(FixY2K(),"A200","0200")
+
+// PerDevFixed bestimmt, ob der Wechselkurs fest ist, oder (wenn nicht)
+// im Dokument gespeichert wird. Bei festem Wechselkurs wird immer per
+// Dreiecksrechnung ber EUR konvertiert.
+// PerDevFixed {|cPeriode,cIdDev|cIdDev$"BEF,LUF,DEM,NLG,FRF,ITL,DKK"}
+PerDevFixed {|cPeriode,cIdDev|cPeriode>="0000".and.!cIdDev$"USD"}
+
+
+
+

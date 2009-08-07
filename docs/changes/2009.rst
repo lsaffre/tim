@@ -1,0 +1,526 @@
+2009
+====
+
+20090107
+--------
+- Ticket #644 (EKR mit IM oder C und Gesamtbetrag: Detail wird falsch belegt)
+
+  :func:`GsbVnlTvac` funktionierte nicht richtig, wenn man in einer 
+  Einkaufsrechnung mit Regime C oder I im Feld :attr:`VNL._TVAC` 
+  einen Betrag eingab. Das ist ein eher unlogischer Sonderfall, der 
+  aber indirekt auftreten kann, wenn man in :attr:`VEN.Mont` den 
+  Gesamtbetrag der Rechnung eintippt und TIM dann automatisch 
+  den Inhalt generiert. Dann wird diese Funktion auch benutzt.
+  
+20090108
+--------
+- :func:`PrintTemplate` no longer silently accepts to work when the printer stream is already open. Use :func:`TplInclude` in such cases.
+
+- :func:`TplInclude` now executes the print parameter set of the
+  included text block (if this field is not empty).
+
+- Documentation: The following functions modify the left margin: 
+  :func:`p_MrgMirror`
+  :func:`p_SetLMargin`
+  :func:`p_SetWidth` (if PAGEALIGN_RIGHT)
+  
+- New function :func:`PpsExec` executes the printer parameter settings textblock. 
+  This was done only in :func:`OpenPrinter` so far, but now also in :func:`TplInclude`. 
+  
+  
+20090113
+--------
+- :func:`DlsWait` now displays the messages per DLS (Notizen pro Dienstleistung) when WWIN_KEY is 2.
+
+- Neue Funktion :func:`DlsMsgTypes` gibt eine Liste der Arten von 
+  Notizen zurück, die dieser DLS zugeordnet sind.
+  
+  
+20090115
+--------
+- Beginn Programmierung :ref:`topics_vcs`. 
+  Neue Funktionen :func:`hst2vcs` und :func:`vcs2hst`.
+  Funktionieren übrigens sowohl für :mod:`DEF_IMP` als auch für :mod:`DEF_HST`.
+
+20090119
+--------
+- :attr:`USR.IdUsr` ist jetzt schreibgeschützt. 
+- :attr:`USR.Password` dagegen nicht mehr.
+- In :meth:`UsrEdit` (Verwaltermenü Konfigurierung Benutzerliste) 
+  kann man jetzt positionieren.
+- :kbd:`F1` auf :attr:`USR->Attrib` machte einen RTE.
+
+- :xfile:`dlm/hst/hstpar.rep` : benutzt jetzt :func:`is0` statt manuell ``abs(x)>DevTolerance(SetDevise()`` 
+
+20090120
+--------
+- :func:`FnlFill` und :func:`FnlGenerate` kopieren jetzt optional 
+  auch die Buchungsdaten mit.  Neue Option im Dialogfenster 
+  :xfile:`FNLFILL.DLG`.
+  
+  
+- :func:`_rupture` führt den :cmacro:`GRP_BEFORE` jetzt nur aus, 
+  wenn auch :cmacro:`GRP_DTLCOUNT` > 0 ist. Durch diesen Bug wurden
+  (wahrscheinlich seit 20080320) in der :xfile:`HSTPAR.REP`
+  auch solche Partner gedruckt, die weder Bewegungen noch Beginnsaldo
+  hatten (sondern lediglich Buchungen in früheren Perioden).
+  
+20090121
+--------
+- Neue Funktion :func:`be2iban` konvertiert eine belgische Kontonummer in eine IBAN. 
+
+- New import filter :xfile:`BIC.IMP`
+
+- Neues Feld :attr:`BIC.NBID` (Nationale Banknummer), in dem z.B. bei den belgischen Banken die dreistellige nationale Banknummer rein importiert wird. Damit könnte man theoretisch testen, ob eine IBAN und ihre BIC zusammenpassen, bzw. sogar die BIC anhand der IBAN ermitteln.
+
+- Neues Feld :attr:`BIC.Country`, das funktional BIC->IdNat ersetzt.  BIC->IdNat bleibt zwar noch erhalten, aber wird nur noch benutzt, wenn BIC->Country leer ist (sh. :func:`BicCountry`).
+
+- Renamed ValIdBic to :func:`BicValidate`.
+
+- :staticmod:`DEF_IBAN` is back. I started to throw it out some days  ago, thinking that nobody is going to use a TIM without it. But now  I realized that there may be users who don't care about bank account numbers and thus would not want to have an additional :class:`BIC` table.
+
+20090126
+--------
+- TIMATTR_T (Zwischensummen ebenfalls für Menge) wurde von TIM falschrum interpretiert, Mengen wurden ebenfalls zummiert wenn es eingeschaltet war, und umgekehrt.
+
+
+20090128
+--------
+
+- :srcref:`OSTREAM.PRG` now differenciates between "physical" and "logical" page number. The physical page number cannot be changed, but the logical page number (the one who is printed to the paper) can be changed. 
+
+  Useful for printing several documents in a single print job.
+  Note that the print range specified by the user ("print only
+  pages from... to...) refers to physical pages.
+  
+- :func:`PpsExec` now computes `snMaxVPos`.  Until now this was done in :func:`OpenPrinter`, only after the *first* PpsExec().
+  
+- Print Parameter Sets may not produce text, otherwise TIM complains with the warning 
+  "Attempted to print XYZ while no output stream defined".
+  Whitespace is allowed but ignored. But TIM complained (and removed whitespace) 
+  only during OpenPrinter(), not during later :func:`PpsExec` calls. Now also then.
+
+- :func:`ImlPrint` now calls :func:`p_PageNum` to restart logical page numbering before each sub-document, and p_eject(.t.) after each.
+   
+- :func:`p_PageNum` now returns the logical page number, and if called with 
+  a parameter (an integer number), sets this as the new logical page.
+  :func:`SetCurPage` and :func:`p_CurPage` are now aliases for :func:`p_PageNum`.
+
+- New function :func:`length2i` converts a string to a numeric value in inches (as used internally). The following parser commands now use this function:
+  :parsercmd:`set paperheight`
+  :parsercmd:`set paperwidth`
+  :parsercmd:`set marginleft`
+  :parsercmd:`set marginright`
+  :parsercmd:`set margintop`
+  :parsercmd:`set marginbottom`
+
+- Neue Funktion :func:`hst2nb`.
+
+- :func:`hst2vcs` gibt jetzt, wenn es keine VCS-Nummer für diese Buchung gibt, 
+  nicht NIL zurück, sondern einen leeren String.
+  
+- :func:`runbg` now has some more optional parameters that modify the behaviour.
+
+
+20090129
+--------
+
+- When using :func:`SetPageHeader` there was a problem with the line buffer.
+  In p_PageBegin(), ``eval(sbPageHeader)`` is now before the 
+  ``do while snVPos < snTMargin ... PrintLine()``, and saves/restores the 
+  stream's status as does ``eval(sbHeader)`` .
+
+- TIM declared "0 pages have been printed" when printing to a PDF file.
+
+- :configcmd:`DrvName` can now begin with a "=" which means that it is an expression to be evaluated dynamically on each call to :func:`DrvName`. 
+  Used by :xfile:`WINSTD.DRV`.
+  
+20090203
+--------
+
+- Neue Funktionen :func:`gsbNBAN`, :func:`gsbBIC` und :func:`gsbIBAN` zur Optimierung der Benutzereingabe auf :attr:`PAR.Compte1`, :attr:`PAR.Compte2` usw.
+  Die Felder :attr:`PAR.Compte1` speichern jetzt immer eine unformatierte IBAN-Nummer (ohne Leerzeichen).
+  Aber damit bestehende Daten nicht konvertiert werden müssen, werden die bisher darin enthaltenen Formatierungszeichen ("-" und Leerzeichen) vor jeder Auswertung durch eine der GSB-Functionen rausgefiltert. Aber gespeichert wird ab jetzt immer ohne Formatierung.
+  
+- Neue Funktion :func:`Nat2iso` erspart in den häufigsten Fällen einen Datenbankzugriff.
+
+- BqeBeParse() heißt jetzt BanBeParse()
+
+- BanParse() replaces BqeParse() functionally but with different API. 
+
+20090206
+--------
+
+- New functions :func:`BanBeValidate` :func:`BanBeFormat` replace 
+  BanBeParse().
+  
+  
+20090212
+--------
+
+- :func:`TplInclude` now also calls :func:`p_setWidth` if :attr:`TPL.Width` is not empty.
+
+
+20090216
+--------
+
+- :xfile:`PRNPRINT.ACT` calls prnprint now with 
+   ``+" --config="+GetDlmPath("prnprint.ini")``.
+   New file :xfile:`PRNPRINT.INI` in :xfile:`DLM\STD`.
+   Users who change this file should copy it to their database 
+   directory.
+   
+   
+20090217
+--------
+
+- Modified ImpVmeWrite(), FinVmeWrite() and FinOtiWrite()
+  for `20090206`_.
+  
+- New function :func:`ddAddBanFields`, :func:`BanValidate` and 
+  :func:`BanClean`
+
+- Renamed BanParse() to :func:`BanSplit`. 
+
+- New file :xfile:`BANCLEAN.ACT` which calls :func:`banclean` on 
+  every BAN of the database. Don't run this file without being
+  instructed to do it...
+  
+20090219
+--------
+
+- Non-IBAN BANs are now stored again with formatting (forced for Belgian numbers, free for other coutries). Modified
+  :func:`gsbNBAN` accordingly.
+  
+- New function :func:`isnban` 
+ 
+- :func:`banclean` 
+
+
+20090226
+--------
+
+- Editing :attr:`IMP.Compte1`, :attr:`IML.Compte1`, :attr:`TRL.Compte1` 
+  :attr:`PAR.Compte1`, :attr:`PAR.Compte1` and 
+  :attr:`JNL.Compte` raised a RTE.
+  BqePostEdit(x) and BqeValidate(x) expect the string content of a Compte1 field. They exist also if not :mod:`DEF_IBAN`.
+  But :func:`BanPostEdit` and :func:`BanValidate` expect an array returned by BanSplit().
+  
+  New function :func:`BanParse` returns a *validated* BAN array 
+  (or NIL if the BAN is not valid)
+  
+  New function :func:`IsBelgian` for :func:`ImpWriteZau` and :func:`FinWriteZau` who make now correctly the difference 
+  between VME and FBF files.
+  
+  New functions :func:`TrlIdPar2` and :func:`TrlCountry`
+  
+  Die virtuellen NBAN-Felder sind jetzt nicht mehr read-only für ausländische Nummern.
+  
+- Patch 20090226
+
+- When editing IML.Compte1 or IMP.Compte1, TIM did not check national
+  BANs. Fixed. New functions :func:`ImlIdPar2` and :func:`ImlCountry`.
+  
+- Falsche Fehlermeldung "6 : unbekannter BIC" nach Eingabe einer
+  nationalen Kontonummer ohne BIC in PAR.
+
+- Patch 20090226c
+
+- New import filter :xfile:`BICBB.IMP` to import German bank entries 
+  (BLZ, name and BIC) into BIC.
+  
+- Patch 20090226d
+ 
+- TIM prüft jetzt nicht mehr nach, ob das Land des Partners mit dem
+  der IBAN-Nummer übereinstimmt. Kontonummern ohne ":" gelten jetzt
+  immer als belgische, auch bei Ausländern, und werden entsprechend
+  geprüft. Deshalb nach der Installation Integritätstest laufen lassen.
+
+- TIM prüft jetzt bei verifizierten belgischen Kontonummern (also die im
+  Format BIC:IBAN gespeichert sind) nach, ob be2iban() und be2bic()
+  funktionieren. Zwei neue Fehlermeldungen sind möglich:
+  
+   - "be2iban() sagt XXX statt YYY"
+   - "be2bic() sagt XXX statt YYY"
+   
+  Ich mache diese Prüfung momentan auch schon bei der Eingabe, nicht
+  erst im Integritätstest. Belgische BICs kann man also nur eingeben,
+  wenn TIM die aus der alten Nummer ermittelte BIC/IBAN auch schon
+  vorher am Bildschirm korrekt anzeigt. Kann sein, dass euch das lästig
+  wird, weil be2bic() ja noch nicht richtig funktioniert. Evtl. zu
+  besprechen.
+
+20090227
+--------
+
+- BIC hat jetzt nicht mehr nur IdBic als primären Schlüssel, sondern IdBic+NBAN. Ein zweiter Index ist umgekehrt NBAN+IdBic. 
+  In Belgien können viele verschiedene NBANs zum gleichen BIC führen.
+  In Deutschland ist es umgekehrt: dort kann eine BLZ zu mehreren BICs führen.
+  Deshalb gibt es zwar eine be2bic(), aber keine de2bic().
+  
+- Worked on :xfile:`BICBB.IMP`, :xfile:`BICBNB.IMP`, :xfile:`BICSWIFT.IMP`
+
+20090304
+--------
+
+- :func:`ImlVcsCreate` prüfte nicht nach, ob die übernommene Buchung im
+  gleichen Rechnungsjahr ist. Jetzt ruft sie :func:`ImpMviPreCollect` auf. Also bei Alt-V auf IML kann jetzt eine Warnung im Still "FFO1 964182 : falsches Rechnungsjahr".
+  Daneben prüft TIM (wenn IMP->IdPar unleer ist) ebenfalls, ob der Partner übereinstimmt. Dieser Fall kann aber nur theoretisch vorkommen, wenn man CVS aktivieren würde für ein Journal, das IMP->IdPar erfassen lässt.
+  
+20090309
+--------
+
+- Die drei folgenden Listen haben jetzt ebenfalls die Option "PDF-Datei generieren statt 
+  zu drucken":
+  :xfile:`LSTTVAI.REP` (Kundenliste Intracom)
+  :xfile:`LSTTVAA.REP` (Kundenliste MWSt)
+  und
+  :xfile:`LSTTVAD.REP` (Kundenliste Deutschland)
+
+
+20090310
+--------
+
+- Die Änderung von gestern funktionierte noch nicht.
+  Außerdem werden jetzt die Liste und das Begleitschreiben im gleichen Druckjob gedruckt, 
+  also beide stehen in einer einzigen PDF-Datei.
+
+- TIM machte einen RTE, wenn man :func:`TplInclude` für einen Textblock
+  aufrief, dessen TPL->Width nicht leer war.
+  
+- Patch 20090310
+
+- Committed revision 144.
+
+- Patch 20090310b
+
+20090316
+--------
+
+- :func:`LstHaushalt` rief an 3 Stellen noch :func:`PrintTemplate` auf, aber dort musste seit 20090108_ :func:`TplInclude` aufgerufen werden.
+  Folge: die betroffenen Teile fehlten im Ausdruck, und zwischendurch kamen möglicherweise Fehlermeldungen wie "no output stream active".
+  Genauer gesagt waren folgende Stellen betroffen: 
+  H05 1x, 
+  R09 2x, 
+  LstRe05() 1 x
+  LstHH05() 1 x
+  LstRe11() 1 x
+  LstRe12Detail() 1 x
+
+20090317
+--------
+
+- :func:`TplInclude` hat ein spezielles Verhalten, wenn cIdTpl Leerzeichen enthält: dann wird cIdTpt ersetzt durch den Teil von cIdTpl vor dem Leerzeichen. Aber :func:`LstHaushalt` machte ein padr() von cIdTpl, dadurch missverstanden die beiden sich. Jetzt macht TplInclude() ein trim(cIdTpl), bevor sie dort nach Leerzeichen sucht.
+
+20090317b
+---------
+
+- :func:`LstHaushalt` machte einen RTE "saOsStack: stack underflow;Thread ID : 1", wenn man während :xfile`PRN2PDF.DLG` mit :kbd:`Escape`abbrach. Weil dann trotzdem :func:`ClosePrinter` gerufen wurde. 
+  Außerdem startete sie einen unnützen leeren Druckjob, wenn man lediglich c12Detail ankreuzte.
+  Behoben.
+  
+  
+20090326
+--------
+
+- :attr:`TRL.Compte1`, :attr:`IML.Compte1` und :attr:`IMP.Compte1` formatierten nationale belgische Nummern nicht, und akzeptierten manuell eingebrachte falsche Formatierungen, z.B. mit Punkten statt Strichen. Außerdem benutzten diese Felder noch das Land des Partners statt MemPays als Land wenn es kein IBAN-Konto war.
+  
+20090402
+--------
+
+- :func:`runbg` schreibt die :xfile:`runbg.log` jetzt in den Sitzungsbericht, und trägt die Kurzmeldung in die Console ein.
+
+- Replaced warning "NAT : sadCurrent != NIL" by
+  Warning("Started ddDeclare(NAT) before ending ddDeclare(PAR)").
+  
+- :func:`nat2iso` now also converts "EE" without lookup in NAT.
+  Note that :func:`ddAddBanFields` causes the above warning when used in a database whose MemPays is not known by :func:`nat2iso`.
+
+20090406
+--------
+
+- TIM akzeptierte in IML->Mont den ungültigen Wert "152/001-43" ohne zu mucken. Neue Funktion :func:`NumValidate`, die von ImlMontValidate()
+  gerufen wird.
+  
+  
+20090407
+--------
+- :func:`csv2array` hatte ein Problem beim Import von Swedbank-CSV-Dateien, deren Zeilen neuerdings mit einem Komma 
+  enden::
+  
+    ╔═════════════ Confirmation ════════════╗
+    ║   csv2array() :  : " expected at 12   ║
+    ║           Continue (Y/N) ? Y          ║
+    ╚═══════════════════════════════════════╝
+  
+  
+20090414
+--------
+
+- Neuer Standard-Exportfilter für Adressetiketten: 
+  :xfile:`PARETI.EXP`  und :xfile:`PARETI.DOC`.
+  
+  
+20090418
+--------
+
+sbPageHeader (i.e. :func:`SetPageHeader`) 
+is now executed before sbHeader (i.e. :parsercmd:`set header`). 
+Until today it was the opposite.
+AFAIK there is only JB who uses both header methods in the same
+document, and he needs sbPageHeader to come first.
+
+
+20090420 
+--------
+
+:func:`LogOpen` probiert jetzt (wie bei missglückten Record Locks)
+drei mal, bevor er den Benutzer mit der Frage ""[32] Exklusivzugriff
+verweigert. Neu versuchen?" " belästigt.
+
+
+20090422
+--------
+
+:xfile:`ASPDF.DLG` zeigt das lange Feld mit dem Namen der zu
+generierenden PDF-Datei jetzt nur noch an, wenn "E" $ UsrAttrib().
+
+
+20090428
+--------
+
+- Wenn man einen Partner löscht, dann kontrolliert TIM jetzt auch, ob
+  dieser Partner Sonderpreise hat. Wenn ja, dann löscht er diese zuerst.
+  
+- Patch 20090428
+
+- Bug in mstdio.prg: Wenn man folgende Schachtelung hatte::
+
+   #if .f 
+   #if .t.
+   foo
+   #endif
+   #endif
+  
+  dann wurde foo fälschlicherweise ausgeführt. Jetzt nicht mehr.
+  
+ - Nach einem #endif kann man jetzt egal was hinschreiben (auf der
+   gleichen Zeile). Vorher waren selbst Kommentare dort nicht erlaubt.
+   Auch ein Leerzeichen ist nicht nmötig.
+   
+- :xfile:`PROG.MNU` prüft jetzt an mehreren Stellen nach, ob ``"C"$UsrAttrib()`` 
+   
+20090429
+--------
+
+- :xfile:`USER.MNU` prüft jetzt an mehreren Stellen nach, ob ``"C"$UsrAttrib()`` 
+   
+ 
+- xbase memoedit() meldet oft UNKEY statt UNKEYX, wenn der Text bereit
+  verändert wurde. Workaround: ESC speichert jetzt einfach stillschweigend auch immer ab. Also keine Möglichkeit
+  mehr, die Änderungen zu stornieren. Wird niemanden stören.
+ 
+ 
+- Neue Funktion :func:`ddFldSetType`. Mit ddFldSetType("_Libell","M") kann man das Eingabeverhalten von VNL verändern. (Funktioniert aber nicht.)
+  
+  
+20090512
+--------
+
+- (SPZ) F8 auf :class:`DLS` dürfen jetzt wieder alle Benutzer (nicht nur Therapeuten) machen.
+
+
+20090513
+--------
+
+- In einer Datenbank mit mehreren Benutzern (MrkMaxUsers > 1) lässt TIM jetzt nicht mehr zu, dass man sich anmeldet, wenn nicht wenigstens die Umgebungsvariable PC gesetzt ist. 
+  Wenn die leer ist, dann sagt er::
+
+   ╔════════════════════ Warning ═══════════════════╗
+   ║    Your PC environment variable is not set.    ║
+   ║   Please contact your system administrator!    ║
+   ║          Press any key to continue...          ║
+   ╚════════════════════════════════════════════════╝
+
+20090528
+--------
+
+- Neuer Eintrag :configcmd:`KrgKrmPrix`. 
+  Dieser Ausdruck wird in KrgKrlUpdate ausgeführt, und er muss den Stundentarif für die "majoration du forfait" der INAMI zurück 
+  geben. Dieser ist normlerweise 0, außer für die betroffenen Rechnungen. 
+
+20090529
+--------
+
+- Neue Funktionen KrgTot4, KrgTot5, KrgTot6.
+- Funktion KrgCol() fügt jetzt auch eine Zeile für Artikel 783.871 (hardkodierte Nummer), wenn :attr:`KRG.MontKrm` nicht leer ist.
+- KrgKrlUpdate() vergaß die Stunden der Testsitzungen machte einfach nur val(IdArt), was bei Testsitzungen 0 ergab, weil deren IdArt mit T beginnt.
+
+20090603
+--------
+
+- PrjPinEdit() machte die PRJ nicht erneut auf. Also wenn man F6 auf PRJ machte, wenn PRJ1.NTX nicht aktiv war, dann fand er IdPrj nicht.
+
+20090616
+--------
+
+- :xfile:`WINSTD.DRV` rendert Formatierung Shadow ([S]) jetzt als fett-kursiv statt sie einfach zu ignorieren.
+
+
+2009623
+-------
+- MFC, IFC und TAX ignorierten bisher DEF_4LANG. Behoben. Neue Felder IFC->Memo4 und TAX->Memo4. 
+  IFC.MSK
+
+20090701
+--------
+- Neue Funktion xupper(), die eine Datei xupper.dbc benötigt. Ähnlich wie eupper(), aber eben konfigurierbar und deshalb nicht geeignet um in Indexdateien verwendet zu werden.
+
+20090702
+--------
+
+- LstHaushalt() : Unterteilungen 6,7 und 8 (Haushalt und Rechnung) haben scheinbar in 2007 mal die Gesamtsummen fett gedruckt. Das muss aber ein Wunder gewesen sein.... Jedenfalls sind diese Zeilen jetzt (wieder) fett. 
+
+- Ein fieser alter Bug ist raus: ms_wrap() hatte ein Problem in schmalen Kolonnen, wenn es überhaupt keine Stelle für den Zeilenumbruch fand. Dann wurde der Text in der betreffenden Kolonne abgeschnitten, und auf der nächsten Zeile waren alle Kolonnen verschoben.
+
+- Neue Funktion DrvFilename(). 
+
+- DIAG.LST zeigt jetzt auch Druckertreiber an und testet Zeichenformatierungen (bold, underline, italic, shadow)
+
+- release gx
+
+20090708
+--------
+- Neue Datei 20060825.ACT 
+
+20090716 
+--------
+- GetEid() vertrug es nicht, wenn ein Personalausweis mit unbekanntem Tag und/oder Monat im BIRTHDATE eingelesen wurde. Er meldete dann "Geboren im 18. Jahrhundert!?" Solche Leute gibt es aber. Jetzt wird in diesem Fall die 0 im Tag oder Monat des Geburtsdatums auf 1 gesetzt. Das ist zwar ein bisschen dumm, weil Leute, die wirklich z.B. am 1. Januar geboren sind, dann so aussehen wie welche, die ihr Geburtsdatum nicht wissen, aber Clipper-Datumsfelder akzeptieren leider keine unvollständigen Daten. Um auch unvollständige Geburtsdaten speichern zu können, müssten wir PAR->GebDat nach CHAR konvertieren. Das wäre nicht unmöglich, aber ich schätzte dass das den Aufwand nicht wert ist. Ich habe es mit folgenden Werten getestet::
+
+   19640514 -> 14.05.64
+   19520000 -> 01.01.52
+   19520300 -> 01.03.52
+   19520017 -> 17.01.52
+
+20090729
+--------
+- :xfile:`VENTOTAL.PDS` in DLM\VEN 
+
+  - druckt den Gesamtbetrag jetzt auch bei Verkäufen mit 6% MWSt.
+  
+  - druckt jetzt den Satz "Für die Richtigkeit des Betrags von" 
+    wenn :data:`PARATTR_T` gesetzt ist.    
+    
+20090805
+--------
+- Neue Funktion :func:`BanShort` gibt entweder die NBAN oder die formatierte IBAN zurück.
+
+20090807
+--------
+- Seit 20050919 gibt es das Feature, dass wenn ein nicht-virtuelles Feld trotzdem "Block" definiert hat, dieser Ausdruck angezeigt wird. Nur wenn der Cursor ins Feld springt, wird der wahre Inhalt des Feldes angezeigt. Dieses Feature wird aber bei ph_refresh() ignoriert. Das fiel bei GX auf, wo wir in IMPREG.MSK für IMP->Compte1 einen Block mit BanShort() verwenden. ph_refresh() kennt ja nur die GETs und n oGet:cargo eventuell deren AD_ALEN, aber nicht das MSKGET.
+
+  Lösung: MSKGET_BLOCK ist jetzt obsolet. Stattdessen neue Funktion ddFldSetSayBlock() bentuzen, die das Gleiche für alle MSK macht, und richtig.
+  Also ein MSKGET_BLOCK mit MSKGET_FLDHANDLE != 0 ist jetzt obsolet und sollte durch ddFldSetSayBlock() ersetzt werden.
+  
+  Problem: Im SPZ z.B. wird das auf IdPar benutzt, und in manchen QRY will man beide Felder haben. Dann darf man ddFldSetSayBlock() nicht benutzen.
+

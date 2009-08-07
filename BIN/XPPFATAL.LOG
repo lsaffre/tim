@@ -1,0 +1,19 @@
+FATAL ERROR LOG 
+Abort with Alt-C
+SYS Thread-ID: 1556 
+Module: EVM
+Error Codes: EH: 11 Sub: 0(0) OS: 0 XPP: 0
+Call Stack of Thread 1 (1732):
+WAITKEY(308)
+WAITKEYSET(429)
+WARNING(496)
+(B)XPARSE(0)
+ONREBUILD(1668)
+LOGOPEN(737)
+OPENDATA(760)
+DBLOGIN(384)
+MAIN(166)
+Call Stack of Thread 2 (1556):
+File: T:\svnwork\tim\trunk\BIN\TIM4.EXE
+TimeStamp: 20080321 10:55
+End of FATAL ERROR LOG.

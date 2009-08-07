@@ -1,0 +1,24 @@
+title "General Ledger to PDF"
+field name="year" default=year(userdate()+30)-1 \
+      caption="Jahr " \
+      picture="9999"
+field name="GL2PDF.path" \
+      value=padr(AppRoot()+"\pdf",200) \
+      picture="@k@s30" \
+      caption="Path "
+field name="GL2PDF.Journale" default="X" \
+      caption2=" Journale" \
+      reader={|g|CbxReader(g)}
+field name="GL2PDF.GENHST" default="X" \
+      caption2=" Saldenliste Generalkonten" \
+      reader={|g|CbxReader(g)}
+field name="GL2PDF.PARHST" default="X" \
+      caption2=" Saldenlisten Partnerkonten" \
+      reader={|g|CbxReader(g)}
+field name="GL2PDF.Historiken" default="X" \
+      caption2=" Historiken" \
+      reader={|g|CbxReader(g)}
+field name="GL2PDF.Deklarationen" default="X" \
+      caption2=" Deklarationen" \
+      reader={|g|CbxReader(g)}
+
