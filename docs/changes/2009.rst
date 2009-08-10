@@ -517,6 +517,7 @@ generierenden PDF-Datei jetzt nur noch an, wenn "E" $ UsrAttrib().
 
 20090807
 --------
+
 - Seit 20050919 gibt es das Feature, dass wenn ein nicht-virtuelles Feld trotzdem "Block" definiert hat, dieser Ausdruck angezeigt wird. Nur wenn der Cursor ins Feld springt, wird der wahre Inhalt des Feldes angezeigt. Dieses Feature wird aber bei ph_refresh() ignoriert. Das fiel bei GX auf, wo wir in IMPREG.MSK für IMP->Compte1 einen Block mit BanShort() verwenden. ph_refresh() kennt ja nur die GETs und n oGet:cargo eventuell deren AD_ALEN, aber nicht das MSKGET.
 
   Lösung: MSKGET_BLOCK ist jetzt obsolet. Stattdessen neue Funktion ddFldSetSayBlock() bentuzen, die das Gleiche für alle MSK macht, und richtig.
@@ -524,3 +525,7 @@ generierenden PDF-Datei jetzt nur noch an, wenn "E" $ UsrAttrib().
   
   Problem: Im SPZ z.B. wird das auf IdPar benutzt, und in manchen QRY will man beide Felder haben. Dann darf man ddFldSetSayBlock() nicht benutzen.
 
+20090810
+--------
+
+- :func:`OpenPrinter` and :func:`RepPrint` have a new optional parameter *nCopies*. This is needed in FER.DLG which calls  RepPrint() several times without dialog.

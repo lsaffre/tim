@@ -132,7 +132,7 @@ static snGrpCurrent
 static snClnCurrent := 0
 
  
-FUNCTION RepPrint(cIdRep,cIdDlg,cTitle,cTplIni,cPreview,lToCsv)
+FUNCTION RepPrint(cIdRep,cIdDlg,cTitle,cTplIni,cPreview,lToCsv,nCopies)
 local rptSave := rpt
 local lOkay := .t.
 if cTitle != NIL
@@ -156,7 +156,7 @@ if (rpt := RptLoad(cIdRep,lToCsv)) == NIL
 endif
 if ! rpt[RPT_TOCSV]
   RETURN .f. if ! OpenPrinter(SetTplIni(),SetPreview(),;
-    NIL,NIL,NIL,NIL,NIL,NIL,SetAsPdf(),SetAsMail())
+    NIL,NIL,NIL,NIL,NIL,NIL,SetAsPdf(),SetAsMail(),nCopies)
 endif
 lOkay := _Report(cTitle==NIL)
 if !rpt[RPT_TOCSV]

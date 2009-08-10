@@ -603,10 +603,12 @@ default lAsync to .f.
 default lBackground to .t.
 RETURN !SetMsg("runbg(): "+cProgram+MsgFileExist()) if ! file(cProgram)
 default cParams to ""
-default lLog to ! ">" $ cParams
 #ifdef __XPP__
-  if lLog 
-    cParams += " > runbg.log 2>&1"
+  if .t. // was temporarily .f. for DF 20090808
+      default lLog to .t.
+      if lLog .and. ! ">" $ cParams
+        cParams += " > runbg.log 2>&1"
+      endif
   endif
   uRetVal := RunShell(cParams,cProgram,lAsync,lBackground)
   RETURN .t. if uRetVal == 0

@@ -16,7 +16,7 @@ rem
 rem You should have received a copy of the GNU General Public License
 rem along with TIM. If not, see <http://www.gnu.org/licenses/>.
 
-SET TIMHOME=t:\svnwork\tim\trunk
+SET TIMHOME=t:\hgwork\tim
 
 if not exist %TIMHOME%\SRC\CUST\%1.CH goto error1
 set CUST=%1
@@ -80,7 +80,7 @@ pbuild /d%DEFINE% /dCUST=%CUST%
 goto ende
 
 :error1
-echo %1 : No such custization!
+echo %1 : No such customization!
 goto ende
 
 :error2

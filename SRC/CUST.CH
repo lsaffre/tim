@@ -1,1 +1,1 @@
-#include "t:\svnwork\tim\trunk\SRC\CUST\stdd.CH" 
+#include "t:\hgwork\tim\SRC\CUST\spz.CH" 

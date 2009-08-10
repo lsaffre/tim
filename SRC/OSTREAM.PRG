@@ -336,7 +336,8 @@ FUNCTION OpenPrinter( ;
   cIdDlg, ;
   lDlg, ;
   lAsPdf, ;
-  lAsMail ;
+  lAsMail, ;
+  nCopies ;
 )
 local cMsg := ""
 if snPrnStatus == PRN_CONTINUE
@@ -405,7 +406,7 @@ scDoCapture := BUTTON_OFF
 scMntFormat := SetMntFormat()
 scSetSolde  := SetSolde()
 sSaveDateFormat  := SetDateFormat()
-snCopies    := NIL
+snCopies    := nCopies
 * snPrnStatus := PRN_CONTINUE
 sbPageHeader := bPageHeader
 sbPageFooter := NIL

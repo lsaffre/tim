@@ -144,7 +144,7 @@
 
 // #define DEF_BNB
 
-#define SIMULATE_CARD_READER
+// #define SIMULATE_CARD_READER
 
 // #define DEF_FOX
 
