@@ -428,8 +428,8 @@ RETURN ConfirmDelete() if DbfPeek(oPar(),PXS->IdPar,"ParPxtTable()",NIL)==NIL
 RETURN !SetMsg(alias()+" wird automatisch mit dem Partner gel”scht.")
 
 
-FUNCTION ParPxtTable
-RETURN if(PAR->IdPrt$"SZI",oPxs(),NIL)
+* FUNCTION ParPxtTable
+* RETURN if(PAR->IdPrt$"SZI",oPxs(),NIL)
 
 FUNCTION PxtSync()
 MsgDisplay("PxtSync() l„uft...")

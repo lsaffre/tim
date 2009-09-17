@@ -98,6 +98,7 @@ static scOpenCsv := NIL
 
 static slFixY2K := .t.
 static sbParName := {|| trim1(PAR->Allo) + trim(PAR->Firme) }
+
 static sbParLogo := {|| "" }
 // iif(empty(PAR->NB2),"",AppPath()+"\photos\"+trim(PAR->NB2)+".jpg")
 static sbParCity := {||PlzString(PAR->Pays,PAR->CP)}
@@ -125,6 +126,11 @@ static sbPerDevFixed := {|| .f. }
   static sbZauComPrefix := {||""}
   static sbImlCompte := {|| PAR->Compte1 }
 #endif DEF_IMP
+
+#ifdef DEF_PXT
+static sbParPxtTable := {||iif(PAR->IdPrt$"SZI",oPxs(),NIL)}
+#endif DEF_PXT
+
 
 
 #ifdef DEF_PLP
@@ -5857,6 +5863,9 @@ AddIniCmd( { "PerShift" , {|x| snPerShift := val(x),.t. } } )
 #ifdef DEF_VCS
   AddIniCmd( { "VcsJournals" , {|x| VcsJournals(x) } } )
 #endif DEF_VCS
+#ifdef DEF_PXT
+  AddIniCmd( { "ParPxtTable" , {|x|(sbParPxtTable:=cblock(x)) != NIL }})
+#endif DEF_PXT
 RETURN NIL
 
 
@@ -6002,3 +6011,9 @@ RETURN eval(sbKrgKrmPrix)
 
 #endif DEF_KITZ
 
+#ifdef DEF_PXT
+
+FUNCTION ParPxtTable()
+RETURN eval(sbParPxtTable)
+
+#endif DEF_PXT

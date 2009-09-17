@@ -60,7 +60,7 @@ column header=utr("VAT","MWS","TVA") width=3 text={||HST->IdTax}
          text={|x|ntomf(x)} xsum={|x| ntomf(x) }
   // 1. : 18% m„„raga maksustatav k„ive
   column header="1" width=LenMntF() \
-         when={||GEN->IdClj=="..".and.HST->IdTax$"18 "} \
+         when={||GEN->IdClj=="..".and.HST->IdTax$"18 ,20 "} \
          value={||HstDcMont("C",SetDevise())} \
          text={|x|ntomf(x)} xsum={|x| ntomf(x) }
   // 1.1 : sh. kinnisasjade ja nendega seotud tehingute...
