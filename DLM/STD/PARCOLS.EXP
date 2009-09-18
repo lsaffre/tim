@@ -36,7 +36,9 @@ FieldUpdate   NB2     trim(PAR->NB2)
 FieldUpdate   Sprache     trim(PAR->Langue)
 FieldUpdate   PG     trim(PAR->IdPgp)
 FieldUpdate   Waehrung  trim(PAR->IdDev)
+#if type("PAR->Regime")=="C"
 FieldUpdate   Regime    trim(PAR->IdReg)
+#endif
 #if type("PAR->IdGen")=="C"
   FieldUpdate   Kto      trim(PAR->IdGen)
 #endif
