@@ -467,8 +467,8 @@ generierenden PDF-Datei jetzt nur noch an, wenn "E" $ UsrAttrib().
 - :xfile:`WINSTD.DRV` rendert Formatierung Shadow ([S]) jetzt als fett-kursiv statt sie einfach zu ignorieren.
 
 
-2009623
--------
+20090623
+--------
 - MFC, IFC und TAX ignorierten bisher DEF_4LANG. Behoben. Neue Felder IFC->Memo4 und TAX->Memo4. 
   IFC.MSK
 
@@ -520,7 +520,7 @@ generierenden PDF-Datei jetzt nur noch an, wenn "E" $ UsrAttrib().
 
 - Seit 20050919 gibt es das Feature, dass wenn ein nicht-virtuelles Feld trotzdem "Block" definiert hat, dieser Ausdruck angezeigt wird. Nur wenn der Cursor ins Feld springt, wird der wahre Inhalt des Feldes angezeigt. Dieses Feature wird aber bei ph_refresh() ignoriert. Das fiel bei GX auf, wo wir in IMPREG.MSK für IMP->Compte1 einen Block mit BanShort() verwenden. ph_refresh() kennt ja nur die GETs und n oGet:cargo eventuell deren AD_ALEN, aber nicht das MSKGET.
 
-  Lösung: MSKGET_BLOCK ist jetzt obsolet. Stattdessen neue Funktion ddFldSetSayBlock() bentuzen, die das Gleiche für alle MSK macht, und richtig.
+  Lösung: MSKGET_BLOCK ist jetzt obsolet. Stattdessen neue Funktion ddFldSetSayBlock() benutzen, die das Gleiche für alle MSK macht, und richtig.
   Also ein MSKGET_BLOCK mit MSKGET_FLDHANDLE != 0 ist jetzt obsolet und sollte durch ddFldSetSayBlock() ersetzt werden.
   
   Problem: Im SPZ z.B. wird das auf IdPar benutzt, und in manchen QRY will man beide Felder haben. Dann darf man ddFldSetSayBlock() nicht benutzen.

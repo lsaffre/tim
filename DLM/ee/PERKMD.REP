@@ -4,7 +4,7 @@ header2 PerText()
 area { oPer() }
 order 1 // GEN->IdBil+GEN->IdGen
 ValidateRecord {|| (MemPer1:=MemPer2:=PER->Periode)!=NIL }
-ValidateRecord {|| setvar("4",CttTaxe('IdCtr=="V".and.IdTax$"18 ,20"'))}
+ValidateRecord {|| setvar("4",CttTaxe('IdCtr=="V".and.IdTax$"18 ,20 "'))}
 ValidateRecord {|| setvar("5",CttTaxe('IdCtr=="E".and.IdTax$"D5 ,D18,D20"'))}
 ValidateRecord {|| setvar("6",CttTaxe('IdCtr=="E".and.IdTax$"IM "'))}
 // filter {|| !"H"$BIL->Attrib}
