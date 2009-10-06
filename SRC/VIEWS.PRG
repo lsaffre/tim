@@ -473,7 +473,7 @@ aadd( saCurQry[QRY_COLUMNS], { ;
   "",     ;        // COL_BUFFER
   cExpr,    ;      // COL_EXPR
   0,      ;        // COL_SUM
-  cSayBlock, ;     // COL_SAYBLOCK
+  cSayBlock, ;     // COL_SUMFMT
   cBlock,    ;     // COL_BLOCK
   aOnEdit,   ;     // COL_ONEDIT
   xlSkip,    ;     // COL_SKIPBLOCK
@@ -565,12 +565,12 @@ if nFldHandle == NIL
     "",                                     ;   // COL_BUFFER
     NIL,                                    ;   // COL_EXPR
     0,                                      ;   // COL_SUM
-    NIL,                                    ;   // COL_SAYBLOCK
+    NIL,                                    ;   // COL_SUMFMT
     cBlock,                                 ;   // COL_BLOCK
     NIL,                                    ;   // COL_ONEDIT
     ".t.",                                  ;   // COL_SKIPBLOCK
-    NIL                        ;   // COL_CLRBLOCK
-    , NIL ;   // COL_IFEXPR
+    NIL                                     ;   // COL_CLRBLOCK
+    , NIL                                   ;   // COL_IFEXPR
     }                                             // COL_ALEN
 endif
 RETURN { ;
@@ -581,13 +581,13 @@ RETURN { ;
   "",                                     ;            // COL_BUFFER
   NIL,                                    ;            // COL_EXPR
   0,                                      ;            // COL_SUM
-  NIL,                                    ;            // COL_SAYBLOCK
+  NIL,                                    ;            // COL_SUMFMT
   NIL,                                    ;            // COL_BLOCK
   NIL,                                    ;            // COL_ONEDIT
   ".f.",                                  ;            // COL_SKIPBLOCK
   NIL       ;            // COL_CLRBLOCK
   , NIL ; // COL_IFEXPR
-}                                                      // COL_ALEN
+}  // COL_ALEN
 
 STATIC FUNCTION ColText(aFields,col)
 local fld
@@ -697,8 +697,8 @@ for i := 1 to len( a )
   if a[i][COL_EXPR] != NIL
     fwrite( fd, " expr " + a[i][COL_EXPR] )
   endif
-  if a[i][COL_SAYBLOCK] != NIL
-    fwrite( fd, " say " + a[i][COL_SAYBLOCK] )
+  if a[i][COL_SUMFMT] != NIL
+    fwrite( fd, " sumfmt " + a[i][COL_SUMFMT] )
   endif
   if a[i][COL_ONEDIT] != NIL
     fwrite( fd, " onEdit ")

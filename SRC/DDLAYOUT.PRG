@@ -663,10 +663,10 @@ if col[COL_BLOCK] == NIL
 else
   cBlock := padr(col[COL_BLOCK],200)
 endif
-if col[COL_SAYBLOCK] == NIL
+if col[COL_SUMFMT] == NIL
   cSayBlock := space(200)
 else
-  cSayBlock := padr(col[COL_SAYBLOCK],200)
+  cSayBlock := padr(col[COL_SUMFMT],200)
 endif
 if col[COL_ONEDIT] != NIL
   cOnEdit := ""
@@ -728,7 +728,7 @@ if empty(cExpr)
 else
   col[COL_EXPR]    := trim(cExpr)
 endif
-col[COL_SAYBLOCK] := if(empty(cSayBlock),NIL,trim(cSayBlock))
+col[COL_SUMFMT] := if(empty(cSayBlock),NIL,trim(cSayBlock))
 if empty(cBlock)
   if col[COL_FLDHANDLE] == 0
     col[COL_BLOCK]    := '""'

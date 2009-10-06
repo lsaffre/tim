@@ -25,12 +25,13 @@
   #define COL_BUFFER    5
   #define COL_EXPR      6
   #define COL_SUM       7
-  #define COL_SAYBLOCK  8
+  #define COL_SUMFMT    8
   #define COL_BLOCK     9
   #define COL_ONEDIT    10
   #define COL_SKIPBLOCK 11
   #define COL_CLRBLOCK  12
   #define COL_IFEXPR    13
+  // #define COL_SAYBLOCK  14
   #define COL_ALEN      13
 #define QRY_ORDER    3 // index order to activate
 #define QRY_WINDOW   4

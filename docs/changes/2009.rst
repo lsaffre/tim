@@ -529,3 +529,15 @@ generierenden PDF-Datei jetzt nur noch an, wenn "E" $ UsrAttrib().
 --------
 
 - :func:`OpenPrinter` and :func:`RepPrint` have a new optional parameter *nCopies*. This is needed in FER.DLG which calls  RepPrint() several times without dialog.
+
+
+20091004
+--------
+
+- ddFldSetSayBlock() wurde in der Listenansicht ignoriert.
+  intern: renamed COL_SAYBLOCK to COL_SUMFMT
+  Denn COL_SAYBLOCK hat nichts mit AG_SAYBLOCK zu tun.
+  
+  N.B. Man sollte darauf achten, dass das picture und der AG_SAYBLOCK die gleiche Länge haben, weil sonst nach dem Bearbeiten der Rahmen überschrieben wird.
+  
+  @k@s31 und padl(...,31) 

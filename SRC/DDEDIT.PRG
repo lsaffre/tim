@@ -2740,7 +2740,7 @@ if len(aCol) == 0   // query empty : default col order = field order
       "", ;
       NIL, ;
       0, ;
-      NIL, ;              // COL_SAYBLOCK
+      NIL, ;              // COL_SUMFMT
       NIL,;               // COL_BLOCK
       NIL,;               // COL_ONEDIT
       ".f.",;             // COL_SKIPBLOCK
@@ -2816,7 +2816,7 @@ col[COL_ATTRIB   ] := ""
 col[COL_PICTURE  ] := cPicture
 col[COL_BUFFER   ] := ""
 col[COL_SUM      ] := 0
-col[COL_SAYBLOCK ] := NIL
+col[COL_SUMFMT   ] := NIL
 col[COL_ONEDIT   ] := NIL
 col[COL_SKIPBLOCK] := ".f."
 col[COL_CLRBLOCK ] := xbColorBlock
@@ -2859,7 +2859,7 @@ RETURN .f. if FLDATTR_C $ fld[AG_ATTRIB]  .and. !USRATTR_C $ UsrAttrib()
 * fld:picture := col[COL_PICTURE]
 if col[COL_BLOCK] == NIL
   if fld[AG_TYPE] == "D"
-    col[COL_SAYBLOCK] := '""'
+    col[COL_SUMFMT] := '""'
   endif
   fldBlock := fld[AG_BLOCK] // :block
   if fldBlock == NIL ; raise("fld:block is NIL") ; endif
@@ -2880,6 +2880,7 @@ column := TBcolumnNew( ;
   {|x| GsbColEof(x,col,fldBlock,nWidth,ad,lIsMemo) } )
 column:width := nWidth
 * logConsole(fld[AG_NAME]+" "+ntrim(nWidth))
+// col[COL_SAYBLOCK] := fld[AG_SAYBLOCK] // neu seit 20091004
 if col[COL_CLRBLOCK] != NIL
   column:colorBlock := xparse(col[COL_CLRBLOCK])
 endif
@@ -2919,8 +2920,7 @@ local col := soBrowse:getColumn(nCol)
 RETURN eval(col:block)
 
 static FUNCTION GsbColEof(x,col,bBlock,nWidth,ad,lIsMemo)
-* local cSayBlock
-local i
+local i,b,s
 if x == NIL
   * 20070524 if slIsEof .and. slSumActive .and. snSkipOffset == 0
   if (eof().or.bof()) .and. slSumActive .and. snSkipOffset == 0
@@ -2939,17 +2939,29 @@ if x == NIL
         endif
         MsgDisplay("")
       endif
-      RETURN padl(col[COL_SUM],nWidth) if col[COL_SAYBLOCK] == NIL
+      RETURN padl(col[COL_SUM],nWidth) if col[COL_SUMFMT] == NIL
     endif
-    if col[COL_SAYBLOCK] != NIL
-      RETURN eval(&("{|nSum|" + col[COL_SAYBLOCK] + "}"),col[COL_SUM])
+    if col[COL_SUMFMT] != NIL
+      RETURN eval(&("{|nSum|" + col[COL_SUMFMT] + "}"),col[COL_SUM])
     endif
   endif
   if lIsMemo
     RETURN space(nWidth) if mlcount(eval(bBlock)) == 0
     RETURN memoline(eval(bBlock),nWidth,snSkipOffset+1)
   endif
-  RETURN transform(eval(bBlock),col[COL_PICTURE]) if snSkipOffset == 0
+  if snSkipOffset == 0
+      // RETURN transform(eval(bBlock),col[COL_PICTURE]) 
+      // seit 20091004: test ob FLD_SAYBLOCK existiert
+      if col[COL_FLDHANDLE] != 0 .and. (b := saData[AD_FIELDS][col[COL_FLDHANDLE]][AG_SAYBLOCK]) != NIL
+        s := xparse(b)
+      else
+        s := eval(bBlock)
+      endif
+      RETURN transform(s,col[COL_PICTURE])
+      // return padl(s,nWidth)
+      // RETURN transform(eval(bBlock),col[COL_PICTURE]) if b == NIL
+      // RETURN transform(xparse(b),col[COL_PICTURE])
+  endif
   RETURN space(nWidth)
 endif
 RETURN eval(bBlock,x)
