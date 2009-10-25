@@ -1,1 +1,1 @@
-#include "t:\hgwork\tim\SRC\CUST\luc.CH" 
+#include "t:\hgwork\tim\SRC\CUST\stdd.CH" 

@@ -4429,24 +4429,28 @@ browse array a ;
 RETURN NIL if lastchoice() == 0
 RETURN a[lastchoice()][nReturnItem]
 
-FUNCTION PickDbcString(cDbcName,cStart,cTitle,nWidth)
-local a := DbcLoad(cDbcName,1)
+FUNCTION PickDbcLngString(cDbcName,cStart,cTitle,nWidth)
+RETURN PickDbcString(cDbcName,cStart,cTitle,nWidth,LngIndex(SetTplLang()))
+
+FUNCTION PickDbcString(cDbcName,cStart,cTitle,nWidth,nField)
+local a := DbcLoad(cDbcName) // ,1)
 local i
 local nChoice := 0
 local nPadWidth := nWidth
 default nPadWidth to 40
+default nField to 1
 for i := 1 to len(a)
-  if trim(a[i][1]) == trim(cStart)
+  if trim(a[i][nField]) == trim(cStart)
     nChoice := i
   endif
 next i
 browse array a ;
-             using {|x| padr(x[1],nPadWidth) } ;
+             using {|x| padr(x[nField],nPadWidth) } ;
              title (cTitle) ;
              start nChoice
 RETURN NIL if lastchoice() == 0
-RETURN a[lastchoice()][1] if nWidth == NIL
-RETURN padr(a[lastchoice()][1],nWidth)
+RETURN a[lastchoice()][nField] if nWidth == NIL
+RETURN padr(a[lastchoice()][nField],nWidth)
 
 FUNCTION DbcText(cDbcName,cId,nField)
 local a := DbcLoad(cDbcName)

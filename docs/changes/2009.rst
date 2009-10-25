@@ -541,3 +541,27 @@ generierenden PDF-Datei jetzt nur noch an, wenn "E" $ UsrAttrib().
   N.B. Man sollte darauf achten, dass das picture und der AG_SAYBLOCK die gleiche Länge haben, weil sonst nach dem Bearbeiten der Rahmen überschrieben wird.
   
   @k@s31 und padl(...,31) 
+  
+20091015
+--------
+
+- Im Dialogfenster der MWSt-Erklärung kann man jetzt bei den drei Beträgen auch Nachkommastellen eingeben.
+  :xfile:`DCLTVA.ACT`.
+  
+20091019
+--------
+- LenIdUsr kann jetzt länger als 8 sein, und IdUsr wird nicht mehr unbedingt in Großbuchstaben umgewandelt. Neuer Eintrag PicIdUsr
+
+- Wenn SetTrapErrors .t. ist, dann machte xparse() seit 2002 keine Warning(), sondern lediglich ein SetMsg(). Jetzt wieder Warning().  Denn zum Arbeiten mit RTF-Templates müssen ungültige Maskenbefehle angezeigt werden, ohne dass TIM deswegen gleichen einen RTE macht.
+
+20091020
+--------
+- PickDbcString() hat eine neuen optionalen Parameter nField. Defaultwert ist 1 wie bisher.
+  Nue: jetzt kommt keine Warnung mehr, wenn die DBC-Datei mehr Felder enthält als das angefragte.
+- PickDbcLngString() setzt als Defaultwert für nField die SetTplLang().
+- EXPLORER.MNU machte RTE wenn DEF_DLS nicht definiert war. Weil dann oDlp() nicht existierte.
+
+20091021
+--------
+- Die Bestätigung "Eine andere Sitzung ist bereits aktiv im Verzeichnis" hat jetzt "N" als Standardantwort.
+- MsgPrint() öffnet jetzt auch oPar(). Denn ParExist() funktionierte nicht wenn PAR mit anderem Index offen war.

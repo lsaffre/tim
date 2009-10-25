@@ -782,11 +782,13 @@ SetBreakTrap(.t.)
     u := &cExpr
   recover using e
     if valtype(cExpr) == "C"
-      SetMsg(cExpr + " : " + ErrorMessage(e))
+      Warning(cExpr + " : " + ErrorMessage(e))
+      * 20091019 SetMsg(cExpr + " : " + ErrorMessage(e))
       * 20021219 Warning(cExpr + " : ",ErrorMessage(e))
     else
       * 20021219 Warning("xparse() : argument error")
-      SetMsg("xparse() : " + utor(cExpr) + " is not a string!")
+      * 20091019 SetMsg("xparse() : " + utor(cExpr) + " is not a string!")
+      Warning("xparse() : " + utor(cExpr) + " is not a string!")
     endif
     u := NIL
   end sequence

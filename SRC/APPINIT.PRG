@@ -133,6 +133,7 @@ static slQuiet // /quietlogin
 
 // static snShift2000 := 1920
 static snLenIdUsr
+static scPicIdUsr
 static saOnRebuild := { ;
   {|cText| Warning( ;
     cText,NIL,"REBUILD",.t.,CfgDataBase() + MsgSystem() ;
@@ -219,6 +220,7 @@ AddIniCmd( { "set epoch" , {|x| set(_SET_EPOCH,xparse(x)), .t. } } )
 AddIniCmd( { "ClearOnRebuild" , {|x| saOnRebuild := {}, .t. } } )
 AddIniCmd( { "OnRebuild" , {|x| AddIfNotNil(saOnRebuild,xparse(x)) } } )
 AddIniCmd( { "LenIdUsr" , {|x| (snLenIdUsr := xparse(x)) != NIL } } )
+AddIniCmd( { "PicIdUsr" , {|x| (scPicIdUsr := xparse(x)) != NIL } } )
 AddIniCmd( { "PreLogin" , {|x| AddIfNotNil(saPreLogin, cblock(x)) } } )
 AddIniCmd( { "OnLogin" , {|x| AddIfNotNil(saOnLogin, cblock(x)) } } )
 AddIniCmd( { "HelpPath" , {|x| sxcHelpPath := x, .t.  } } )
@@ -433,6 +435,7 @@ local fn := "\" + ProgName() + ".INI"
 RETURN .f. if ! DlmInit()
 scCustData := ""
 snLenIdUsr := 8
+scPicIdUsr := PIC_ID
 saPreLogin   := {}
 saOnLogin   := { ;
   {|| AppOnLogin() } ;
@@ -1663,6 +1666,7 @@ FUNCTION IsCustData(cAlias) ; RETURN (cAlias $ scCustData)
 #endif DEF_ACT
 
 FUNCTION LenIdUsr  ; RETURN snLenIdUsr
+FUNCTION PicIdUsr  ; RETURN scPicIdUsr
 * FUNCTION Shift2000 ; RETURN set(_SET_EPOCH) // snShift2000
 
 FUNCTION OnRebuild(cText)

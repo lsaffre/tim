@@ -1,5 +1,5 @@
 //
-// PARNAME.QRY - generated 19.09.07
+// PARNAME.QRY - generated 22.10.09
 // for PAR.FOX
 //
 column 33 =tr("Name (Anrede)","Nom","Name") pict @K@S32
@@ -26,7 +26,7 @@ column 38 Bank (2)
 column 21 Spr. pict @K@!
 column 20 ZA pict @K@!
 column 36 W„ pict @K@!
-column 28 Erstellt am say ""
+column 28 Erstellt am sumfmt ""
 column 2 G-Kto
 column 14 PG pict @K@!
 column 49 GSM
@@ -34,6 +34,7 @@ column 44 Vorname pict @K
 column 50 URL pict @k@s40
 column 45 Name3
 column 46 RegKood
+column 49 GSM
 mask PAR
 order 7
 help PAR

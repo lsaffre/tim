@@ -41,7 +41,7 @@ do while file(scFilename)
       "Another session is already using the directory ",;
       "Eine andere Sitzung ist bereits aktiv im Verzeichnis ",;
       "Une autre session est d‚j… active dans le r‚pertoire ";
-      )+curdir(),MsgRetry();
+      )+curdir(),MsgRetry(),MSG_NO;
     )
   else
     fclose(fd)

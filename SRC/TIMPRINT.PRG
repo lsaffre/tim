@@ -764,23 +764,31 @@ RETURN ntomf(nMont,nDecPos)
 **
 FUNCTION MsgPrint(cTplType,cPickTitle)
 local cIdTpl := MSG->IdTxt
-RETURN .f. if ! ParExist(MSG->IdPar)
+local lOkay := .f.
 default cTplType to TPLTYPE_MSG
-if cPickTitle != NIL
-  cIdTpl := PickTpl(cTplType,cIdTpl,PAR->Langue,NIL, cPickTitle)
-  RETURN .f. if cIdTpl == NIL
-elseif empty(cIdTpl)
-  RETURN !SetMsg("Kann nicht drucken weil keine Druckmaske angegeben.")
-endif
-open area oPlz(), oAmk(), oPxs()
-  SetTplLang(PAR->Langue)
-  #ifdef DEF_AMK
-  seek MSG->IdMsg in AMK
-  #endif DEF_AMK
-  #ifdef DEF_PXT
-  seek MSG->IdPar in PXS
-  #endif
-  PrintTemplate(cTplType,cIdTpl)
+open area oPar(), oPlz(), oAmk(), oPxs()
+  if ParExist(MSG->IdPar)
+    lOkay := .t.
+    if cPickTitle != NIL
+      cIdTpl := PickTpl(cTplType,cIdTpl,PAR->Langue,NIL, cPickTitle)
+      if cIdTpl == NIL
+        lOkay := .f.
+      endif
+    elseif empty(cIdTpl)
+      SetMsg("Kann nicht drucken weil keine Druckmaske angegeben.")
+      lOkay := .f.
+    endif
+    if lOkay
+      SetTplLang(PAR->Langue)
+      #ifdef DEF_AMK
+        seek MSG->IdMsg in AMK
+      #endif DEF_AMK
+      #ifdef DEF_PXT
+        seek MSG->IdPar in PXS
+      #endif
+      PrintTemplate(cTplType,cIdTpl)
+    endif
+  endif
 close area
 RETURN MnuDone()
 

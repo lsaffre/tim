@@ -180,26 +180,12 @@ endif
 //
 // put up alert box
 //
-if ! AppIsDemo()     // def DEF_DEMO            // if SET(_SET_BELL)
-  *if set(_SET_BELL)
-  *  tune_morts()
-  *endif
-  * tone(262,1)
-  * tone(330,1)
-  * tone(392,1)
-  * tone(523,3)
-endif
 nChoice := 0
 SetKeepReport(.t.)
 #ifndef MONKEY
   if !AppIsDemo()
     while ( nChoice == 0 )
-      * if ( empty(e:osCode) )
-        nChoice := Alert( cMessage, aOptions )
-      * else
-      *   nChoice := Alert( cMessage + "; (DOS Error " ;
-      *              + ntrim(e:osCode) + ")", aOptions )
-      * endif
+      nChoice := Alert( cMessage, aOptions )
       if ( nChoice == NIL )
         exit
       endif

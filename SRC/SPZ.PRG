@@ -582,6 +582,68 @@ RETURN .f. if ! DlsDlpTest()
 #endif DEF_DLP
 RETURN .t.
 
+
+FUNCTION DlaExist(cId)
+if DLA->IdDla == cId .and. ! eof() in DLA
+  RETURN .t.
+endif
+seek cId in DLA
+if eof() in DLA
+  RETURN ! SetMsg(cId + " : unbekannte Dienstleistungsart" )
+endif
+RETURN .t.
+
+FUNCTION DlsExist(cId)
+if DLS->IdDls == cId .and. ! eof() in DLS
+  RETURN .t.
+endif
+seek cId in DLS
+if eof() in DLS
+  RETURN ! SetMsg(cId + " : unbekannte Dienstleistung" )
+endif
+RETURN .t.
+
+FUNCTION DlsPreDelete(lConfirm)
+local lOkay := .f.
+local cId := DLS->IdDls
+default lConfirm to .t.
+if lConfirm
+  RETURN .f. if ! ConfirmDelete()
+endif
+#ifdef DEF_DLP
+  MsgDisplay(MsgWorking())
+  lOkay := .f.
+  open area oDlp()
+    lOkay := .t.
+    ddSetOrder(1)
+    softseek cId
+    do while ! eof() .and. DLP->IdDls == cId
+      if ddRecLock()
+        delete
+        unlock record
+      else
+        lOkay := .f.
+        exit
+      endif
+      softseek cId
+    enddo
+  close area
+  RETURN .f. if ! lOkay
+#endif DEF_DLP
+RETURN .t.
+
+
+
+FUNCTION LenIdDla ; RETURN 3
+
+#else
+
+FUNCTION oDls() ; RETURN NIL
+FUNCTION oDla() ; RETURN NIL
+
+#endif DEF_DLS
+
+
 #ifdef DEF_DLP
 
 FUNCTION oDlp
@@ -799,65 +861,7 @@ FUNCTION oDlp() ; RETURN NIL
 #endif DEF_DLP
 
 
-FUNCTION DlaExist(cId)
-if DLA->IdDla == cId .and. ! eof() in DLA
-  RETURN .t.
-endif
-seek cId in DLA
-if eof() in DLA
-  RETURN ! SetMsg(cId + " : unbekannte Dienstleistungsart" )
-endif
-RETURN .t.
 
-FUNCTION DlsExist(cId)
-if DLS->IdDls == cId .and. ! eof() in DLS
-  RETURN .t.
-endif
-seek cId in DLS
-if eof() in DLS
-  RETURN ! SetMsg(cId + " : unbekannte Dienstleistung" )
-endif
-RETURN .t.
-
-FUNCTION DlsPreDelete(lConfirm)
-local lOkay := .f.
-local cId := DLS->IdDls
-default lConfirm to .t.
-if lConfirm
-  RETURN .f. if ! ConfirmDelete()
-endif
-#ifdef DEF_DLP
-  MsgDisplay(MsgWorking())
-  lOkay := .f.
-  open area oDlp()
-    lOkay := .t.
-    ddSetOrder(1)
-    softseek cId
-    do while ! eof() .and. DLP->IdDls == cId
-      if ddRecLock()
-        delete
-        unlock record
-      else
-        lOkay := .f.
-        exit
-      endif
-      softseek cId
-    enddo
-  close area
-  RETURN .f. if ! lOkay
-#endif DEF_DLP
-RETURN .t.
-
-
-
-FUNCTION LenIdDla ; RETURN 3
-
-#else
-
-FUNCTION oDls() ; RETURN NIL
-FUNCTION oDla() ; RETURN NIL
-
-#endif DEF_DLS
 
 #ifdef DEF_LPJ
 

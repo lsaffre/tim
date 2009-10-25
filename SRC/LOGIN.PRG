@@ -202,7 +202,7 @@ do while !lOkay
   @ CSR_POS say MSG002 get dDate // pick PickDate(sdDate)
   WinCR()
   * @ CSR_POS say MSG003 get pcUserId picture PIC_ID
-  @ CSR_POS say MSG003 get cIdUsr picture PIC_ID
+  @ CSR_POS say MSG003 get cIdUsr picture PicIdUsr()
   nRow := row()
   nCol := col()
   nKey := ReadScr()
@@ -489,7 +489,7 @@ local aBuf := CopyRec()
 local cIdUsr := USR->UserId
 open window ("Create User") size 3,50 help USRCREA
 say "User ID "
-get cIdUsr picture PIC_ID
+get cIdUsr picture PicIdUsr()
 nKey := ReadScr()
 close window
 RETURN DDCREATE_FAIL if nKey == K_ESC
@@ -516,7 +516,7 @@ static b := NIL
 if b != NIL ; RETURN b ; endif
 define data b name USR
 ddindex b on USR->UserId
-ddFld UserId   ,C,  LenIdUsr(),0 picture PIC_ID when .f.
+ddFld UserId   ,C,  LenIdUsr(),0 picture PicIdUsr() when .f.
 ddFld IdMnu    ,C,  5,0 picture PIC_ID
 ddFld Birth    ,D,  8,0
 ddFld Heure    ,C,  8,0 attrib H
@@ -612,7 +612,8 @@ RETURN .t.
 **
 FUNCTION GetAppEnv(cVarName)
 * local cUserId := upper(trim(left(getenv(cVarName),8)))
-local cUserId := upper(trim(left(getvar(cVarName),8)))
+* local cUserId := upper(trim(left(getvar(cVarName),8)))
+local cUserId := trim(getvar(cVarName))
 if empty(cUserId)
   cUserId := ProgName()
 endif
