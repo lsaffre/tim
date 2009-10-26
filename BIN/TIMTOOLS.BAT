@@ -1,3 +1,4 @@
 @echo off
-echo Using Lino from source
-python -c "from lino import runscript" %*
+echo Using TimTools from source
+rem python -c "from timtools import runscript" %*
+python -m "timtools.runscript" %*

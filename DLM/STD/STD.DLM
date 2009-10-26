@@ -18,6 +18,7 @@ PreLogin !IndExist("DBCHECK").or.ActExec("DBCHECK").or.Confirm(\
 // OnLogin setvar("asMail"," ")
 do DlgDefault("mailhost","")
 do DlgDefault("mailfrom","")
+do DlgDefault("mailsupport","")
 do DlgDefault("mailto","luc.saffre@gmx.net")
 do DlgDefault("mailtpl","MAIL.EML")
 do DlgDefault("fontName","")

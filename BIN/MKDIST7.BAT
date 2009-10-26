@@ -14,36 +14,42 @@ if errorlevel 1 goto ende
 md dist
 if errorlevel 1 goto ende
 
+
+:restart
+
+if x%1 == x goto weiter
+
+T:
+cd T:\HGWORK\TIM\DATA
+if not exist %1\tim.dbi goto error1
+7za a -tzip -r -p T:\HGWORK\TIM\dist\%1 %1 -x!*.NTX -x!*.OL* -x!*.CDX
+if errorlevel 1 goto err_zip
+
+
+shift
+goto restart
+
+:weiter
+
 T:
 cd T:\HGWORK\TIM
-if exist dlm\*.* zip -r dist\dlm.zip dlm
+if exist dlm\*.* 7za a -tzip -r dist\dlm.zip dlm
 if errorlevel 1 goto err_zip
-if exist localdlm\*.* zip -r dist\localdlm.zip localdlm
+if exist localdlm\*.* 7za a -tzip -r dist\localdlm.zip localdlm
 if errorlevel 1 goto err_zip
 if exist readme.txt xcopy readme.txt dist /v
 if errorlevel 1 goto err_copy
 
 T:
 cd T:\HGWORK\TIM\BIN
-zip T:\HGWORK\TIM\dist\bin.zip tim4.exe tim4.ico tim.ini choice.com prn2file.com zip.exe zipsplit.exe setup.bat
+7za a -tzip T:\HGWORK\TIM\dist\bin.zip tim4.exe tim4.ico tim.ini choice.com prn2file.com setup.bat
 if errorlevel 1 goto err_zip
 if exist unzip.exe xcopy unzip.exe T:\HGWORK\TIM\dist /v
 if errorlevel 1 goto err_copy
+if exist 7za.exe xcopy 7za.exe T:\HGWORK\TIM\dist /v
+if errorlevel 1 goto err_copy
 
-
-:restart
-
-if x%1 == x goto ende
-
-T:
-cd T:\HGWORK\TIM\DATA
-if not exist %1\tim.dbi goto error1
-zip -r -e T:\HGWORK\TIM\dist\%1 %1 -x *.NTX -x *.OL* -x *.CDX
-if errorlevel 1 goto err_zip
-
-
-shift
-goto restart
+goto ende
 
 :error1
 echo FEHLER : %1 : Datenbank nicht gefunden in T:\HGWORK\TIM\DATA
@@ -63,7 +69,7 @@ pause
 goto ende
 
 :syntax
-echo Usage : MKDIST.BAT echo 컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴�
+echo Usage : MKDIST7.BAT echo 컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴�
 echo where dbname_1 through n are database names
 pause
 

@@ -1,6 +1,6 @@
 @echo off
 T:
-cd T:\SVNWORK\TIM\TRUNK\BIN
+cd T:\HGWORK\TIM\BIN
 tim4.exe %*
 T:
-cd T:\SVNWORK\TIM\TRUNK\BIN
+cd T:\HGWORK\TIM\BIN
