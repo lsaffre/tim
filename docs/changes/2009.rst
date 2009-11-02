@@ -565,3 +565,9 @@ generierenden PDF-Datei jetzt nur noch an, wenn "E" $ UsrAttrib().
 --------
 - Die Bestätigung "Eine andere Sitzung ist bereits aktiv im Verzeichnis" hat jetzt "N" als Standardantwort.
 - MsgPrint() öffnet jetzt auch oPar(). Denn ParExist() funktionierte nicht wenn PAR mit anderem Index offen war.
+
+20091026
+--------
+- Neue Datei :xfile:`MKDIST7.BTP` wird der Nachfolger von :xfile:`MKDIST.BTP`. Erstens benutzt sie 7za.exe (http://www.7-zip.org/download.html) statt des bisherigen Info-Zip. Daneben macht sie das Backup der Datenbanken jetzt als erstes, so dass man nicht mehr lange zu warten braucht bevor man nach dem Passwort gefragt wird. Und das Passwort fragt er jetzt nicht mehr blind und doppelt, sondern sichtbar und nur einmal.
+
+- Im Kolonnentitel konnte seit 20091004 manchmal "sumfmt" erscheinen, weil ColRead() noch nicht von "say" nach "sumfmt" als keyword konvertiert war. Jetzt versteht ColRead() beide Versionen, wobei "say" nur noch in .qry-Dateien erscheint, die vor dem 20091004 gespeichert wurden.

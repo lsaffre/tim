@@ -415,6 +415,11 @@ if (nPos := rat(" onEdit ",cLine)) != 0
   aOnEdit  := ListAsArray(substr(cLine,nPos + 8),";")
   cLine    := trim(left(cLine,nPos - 1))
 endif
+if (nPos := rat(" sumfmt ",cLine)) != 0
+  cSayBlock   := substr(cLine,nPos + 8)
+  cLine   := trim(left(cLine,nPos - 1))
+endif
+* the following is for backwards-compatibility:
 if (nPos := rat(" say ",cLine)) != 0
   cSayBlock   := substr(cLine,nPos + 5)
   cLine   := trim(left(cLine,nPos - 1))
