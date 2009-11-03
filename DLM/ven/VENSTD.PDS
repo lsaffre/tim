@@ -1,4 +1,5 @@
-from lino.sdoc.commands import *
+#coding: cp850
+from timtools.sdoc.commands import *
 
 # stylesheet.Normal.fontSize=12
 
