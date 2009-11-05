@@ -571,3 +571,17 @@ generierenden PDF-Datei jetzt nur noch an, wenn "E" $ UsrAttrib().
 - Neue Datei :xfile:`MKDIST7.BTP` wird der Nachfolger von :xfile:`MKDIST.BTP`. Erstens benutzt sie 7za.exe (http://www.7-zip.org/download.html) statt des bisherigen Info-Zip. Daneben macht sie das Backup der Datenbanken jetzt als erstes, so dass man nicht mehr lange zu warten braucht bevor man nach dem Passwort gefragt wird. Und das Passwort fragt er jetzt nicht mehr blind und doppelt, sondern sichtbar und nur einmal.
 
 - Im Kolonnentitel konnte seit 20091004 manchmal "sumfmt" erscheinen, weil ColRead() noch nicht von "say" nach "sumfmt" als keyword konvertiert war. Jetzt versteht ColRead() beide Versionen, wobei "say" nur noch in .qry-Dateien erscheint, die vor dem 20091004 gespeichert wurden.
+
+20091103
+--------
+
+- Ein Bug, der noch niemandem so recht aufgefallen ist, der aber wahrscheinlich schon immer in der xbase++-Version war: wenn ein ddSetFldValidate() nicht einverstanden war, dann ließ er dich nicht mit ENTER aus dem Feld raus, aber wenn du ESC drücktest, wurde trotzdem nicht der alte Wert zurück gesetzt. Also der neue Wert wurde trotzdem akzeptiert.
+  Das war 2:30 Stunden Fehlersuche mit dem Debugger, bis ich rausfand, dass dass oGet:undo() von xbase++ nicht funktioniert (PDR 2615,  http://www.alaska-software.com/scripts/waa001.dll?WAA_PACKAGE=PUBLICDTS&WAA_FORM=DISPLAYPDR&PDRID=2615), für den es allerdings einen Workaround gibt, den ich übernommen habe.  
+
+- Ein weiterer Bug behoben: wenn man im Browse ein Feld bearbeitete und dann mit F10 beendete, dann wurde sah das aus als hätte man ESC gedrückt. Aber Alt-F5 zeigte, dass lediglich der Bildschirm nicht korrekt aktualisiert worden war. Jetzt kann man auch mit F10 beenden ohne irritiert zu sein.
+
+- ParPick() hat jetzt einen neuen Parameter bPrePick (der aber nicht benutzt wird, denn 
+  folgende Neuerung war für DD angebrachter).
+
+- ddPrePick() in einer DEF-Datei gibt eine Bedingung (als Codeblock oder Expression) an, die vor jedem Auswählen eines Records dieser Tabelle getestet wird.
+

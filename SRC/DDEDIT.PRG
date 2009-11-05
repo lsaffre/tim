@@ -44,6 +44,7 @@ static slIsEof  := .F. // steht der cursor auf lastrec() + 1 ?
                        // bzw. (im Netz) : stand er drauf beim
                        // stabilize...?!
 * static slHitBottom := .f.
+* static sxlPrePick := ".t."
 static slSumActive := .t.
 static slModify := .F.
 static saKeyStack := {}
@@ -420,6 +421,7 @@ local lMustScan := slMustScan
 local cIdFlt := scIdFlt
 local bSaveCreate := ad[AD_CREATE]
 local bOnIdleSave := sbOnIdle
+* local xlPrePick := sxlPrePick
 local bSavePreEdit := ad[AD_PREEDIT]
 local nSaveRequest := snRequest
 local nSaveRecStat := snRecStat
@@ -681,6 +683,7 @@ slCanSkip := lSaveCanSkip
 snRequest := nSaveRequest
 sxcKey := bSaveKeyBlock
 sxlFilter := bSaveFltBlock
+* sxlPrePick := xlPrePick
 scFltText  := cSaveFltText
 scKeyValue := cSaveKeyValue
 soBrowse := oOldBrowse
@@ -887,10 +890,11 @@ do while snRequest == DDEDIT_BROWSE .or. snRequest == DDEDIT_PAGE
       endif
     endif
     if CanSkip()
-    * if snRecStat == RS_VALID
       ForceStable()
       Searching()  // fÅr flinke Finger
-      snRequest := DDEDIT_EXIT
+      if eval(saData[AD_PREPICK])
+        snRequest := DDEDIT_EXIT
+      endif
     endif
   * changed 20061011 : Enter in VenVenEdit() soll auch die MSK anzeigen.
   elseif nKey == K_ENTER .and. CurQry(QRY_IDMSK) != NIL

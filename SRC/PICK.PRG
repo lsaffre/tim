@@ -989,13 +989,14 @@ RETURN PickAttrib(aAttrib,MSG007,cStart,"","ESCATTR")
 **
 ** PickPar()
 **
-FUNCTION PickPar( cPrtList, cStart, cTitle, xuReturn ) // , bPreSelect )
+FUNCTION PickPar( cPrtList, cStart, cTitle, xuReturn, xlPreSelect )
 local uReturn := NIL // local cIdPar := NIL
 local b := oPar()
 local prt
 local nStart := 1 // DDSTART_TOP
 default cStart to ""
 default xuReturn to "PAR->IdPar"
+default xlPreSelect to ".t."
 if len(trim(cStart)) == LEN_IDPRT
   prt := PrtLocate(trim(cStart))
   cStart := ""
@@ -1035,8 +1036,9 @@ open area b, oPlz(), oNat(), oClb()
          title  (cTitle)
   endif
   if ddLastReq() == DDEDIT_SELECT
-    * cIdPar := PAR->IdPar
-    uReturn := &xuReturn
+    if &xlPreSelect
+      uReturn := &xuReturn
+    endif
   endif
 close area
 RETURN uReturn

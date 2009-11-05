@@ -87,7 +87,8 @@
 // AD_PATH no longer used since 20010719
 // again used since 20020117
 #define AD_ONTEST        33  //
-#define AD_ALEN          33  // Length of array
+#define AD_PREPICK       34
+#define AD_ALEN          34  // Length of array
 
 * #define AD_CURMSK        21  // Currently loaded .MSK
 * #define AD_CURQRY        22  // Currently loaded .QRY

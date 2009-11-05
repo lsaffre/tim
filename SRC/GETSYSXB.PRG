@@ -183,7 +183,7 @@ PROCEDURE GetReader( oGet )
 
          // Get keyboard input
          DO WHILE oGet:exitState == GE_NOEXIT
-            * GetApplyKey( oGet, Inkey(0) )
+            // GetApplyKey( oGet, Inkey(0) )
             GetApplyKey( oGet, WaitKey() )
          ENDDO
 
@@ -230,6 +230,8 @@ case (key == K_F1) ; GetDoPick(get)
 case ( key == K_ESC )
   if set(_SET_ESCAPE)
     get:undo()
+    // get:_assign()
+    // get:updateBuffer()
     get:exitState := GE_ESCAPE
   endif
 case ( key == K_CTRL_HOME ) ; get:exitState := GE_TOP
@@ -497,8 +499,9 @@ FUNCTION GetPostValidate( oGet )
    soStatus:updated := .T.
 
    // Reset Get object
-   oGet:Reset()                        
-
+   oGet:Reset()
+   // oGet:home() // 20091103
+   
    #ifdef DEF_BRAND
      if oGet:Type == T_DATE
        if ! empty(ptod(MrkInstall))
@@ -521,7 +524,7 @@ FUNCTION GetPostValidate( oGet )
       SetPos( oGet:row, oGet:col )     
 
       DispScoreboard()
-      oGet:updateBuffer()
+      oGet:updateBuffer() // 20091103 
       soStatus:updated := lUpdated
 
       IF soStatus:killRead
@@ -974,9 +977,42 @@ RETURN scLastGet
 
 STATIC PROCEDURE OtherKey(get,key)
 if key != K_MOUSE_EVENT .and. key != K_ALT
-  get:exitState := GE_WRITE
+  if len(soStatus:getList) == 1 // 20091103b
+    get:exitState := GE_ENTER
+  else
+    get:exitState := GE_WRITE
+  endif
 endif
 RETURN
+
+
+
+/*
+solution for pdr 2615
+http://www.alaska-software.com/scripts/waa001.dll?WAA_PACKAGE=PUBLICDTS&WAA_FORM=DISPLAYPDR&PDRID=2615
+*/
+
+#ifdef __XPP__
+
+CLASS Get2615 FROM Get
+   EXPORTED:
+   VAR original READONLY
+
+   INLINE METHOD setFocus()
+     ::get:setFocus()
+     DEFAULT ::original TO ::varGet()
+   RETURN( self )
+
+   INLINE METHOD undo()
+     IF ::hasFocus
+       ::get:undo()
+       Eval( ::block, ::original )
+     ENDIF
+   RETURN( self )
+
+ENDCLASS
+#endif
+
 
 
 

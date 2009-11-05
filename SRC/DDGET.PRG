@@ -287,6 +287,7 @@ ad[AD_PICKFLT]   := bPickFlt
 ad[AD_PREDELETE] := bPreDelete
 ad[AD_FIRST]     := .f.
 ad[AD_ONTEST]    := {} // blOnTest
+ad[AD_PREPICK]   := {||.t.}
 sadCurrent := ad
 if blOnTest != NIL
   ddOnTest(blOnTest)
@@ -353,6 +354,13 @@ if valtype(b)=="C"; b := cblock(b) ; endif
 RETURN .f. if b == NIL
 aadd(sadCurrent[AD_ONTEST],b)
 RETURN .t.
+
+FUNCTION ddPrePick(b)
+if valtype(b)=="C"; b := cblock(b) ; endif
+RETURN .f. if b == NIL
+sadCurrent[AD_PREPICK] := b
+RETURN .t.
+
 
 **
 ** ddEditDetail() -
@@ -720,14 +728,25 @@ RETURN .f.
 FUNCTION ag2get(ag,nRow,nCol,cPicture)
 local oGet
 default cPicture to ag[AG_PICTURE]
-oGet := GetNew(    ;
-  nRow, nCol,  ;
-  ag[AG_BLOCK],            ;
-  ag[AG_NAME], ;
-  cPicture ;
-)
-oGet:postBlock := ag[AG_VALID]
-oGet:preBlock := ag[AG_WHEN]
+#ifdef __XPP__
+  // seit 20091103
+  oGet := Get2615():new(;
+    nRow, nCol,  ;
+    ag[AG_BLOCK], ;
+    ag[AG_NAME], ;
+    cPicture, ;
+    NIL, ag[AG_VALID], ag[AG_WHEN] ;
+  )
+#else
+  oGet := GetNew(    ;
+    nRow, nCol,  ;
+    ag[AG_BLOCK],  ;
+    ag[AG_NAME], ;
+    cPicture ;
+  )
+  oGet:postBlock := ag[AG_VALID]
+  oGet:preBlock := ag[AG_WHEN]
+#endif
 if ag[AG_TYPE] == GTYPE_MEMO
   oGet:reader := {|x| MemoReader(x) }
 elseif ag[AG_TYPE] == GTYPE_LOGICAL
