@@ -557,7 +557,7 @@ generierenden PDF-Datei jetzt nur noch an, wenn "E" $ UsrAttrib().
 20091020
 --------
 - PickDbcString() hat eine neuen optionalen Parameter nField. Defaultwert ist 1 wie bisher.
-  Nue: jetzt kommt keine Warnung mehr, wenn die DBC-Datei mehr Felder enthält als das angefragte.
+  Neu: jetzt kommt keine Warnung mehr, wenn die DBC-Datei mehr Felder enthält als das angefragte.
 - PickDbcLngString() setzt als Defaultwert für nField die SetTplLang().
 - EXPLORER.MNU machte RTE wenn DEF_DLS nicht definiert war. Weil dann oDlp() nicht existierte.
 

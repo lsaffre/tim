@@ -47,7 +47,7 @@ while cblock("left(HST->IdAna,"\
       when={||"D"$ANA->Attrib}
 
 group key={|| HST->IdAna } \
-      text={|| NIL} \
+      text={|| ""} \
       when={||.t.} \
       after={|nCount,nDetail|nDetail>0.or."D"$ANA->Attrib} \
       align="R" \
