@@ -103,6 +103,7 @@ RETURN a
 
 
 
+
 FUNCTION ParDlsScan(ds1,ds2,xlFilter,xlEval)
 local a := ParAkten()
 local i
@@ -148,6 +149,33 @@ RETURN DbfScan({oDlp(),oDls(),oPar()},2,;
 *RETURN .t. if lFound
 *lFound := eval(xlOnPlp)
 
+
+FUNCTION ParSetUsers(xlDlsFilter)
+local cIdUsr1 := ""
+local cIdUsr2 := ""
+local cIdUsr3 := ""
+local a := {}
+local xlEval := {||acollect(a,{DLS->IdUsr,1}),.t.}
+local i
+RETURN .f. if ! DbfScan({oDls(),oDla(),oPar()},4,;
+  PAR->IdPar,"DLS->IdPar=="+utos(PAR->IdPar),xlDlsFilter,xlEval, NIL,.f.)
+// RETURN .f. if ! ParDlsScan('','',xlDlsFilter,bOnDLS)
+RETURN .t. if len(a) == 0
+PAR->IdUsr1 := a[1][1]
+if len(a) == 1
+  PAR->IdUsr2 := PAR->IdUsr1
+  RETURN .t.
+endif
+asort(a,,,{|a,b|a[2]>b[2]})
+PAR->IdUsr2 := a[1][1]
+// RETURN .t. if len(a) < 3
+for i := 1 to len(a)
+  if a[i][1] != PAR->IdUsr1 .and. a[i][1] != PAR->IdUsr2
+    PAR->IdUsr3 := a[i][1]
+    RETURN .t.
+  endif
+next i
+RETURN .t.
 
 
 

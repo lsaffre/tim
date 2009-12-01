@@ -585,3 +585,14 @@ generierenden PDF-Datei jetzt nur noch an, wenn "E" $ UsrAttrib().
 
 - ddPrePick() in einer DEF-Datei gibt eine Bedingung (als Codeblock oder Expression) an, die vor jedem Auswählen eines Records dieser Tabelle getestet wird.
 
+20091116
+--------
+
+- Historik Analysekonten zeigte keine Zwischensummen. Behoben. 
+  :xfile:`HSTANA.REP`
+  
+  
+20091201
+--------
+
+- Neue Funktion ParSetUsers() für DEF_SPZ.
