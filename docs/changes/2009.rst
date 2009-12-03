@@ -596,3 +596,8 @@ generierenden PDF-Datei jetzt nur noch an, wenn "E" $ UsrAttrib().
 --------
 
 - Neue Funktion ParSetUsers() für DEF_SPZ.
+
+20091203
+--------
+
+- ParSetUsers() durchscannt jetzt auch die Anwesenheiten.

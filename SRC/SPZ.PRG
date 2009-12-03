@@ -155,14 +155,28 @@ local cIdUsr1 := ""
 local cIdUsr2 := ""
 local cIdUsr3 := ""
 local a := {}
-local xlEval := {||acollect(a,{DLS->IdUsr,1}),.t.}
+local dFirst := UserDate()
+local cT1 := ''
+local xlEval := {||acollect(a,{DLS->IdUsr,1}),;
+  iif(DLS->Date>dFirst,.t.,(dFirst:=DLS->Date)!=NIL.and.(cT1:=DLS->IdUsr)!=NIL);
+}
 local i
 RETURN .f. if ! DbfScan({oDls(),oDla(),oPar()},4,;
   PAR->IdPar,"DLS->IdPar=="+utos(PAR->IdPar),xlDlsFilter,xlEval, NIL,.f.)
 // RETURN .f. if ! ParDlsScan('','',xlDlsFilter,bOnDLS)
+RETURN .f. if ! DbfScan({oDlp(),oDls(),oPar()},2,;
+  PAR->IdPar,;
+  "DLP->IdPar=='" + PAR->IdPar + "'",;
+  "DlsExist(DLP->IdDls).and."+xlDlsFilter,xlEval,NIL,.f.)
 RETURN .t. if len(a) == 0
-PAR->IdUsr1 := a[1][1]
-if len(a) == 1
+PAR->IdUsr1 := cT1 // a[1][1]
+for i := 1 to len(a)
+  if USRATTR_H $ UsrField(a[i][1],"USR->Attrib")
+    adel(a,i)
+    asize(a,len(a)-1)
+  endif
+next i
+if len(a) <= 1
   PAR->IdUsr2 := PAR->IdUsr1
   RETURN .t.
 endif

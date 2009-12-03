@@ -144,3 +144,5 @@
 #define DEF_GST // Gestelle
 #define CUST_AGV
 #define DEF_TRIG
+
+#define DEF_FOX
