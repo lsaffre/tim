@@ -80,9 +80,14 @@ RETURN DbfPick( ;
 )
 
 FUNCTION ParAkten /* returnt ein Array von Aktennummern, die
-therapeutisch zu mir geh”ren. Darunter auch meine eigene Aktennummer,
+"therapeutisch zu mir geh”ren". Darunter auch meine eigene Aktennummer,
 wenn ich eine Anfrage bin. Ein Partner ist eine Anfrage, wenn es keinen
 anderen Partner gibt, der fr ihn Anfrage ist.
+
+Bei Familien sieht jede Familie die DLS ihrer Mitglieder, und die einzelnen Mitglieder sehen nicht einmal die DLS, die fr sie allein erfasst wurden. 
+
+(Neu seit 20091210): 
+Bei Gruppen und Mitgliedern sieht jedes Mitglied die DLS seiner Gruppe, und die Gruppe sieht keine DLS. 
 
 */
 local a := { PAR->IdPar }
@@ -93,6 +98,10 @@ open area oPlp()
     if PLP->Type=="81-" .or. PLP->Type=="82-"
       lAmChild := .t.
     elseif PLP->Type=="81 ".or. PLP->Type=="82 "
+      aadd(a,PLP->IdPar2)
+    elseif PLP->Type=="80 "
+      lAmChild := .t.
+    elseif PLP->Type=="80-"
       aadd(a,PLP->IdPar2)
     endif
     skip
