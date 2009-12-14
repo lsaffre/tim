@@ -37,6 +37,7 @@ DLP : Klienten pro Sitzung
 
 #define PRBATTR_H "H" // nicht benutzen und nicht anzeigen
 #define PRBATTR_T "T" // "Titel" (nicht benutzen, aber wohl anzeigen)
+#define DLAATTR_D "D" // Direkte Dienstleistung
 
 FUNCTION PickDls(cStart)
 RETURN DbfPick( ;
@@ -99,10 +100,10 @@ open area oPlp()
       lAmChild := .t.
     elseif PLP->Type=="81 ".or. PLP->Type=="82 "
       aadd(a,PLP->IdPar2)
-    elseif PLP->Type=="80 "
-      lAmChild := .t.
-    elseif PLP->Type=="80-"
-      aadd(a,PLP->IdPar2)
+    * elseif PLP->Type=="80 "
+    *   lAmChild := .t.
+    * elseif PLP->Type=="80-"
+    *   aadd(a,PLP->IdPar2)
     endif
     skip
   enddo
@@ -139,6 +140,57 @@ RETURN DbfScan({oDlp(),oDls(),oPar()},2,;
     +ntrim(len(ds2));
     +")<='"+PAR->IdPar+ds2+"'",;
     xlFilter,xlEval,NIL,.f.)
+    
+FUNCTION ParDDLScan(d1,d2)
+/* 
+  Direkte DL sind DLS, bei denen die Person pers”nlich anwesend war.
+  deren DLA Attibut D hat.
+*/
+local nAnzDDL := 0
+local dDDL1 := ctod("")
+// local dDDL2 := d1
+local bEval := {||;
+  nAnzDDL += 1,;
+  .t.}
+// dDDL1 := min(DLS->Date,dDDL1),;
+// dDDL2 := max(DLS->Date,dDDL2),;
+// xlDlsFilter += ".and.DlaExist(DLS->IdDla).and.'D'$DLA->Attrib"
+// xlDlsFilter += ".and.DLS->IdUsr==" + utos(PAR->IdUsr2)
+if PAR->IdPrt == "P"
+  RETURN .f. if ! DbfScan({oDlp(),oDls(),oPar()},2,;
+    PAR->IdPar+dtos(d1),;
+    "DLP->IdPar+dtos(DLP->Date)<='"+PAR->IdPar+dtos(d2)+"'",;
+    "DlsExist(DLP->IdDls)",bEval,NIL,.f.)
+  open area oDlp()
+    set order to 2
+    softseek PAR->IdPar
+    if !eof() .and. DLP->IdPar == PAR->IdPar
+      dDDL1 := DLP->Date
+    endif
+  close area
+elseif PAR->IdPrt == "G"
+  RETURN .f. if ! DbfScan({oDls(),oDla(), oPar()},4,;
+    PAR->IdPar+dtos(d1),;
+    "DLS->IdPar+dtos(DLS->Date)<='"+PAR->IdPar+dtos(d2)+"'",;
+    "DlaExist(DLS->IdDla).and.'D'$DLA->Attrib",bEval,NIL,.f.)
+  open area oDls()
+    set order to 4
+    softseek PAR->IdPar
+    do while !eof() .and. DLS->IdPar == PAR->IdPar 
+      if DlaExist(DLS->IdDla) .and. DLAATTR_D $ DLA->Attrib
+        dDDL1 := DLP->Date
+        exit
+      endif
+      skip
+    enddo
+  close area  
+endif
+setvar("AnzDDL",nAnzDDL)
+setvar("DDL1",dDDL1)
+// setvar("DDL2",dDDL2)
+RETURN .t.
+
+
 
 *FUNCTION ParOnPlp(xlOnPlp)
 *local cIdPar := PAR->IdPar

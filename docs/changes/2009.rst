@@ -601,3 +601,9 @@ generierenden PDF-Datei jetzt nur noch an, wenn "E" $ UsrAttrib().
 --------
 
 - ParSetUsers() durchscannt jetzt auch die Anwesenheiten.
+
+20091211
+--------
+
+- Neue Funktion ParDdlScan() für DEF_SPZ. 
+  Wird dort benutzt in PARCTL2.ACT (aktenkontrollliste).
