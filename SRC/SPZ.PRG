@@ -148,7 +148,7 @@ FUNCTION ParDDLScan(d1,d2)
 */
 local nAnzDDL := 0
 local dDDL1 := ctod("")
-// local dDDL2 := d1
+local dDDL2 := ctod("")
 local bEval := {||;
   nAnzDDL += 1,;
   .t.}
@@ -160,12 +160,16 @@ if PAR->IdPrt == "P"
   RETURN .f. if ! DbfScan({oDlp(),oDls(),oPar()},2,;
     PAR->IdPar+dtos(d1),;
     "DLP->IdPar+dtos(DLP->Date)<='"+PAR->IdPar+dtos(d2)+"'",;
-    "DlsExist(DLP->IdDls)",bEval,NIL,.f.)
+    NIL,bEval,NIL,.f.)
   open area oDlp()
     set order to 2
-    softseek PAR->IdPar
-    if !eof() .and. DLP->IdPar == PAR->IdPar
+    // softseek PAR->IdPar
+    // if !eof() .and. DLP->IdPar == PAR->IdPar
+    if dbseek(PAR->IdPar,.f.) 
       dDDL1 := DLP->Date
+    endif
+    if dbseek(PAR->IdPar,.f.,NIL,.t.) // last
+      dDDL2 := DLP->Date
     endif
   close area
 elseif PAR->IdPrt == "G"
@@ -178,16 +182,25 @@ elseif PAR->IdPrt == "G"
     softseek PAR->IdPar
     do while !eof() .and. DLS->IdPar == PAR->IdPar 
       if DlaExist(DLS->IdDla) .and. DLAATTR_D $ DLA->Attrib
-        dDDL1 := DLP->Date
+        dDDL1 := DLS->Date
         exit
       endif
       skip
     enddo
+    if dbseek(PAR->IdPar,.f.,NIL,.t.) // last
+      do while !eof() .and. DLS->IdPar == PAR->IdPar 
+        if DlaExist(DLS->IdDla) .and. DLAATTR_D $ DLA->Attrib
+          dDDL2 := DLS->Date
+          exit
+        endif
+        skip -1
+      enddo
+    endif
   close area  
 endif
 setvar("AnzDDL",nAnzDDL)
 setvar("DDL1",dDDL1)
-// setvar("DDL2",dDDL2)
+setvar("DDL2",dDDL2)
 RETURN .t.
 
 

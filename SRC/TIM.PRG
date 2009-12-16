@@ -145,7 +145,7 @@ endif
 #ifdef DEF_GUI
   SetAppWindow():close := {|mp1,mp2,obj| AppNormEnd() }
   * Warning("gonna enter main loop")
-  do while .T.
+  do while .t.
     nEvent := AppEvent( @mp1, @mp2, @oXbp )
     * if nEvent == xbeP_None .and. MustLogin()
     if MustLogin()
