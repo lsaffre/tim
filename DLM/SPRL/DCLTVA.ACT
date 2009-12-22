@@ -25,6 +25,7 @@ DlgDefine("00",CttBase('DC=="D".and.IdCtr=="V".and.IdCtf!="**".and.IdTax$"0  "')
 DlgDefine("01",CttBase('DC=="D".and.IdCtr=="V".and.IdCtf!="**".and.IdTax$"6  ,06 "'))
 DlgDefine("02",CttBase('DC=="D".and.IdCtr=="V".and.IdCtf!="**".and.IdTax$"12 "'))
 DlgDefine("03",CttBase('DC=="D".and.IdCtr=="V".and.IdCtf!="**".and.IdTax$"20 ,21 "'))
+DlgDefine("44",CttBase('DC=="D".and.IdCtr=="V".and.IdTax$"IB "'))
 DlgDefine("45",CttBase('DC=="D".and.IdCtr=="V".and.IdTax$"C  "'))
 DlgDefine("46",CttBase('DC=="D".and.IdCtr=="V".and.IdTax$"IM ,IM6"'))
 DlgDefine("47",CttBase('\

@@ -111,6 +111,42 @@ close area
 RETURN {} if lAmChild
 RETURN a
 
+/* 
+Gibt die Nummer des Partners zurck, der die Notizen dieses Partners sammelt. Mitglieder einer Familie kriegen keine eigenen Notizen, sondern deren Notizen werden alle in einen Topf geworfen. Bei "therapeutischen Gruppen" dagegen (Psychodrama, Frauen, Jungen,...) wird das nicht gemacht.
+*/
+FUNCTION ParMsgHolder()
+local cIdPar := NIL
+if PAR->IdPrt == "P"
+  open area oPlp()
+    softseek PAR->IdPar
+    do while !eof() .and. PLP->IdPar1 == PAR->IdPar
+      if PLP->Type $ "81-,82-,83-,84-"
+        cIdPar := "" // PLP->IdPar2
+        exit
+      else
+        skip
+      endif
+    enddo
+  close area
+  RETURN cIdPar if cIdPar != NIL
+elseif PAR->IdPrt == "G"
+  open area oPlp()
+    softseek PAR->IdPar
+    do while !eof() .and. PLP->IdPar1 == PAR->IdPar
+      if PLP->Type == "80 "
+        cIdPar := ""
+        exit
+      else
+        skip
+      endif
+    enddo
+  close area
+  RETURN cIdPar if cIdPar != NIL
+endif
+RETURN PAR->IdPar
+
+
+
 
 
 

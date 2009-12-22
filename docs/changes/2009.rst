@@ -606,4 +606,9 @@ generierenden PDF-Datei jetzt nur noch an, wenn "E" $ UsrAttrib().
 --------
 
 - Neue Funktion ParDdlScan() für DEF_SPZ. 
-  Wird dort benutzt in PARCTL2.ACT (aktenkontrollliste).
+  Wird dort benutzt in PARCTL2.ACT (Aktenkontrollliste).
+
+20091217
+--------
+- Neue Funktion ParMsgHolder() für DEF_SPZ. 
+  Wird dort benutzt in PARCTL2.ACT (Aktenkontrollliste).
