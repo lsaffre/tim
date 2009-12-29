@@ -612,3 +612,13 @@ generierenden PDF-Datei jetzt nur noch an, wenn "E" $ UsrAttrib().
 --------
 - Neue Funktion ParMsgHolder() für DEF_SPZ. 
   Wird dort benutzt in PARCTL2.ACT (Aktenkontrollliste).
+
+20091222
+--------
+
+- Erste Änderungen "MWSt 2010" in DCLTVA.ACT, DLG und LST
+
+20091228
+--------
+- ParSetUsers() ließ IdUsr3 unverändert, wenn sie keinen T3 findet.
+  Jetzt setzt sie das Feld dann auf leer.

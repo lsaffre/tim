@@ -1,4 +1,12 @@
 // DCLTVA.ACT : MWSt-Erkl„rung drucken
+// Neue MWSt-Codes 20091222:
+// V IB : Intracom B2B                     
+// E IB : Intracom B2B 21% déductible      
+// E IB6 : Intracom B2B 6% déductible      
+// E IB0 : Intracom B2B 0%                 
+// E NIB : Intracom B2B 21% non d‚ductible 
+// E NB6 : Intracom B2B 6% non d‚ductible  
+
 DlgDefault("61",0.00) // r‚gulations TVA en faveur de l'Etat
 DlgDefault("62",0.00) // r‚gulations TVA en faveur du d‚clarant
 DlgDefault("91",0.00) // Anzahlung
@@ -25,6 +33,7 @@ DlgDefine("00",CttBase('DC=="D".and.IdCtr=="V".and.IdCtf!="**".and.IdTax$"0  "')
 DlgDefine("01",CttBase('DC=="D".and.IdCtr=="V".and.IdCtf!="**".and.IdTax$"6  ,06 "'))
 DlgDefine("02",CttBase('DC=="D".and.IdCtr=="V".and.IdCtf!="**".and.IdTax$"12 "'))
 DlgDefine("03",CttBase('DC=="D".and.IdCtr=="V".and.IdCtf!="**".and.IdTax$"20 ,21 "'))
+// 44 : ventes intracom B2B
 DlgDefine("44",CttBase('DC=="D".and.IdCtr=="V".and.IdTax$"IB "'))
 DlgDefine("45",CttBase('DC=="D".and.IdCtr=="V".and.IdTax$"C  "'))
 DlgDefine("46",CttBase('DC=="D".and.IdCtr=="V".and.IdTax$"IM ,IM6"'))
@@ -32,9 +41,9 @@ DlgDefine("47",CttBase('\
   DC=="D".and.IdCtr=="V".and.IdTax$"IS ,X  ,7  ,15 ,16 ,19 ,19M,L  ,D0 "\
 '))
 // 48 : notes de cr‚dit vente [et corrections n‚gatives] relatives aux
-// op‚rations inscrites en grille 46
+// op‚rations inscrites en grille 46 et 44
 DlgDefine("48",-CttBase('\
-  DC=="C".and.IdCtr=="V".and.IdTax$"IM ,IM6"\
+  DC=="C".and.IdCtr=="V".and.IdTax$"IM ,IM6,IM0,IB ,IB6,IB0"\
 '))
 // 49 : notes de cr‚dit vente [et corrections n‚gatives] relatives aux
 // autres op‚rations du cadre II
@@ -50,7 +59,7 @@ DlgDefine("54",CttTaxe('\
 // 55 : taxe due sur les achats intracom de marchandises (grille 86)
 //      ! mais sans prendre les notes de cr‚dit 
 DlgDefine("55",CttTaxe('\
-  DC=="C".and.IdCtr$"EA".and.IdCtf!="**".and.IdTax$"IM ,IM6,NIM"\
+  DC=="C".and.IdCtr$"EA".and.IdCtf!="**".and.IdTax$"IM ,IM6,NIM,IB ,IB6,NIB,NB6"\
 '))
 
 // 56 : taxe due sur les op‚rations de la grille 87 (sauf celles dont la
@@ -126,7 +135,7 @@ DlgDefine("83",\
 DlgDefine("84",\
   -CttBase('\
     IdCtr$"EA".and.IdCtf!="**".and.DC=="D"\
-    .and.IdTax$"IM ,IM6,IM0,IS "\
+    .and.IdTax$"IM ,IM6,IM0,IB ,IB6,IB0,IS "\
     ')\
 )
 DlgDefine("85",\
@@ -147,9 +156,11 @@ DlgDefine("87",\
     .and.IdTax$"C  ,NC ,C04,C06,C12,E88,IS ,NIS"\
   ')\
 )
-// DlgDefine("88",\
+// base achats B2B
+DlgDefine("88",\
   CttBase('\
-    IdCtr$"EA".and.IdCtf!="**".and.IdTax$"IS ,NIS"\
+    IdCtr$"EA".and.IdCtf!="**".and.DC=="C"\
+    .and.IdTax$"IB ,IB6,IB0"\
   ')\
 )
 
@@ -212,7 +223,7 @@ DlgValue("91")==0.or.DlgPlus("ctrl",val(str(DlgValue("91")*if(SetDevise()=="EUR"
 
 if(DlgValue("AsRtf")=="X",\
   ActExec("FPARSE",{ "dcltva","rtf", "tmp","rtf"} ),\
-  fprint("dcltva.lst","{}"))
+  fprint("dcltva.lst","{}",,,,,,,SetAsPdf(),SetAsMail()))
 #if MemLang1 == "D"
   DlgValue("59bis")==0.or.Warning(\
     "Drucken Sie auch eine Historik des Generalkontos " \

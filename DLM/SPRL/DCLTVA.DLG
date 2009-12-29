@@ -55,7 +55,7 @@ field block={|x|SetTplIni(x)}  picture="@k@!" \
       " long format"\
     )\
     reader={|g|CbxReader(g)}
-field name="AsRtf" \
+// field name="AsRtf" \
     caption2=if(MemLang1=="D",\
       " als RTF-Datei",\
       " comme fichier .rtf"\

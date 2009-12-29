@@ -2,7 +2,7 @@
 !(SetAsMail().or.SetAsPdf()).or.p_SetCopies(1)
 SetAsMail().or.SetAsPdf().or.SetSpooler('\
   runbg(AppPath()+"\timtools.bat",\
-    "prnprint"\
+    "prnprint -e cp850"\
     +iif(empty(getvar("fontName")),""," --fontName "+chr(34)+getvar("fontName")+chr(34))\
     +iif(empty(p_setport()),""," -p "+p_setport())\
     +" --config="+GetDlmPath("prnprint.ini")\
@@ -11,7 +11,7 @@ SetAsMail().or.SetAsPdf().or.SetSpooler('\
 !SetAsPdf().or.FileDelete(trim(getvar("PRN2PDF.out")),.f.,.t.)
 !SetAsPdf().or.SetSpooler('runbg(\
   AppPath()+"\timtools.bat",\
-  "prn2pdf "+iif(SetBatch().or.SetAsMail(),"-b ","")\
+  "prn2pdf -e cp850 "+iif(SetBatch().or.SetAsMail(),"-b ","")\
             +iif(empty(getvar("fontName")),"","--fontName "+chr(34)+getvar("fontName")+chr(34))+" "\
             +"-o "+trim(getvar("PRN2PDF.out"))\
     +" "+SetPrnFile())')

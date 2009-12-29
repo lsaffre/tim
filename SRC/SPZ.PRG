@@ -286,6 +286,7 @@ for i := 1 to len(a)
     asize(a,len(a)-1)
   endif
 next i
+PAR->IdUsr3 := ''
 if len(a) <= 1
   PAR->IdUsr2 := PAR->IdUsr1
   RETURN .t.
