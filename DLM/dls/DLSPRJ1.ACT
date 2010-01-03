@@ -1,7 +1,7 @@
 // Confirm(dtoc(ForValue()))
 DbfScan({oPrj()},1,NIL,NIL,"empty(PRJ->Parent)",{|| \
   setvar(alltrim(PRJ->IdPrj),0)\
-  })
+  },NIL,.f.)
 setvar("Total",0)
 setvar("isTop",{||empty(PRJ->Parent)})
 DbfScan({oDls(),oPrj()},2,dtos(ForValue()),NIL,\
@@ -12,5 +12,5 @@ DbfScan({oDls(),oPrj()},2,dtos(ForValue()),NIL,\
   .and.getvar("IdPrj")!=NIL\
   .and.DlgPlus(getvar("IdPrj"),t2hours(DLS->Dauer))\
   .and.DlgPlus("Total",t2hours(DLS->Dauer))\
-  })
+  },NIL,.f.)
 

@@ -2,12 +2,17 @@ header1 MnuItemName()
 header2 "P‚riode du "+dtoc(getvar("Date1"))+"-"+dtoc(getvar("Date2"))
 forloop {getvar("Date1"),getvar("Date2"),1}
 oneach {||ActExec("DLSPRJ1")}
+#if !empty(getvar("WeeklySums"))
 group key={||ls_woy(ForValue())} \
-      after={||RptTit3().and.PrintTotal(1,1).and.PrintLine()} \
-      text={|nCount|"Semaine "+ls_woy(ForValue())+ " :"} align="R"
+      after=iif(RptToCsv(),{||.t.},{||RptTit3().and.PrintTotal(1,1).and.PrintLine()}) \
+      text={|nCount|"Week "+ls_woy(ForValue())+ " :"} align="R"
+#endif      
+#if !empty(getvar("MonthlySums"))
 group key={||month(ForValue())} \
-      after={||RptTit2().and.PrintTotal(1,2).and.RptTit2()} \
-      text={|nCount|dtocf(ForValue(),"mmmm yyyy")+ " :"} align="R"
+      after=iif(RptToCsv(),{||.t.},{||RptTit2().and.PrintTotal(1,2).and.RptTit2()}) \
+      text={|nCount|dtocf(ForValue(),"mmmm yyyy","E")+ " :"} align="R"
+#endif
+group text={|nCount|"Total"} 
 
 column header="Date" \
        width=15 \
@@ -31,3 +36,4 @@ column header="Date" \
       NIL,NIL)})
 
 total text={||""}
+detail iif(empty(getvar("Detail")),{||.f.},{||.t.})

@@ -1,4 +1,4 @@
-# Makefile for otimdev documentation
+# Makefile for tim documentation
 #
 
 SITENAME     = timdoc

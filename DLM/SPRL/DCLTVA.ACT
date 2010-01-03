@@ -1,11 +1,4 @@
-// DCLTVA.ACT : MWSt-Erkl„rung drucken
-// Neue MWSt-Codes 20091222:
-// V IB : Intracom B2B                     
-// E IB : Intracom B2B 21% déductible      
-// E IB6 : Intracom B2B 6% déductible      
-// E IB0 : Intracom B2B 0%                 
-// E NIB : Intracom B2B 21% non d‚ductible 
-// E NB6 : Intracom B2B 6% non d‚ductible  
+// DCLTVA.ACT : Berechnung Felder der MWSt-Erkl„rung 
 
 DlgDefault("61",0.00) // r‚gulations TVA en faveur de l'Etat
 DlgDefault("62",0.00) // r‚gulations TVA en faveur du d‚clarant
@@ -24,6 +17,10 @@ MemPer1==MemPer2.or.pnQuarter(MemPer1)==pnQuarter(MemPer2)\
     "Les p‚riodes doivent se trouver dans le mˆme trimestre !"\
 ))
 
+setvar("Version",iif(pnYear(MemPer2))>2009,2,1)
+// Version 1 : bis Dezember 2009
+// Version 2 : ab Januar 2010
+
 DlgDefine("p1",if(MemPer1==MemPer2,"",ntrim(pnQuarter(MemPer1))))
 DlgDefine("p2",if(MemPer1==MemPer2,"",ntrim(pnYear(MemPer1))))
 DlgDefine("p3",if(MemPer1!=MemPer2,"",ntrim(pnMonth(MemPer1))))
@@ -34,17 +31,23 @@ DlgDefine("01",CttBase('DC=="D".and.IdCtr=="V".and.IdCtf!="**".and.IdTax$"6  ,06
 DlgDefine("02",CttBase('DC=="D".and.IdCtr=="V".and.IdCtf!="**".and.IdTax$"12 "'))
 DlgDefine("03",CttBase('DC=="D".and.IdCtr=="V".and.IdCtf!="**".and.IdTax$"20 ,21 "'))
 // 44 : ventes intracom B2B
-DlgDefine("44",CttBase('DC=="D".and.IdCtr=="V".and.IdTax$"IB "'))
+Dlgdefine("44",iif(getvar("Version")==1,0,CttBase('DC=="D".and.IdCtr=="V".and.IdTax=="IS "')))
 DlgDefine("45",CttBase('DC=="D".and.IdCtr=="V".and.IdTax$"C  "'))
-DlgDefine("46",CttBase('DC=="D".and.IdCtr=="V".and.IdTax$"IM ,IM6"'))
+DlgDefine("46",CttBase('DC=="D".and.IdCtr=="V".and.IdTax$"IM "'))
 DlgDefine("47",CttBase('\
   DC=="D".and.IdCtr=="V".and.IdTax$"IS ,X  ,7  ,15 ,16 ,19 ,19M,L  ,D0 "\
 '))
 // 48 : notes de cr‚dit vente [et corrections n‚gatives] relatives aux
 // op‚rations inscrites en grille 46 et 44
-DlgDefine("48",-CttBase('\
-  DC=="C".and.IdCtr=="V".and.IdTax$"IM ,IM6,IM0,IB ,IB6,IB0"\
-'))
+
+DlgDefine("48",iif(getvar("Version")==1,\
+  -CttBase('\
+    DC=="C".and.IdCtr=="V".and.IdTax$"IM "\
+  '),\
+  -CttBase('\
+    DC=="C".and.IdCtr=="V".and.IdTax$"IM ,IS "\
+  ')\
+  )
 // 49 : notes de cr‚dit vente [et corrections n‚gatives] relatives aux
 // autres op‚rations du cadre II
 DlgDefine("49",-CttBase('\
@@ -64,10 +67,17 @@ DlgDefine("55",CttTaxe('\
 
 // 56 : taxe due sur les op‚rations de la grille 87 (sauf celles dont la
 // taxe vient en 57)
-DlgDefine("56",CttTaxe('\
-  DC=="C".and.IdCtr$"EA".and.IdCtf!="**".and.\
-  IdTax$"C  ,NC ,C04,C06,C12,IS ,NIS"\
-'))
+DlgDefine("56",\
+  iif(getvar("Version")==1,\
+    CttTaxe('\
+      DC=="C".and.IdCtr$"EA".and.IdCtf!="**".and.\
+      IdTax$"C  ,NC ,C04,C06,C12,IS ,NIS"\
+    '),\
+    CttTaxe('\
+      DC=="C".and.IdCtr$"EA".and.IdCtf!="**".and.\
+      IdTax$"C  ,NC ,C04,C06,C12,IB "\
+    ')\
+    )
 // 57 : taxe due sur importations hors-UE avec report de perception …
 // l'int‚rieur du pays.
 DlgDefine("57",CttTaxe('\
@@ -133,11 +143,16 @@ DlgDefine("83",\
 )
 // montants de base sur les NCA intracommunautaires
 DlgDefine("84",\
+  iif(getvar("Version")==1,\
   -CttBase('\
     IdCtr$"EA".and.IdCtf!="**".and.DC=="D"\
-    .and.IdTax$"IM ,IM6,IM0,IB ,IB6,IB0,IS "\
+    .and.IdTax$"IM ,IM6,IM0,IS "\
+    '),\
+  -CttBase('\
+    IdCtr$"EA".and.IdCtf!="**".and.DC=="D"\
+    .and.IdTax$"IM ,IM6,IM0,IS ,IS6,IS0"\
     ')\
-)
+  ))
 DlgDefine("85",\
   -CttBase('\
     IdCtr$"EA".and.IdCtf!="**".and.DC=="D"\
@@ -151,18 +166,22 @@ DlgDefine("86",\
   ')\
 )
 DlgDefine("87",\
+  iif(getvar("Version")==1,CttBase('\
+    IdCtr$"EA".and.IdCtf!="**".and.DC=="C"\
+    .and.IdTax$"C  ,NC ,C04,C06,C12,E88,IS ,IS6,IS0,NIS"\
+  '),\
   CttBase('\
     IdCtr$"EA".and.IdCtf!="**".and.DC=="C"\
-    .and.IdTax$"C  ,NC ,C04,C06,C12,E88,IS ,NIS"\
-  ')\
+    .and.IdTax$"C  ,NC ,C04,C06,C12,E88,IB "\
+  ')
 )
 // base achats B2B
 DlgDefine("88",\
-  CttBase('\
+  iif(getvar("Version")==1,0,CttBase('\
     IdCtr$"EA".and.IdCtf!="**".and.DC=="C"\
-    .and.IdTax$"IB ,IB6,IB0"\
+    .and.IdTax$"IS ,IS6,IS0,NIS"\
   ')\
-)
+))
 
 DlgDefine("XX",\
   DlgValue("54")+DlgValue("55")+\
@@ -187,6 +206,7 @@ DlgValue("01")==0.or.DlgPlus("ctrl",val(str(DlgValue("01")*if(SetDevise()=="EUR"
 DlgValue("02")==0.or.DlgPlus("ctrl",val(str(DlgValue("02")*if(SetDevise()=="EUR",100,1),15,0)+"02"))
 DlgValue("03")==0.or.DlgPlus("ctrl",val(str(DlgValue("03")*if(SetDevise()=="EUR",100,1),15,0)+"03"))
 
+DlgValue("44")==0.or.DlgPlus("ctrl",val(str(DlgValue("44")*if(SetDevise()=="EUR",100,1),15,0)+"44"))
 DlgValue("45")==0.or.DlgPlus("ctrl",val(str(DlgValue("45")*if(SetDevise()=="EUR",100,1),15,0)+"45"))
 DlgValue("46")==0.or.DlgPlus("ctrl",val(str(DlgValue("46")*if(SetDevise()=="EUR",100,1),15,0)+"46"))
 DlgValue("47")==0.or.DlgPlus("ctrl",val(str(DlgValue("47")*if(SetDevise()=="EUR",100,1),15,0)+"47"))
@@ -200,6 +220,7 @@ DlgValue("84")==0.or.DlgPlus("ctrl",val(str(DlgValue("84")*if(SetDevise()=="EUR"
 DlgValue("85")==0.or.DlgPlus("ctrl",val(str(DlgValue("85")*if(SetDevise()=="EUR",100,1),15,0)+"85"))
 DlgValue("86")==0.or.DlgPlus("ctrl",val(str(DlgValue("86")*if(SetDevise()=="EUR",100,1),15,0)+"86"))
 DlgValue("87")==0.or.DlgPlus("ctrl",val(str(DlgValue("87")*if(SetDevise()=="EUR",100,1),15,0)+"87"))
+DlgValue("88")==0.or.DlgPlus("ctrl",val(str(DlgValue("88")*if(SetDevise()=="EUR",100,1),15,0)+"88"))
 
 DlgValue("54")==0.or.DlgPlus("ctrl",val(str(DlgValue("54")*if(SetDevise()=="EUR",100,1),15,0)+"54"))
 DlgValue("55")==0.or.DlgPlus("ctrl",val(str(DlgValue("55")*if(SetDevise()=="EUR",100,1),15,0)+"55"))

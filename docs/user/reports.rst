@@ -114,35 +114,3 @@ Historik Generalkonten
   ║ X Export nach CSV                               ║
   ╚═════════════════════════════════════════════════╝
 
-
-
-
-Kundenliste Intracom
---------------------
-
-.. xfile:: LSTTVAI.REP
-
-::
-
-  ╔══════ Liste der innergemeinschaftlichen Kunden ══════╗
-  ║ Periode von-bis↨0901-0903                            ║
-  ║ Währung ↨EUR                                         ║
-  ║ Ihre MWSt-Nummer BE-100.588.749                      ║
-  ║ X Datei erstellen : I2009-1.TXT                      ║
-  ║   generate PDF instead of printing                   ║
-  ║   Temporary file .\temp.pdf                          ║
-  ║ X Preview                                            ║
-  ║ Pages from-to                                        ║
-  ║ Parameter set↨LISTE                                  ║
-  ╚══════════════════════════════════════════════════════╝
-
-
-Kundenliste MWSt
-----------------
-
-.. xfile:: LSTTVAA.REP
-
-Kundenliste Deutschland
------------------------
-
-.. xfile:: LSTTVAD.REP

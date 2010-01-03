@@ -6,6 +6,21 @@ field name="Date2" \
     caption=" au " \
     default=UserDate()
 
+field name="WeeklySums" \
+    caption2=" print weekly sums" \
+    default=" " \
+    reader={|g|CbxReader(g)}
+
+field name="MonthlySums" \
+    caption2=" print monthly sums" \
+    default="X" \
+    reader={|g|CbxReader(g)}
+
+field name="Detail" \
+    caption2=" print detail per day" \
+    default=" " \
+    reader={|g|CbxReader(g)}
+
 // field name="IdCtr" \
     caption="Zentralisierungsart " \
     picture="@!" \

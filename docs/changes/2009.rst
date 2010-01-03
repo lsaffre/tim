@@ -616,7 +616,7 @@ generierenden PDF-Datei jetzt nur noch an, wenn "E" $ UsrAttrib().
 20091222
 --------
 
-- Erste Änderungen "MWSt 2010" in DCLTVA.ACT, DLG und LST
+- Erste Änderungen :doc:`20100103` in :xfile:`DCLTVA.ACT`, DLG und LST.
 
 20091228
 --------

@@ -187,6 +187,7 @@ latex_documents = [
 
 #language="de"
 
-srcref_base_uri="http://svn.berlios.de/wsvn/opentim/trunk"
+#srcref_base_uri="http://svn.berlios.de/wsvn/opentim/trunk"
+srcref_base_uri="http://code.google.com/p/tim/source/browse"
 
-from lino.sphinx import setup
+from timtools.sphinx import setup

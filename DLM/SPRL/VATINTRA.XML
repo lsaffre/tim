@@ -1,4 +1,5 @@
 [=MsgDisplay("Calcul pr‚liminaire ...")]
+[=setvar("LSTTVA.Version","1.2")]
 [=setvar("LSTTVA.TurnOver",0)]
 [=setvar("LSTTVA.Amount",0)]
 [=setvar("LSTTVA.ClientNbr",0)]
@@ -27,7 +28,7 @@ SenderDate="[=dtocf(UserDate(),"yyyy-mm-dd")]"
 [etc if .f.]
 Test="1"
 [etc endif]
-VersionTech="1.2">
+VersionTech="[=getvar("LSTTVA.Version")]">
 
 <AgentRepr DecNumber="1">
 <CompanyInfo>
@@ -75,6 +76,9 @@ VersionTech="1.2">
 </CompanyInfo>
 <Amount>[=ntrim0(getvar("MontT")*100)]</Amount>
 <TurnOver>[=ntrim0(getvar("MontB")*100)]</TurnOver>
+[etc if getvar("LSTTVA.Version")=="1.3"]
+<Code>L</Code>
+[etc endif]
 </ClientList>
 [etc endloop clients]
 
