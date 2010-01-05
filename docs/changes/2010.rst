@@ -7,7 +7,9 @@
 - small changes in :srcref:`dlm/dls/dlsprj1.rep`: the user can now 
   specify new options "show weekly sums", "show monthly sums" and "show detail per day".
   
-20100103
+20100105
 --------
 
-- Weiter an :doc:`20100103`.
+- Weiter an http://code.google.com/p/tim/wiki/Vat2010
+
+

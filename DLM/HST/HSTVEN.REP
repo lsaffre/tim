@@ -1,6 +1,6 @@
 // Rechnungsbcher Einkauf/Verkauf
 // Dokumentation : siehe HSTJNL.TXT
-#exec setvar("Version",iif(pnYear(MemPer2))>2009,2,1)
+#exec setvar("Version",iif(pnYear(MemPer2)>2009,2,1))
 header1 "Journal "+DlgValue("IdJnlVen") + " : " + trim(JnlName(DlgValue("IdJnlVen")))
 header2 trim1(PerText(cblock("JNL->IdJnl=='"+DlgValue("IdJnlVen")+"'")))+"("+SetDevise()+")"
 #if !empty(getvar("OnlyD"))
@@ -224,7 +224,7 @@ column header=utr("VAT","MWS","TVA") width=3 text={||HST->IdTax}
   column header="Invest." width=LenMntF() when={||GEN->IdClj=="83"} \
          value={||HstDcMont("D",SetDevise())} text={|x|ntomf(x)} \
          xsum={|x| ntomf(x) }
-  column header=utr("ded.VAT","Abz.MWSt.","TVA d‚d.") width=LenMntF() \
+  column header=utr("Case 59","Fach 59","Case 59") width=LenMntF() \
          when={||GEN->IdClj=="59"} \
          value={||HstDcMont("D",SetDevise())} text={|x|ntomf(x)} \
          xsum={|x| ntomf(x) }
@@ -238,21 +238,21 @@ column header=utr("VAT","MWS","TVA") width=3 text={||HST->IdTax}
 #endif
 #if DlgValue("OnlyD")==" ".and.JnlIdCtr(DlgValue("IdJnlVen"))$"EA"\
     .and."I"$DlgValue("HstVenCols")
-  column header=utr("VAT intra","MWSt.Intra","TVA intra") width=LenMntF() \
+  column header=utr("Case 55","Fach 55","Case 55") width=LenMntF() \
          when={||GEN->IdClj=="55"} \
          value={||HstDcMont("C",SetDevise())} text={|x|ntomf(x)} \
          xsum={|x| ntomf(x) }
 #endif
 #if DlgValue("OnlyD")==" ".and.JnlIdCtr(DlgValue("IdJnlVen"))$"EA"\
     .and."C"$DlgValue("HstVenCols")
-  column header=utr("VAT CP","MWSt.VP","TVA cc") width=LenMntF() \
+  column header=utr("Case 56","Fach 56","Case 56") width=LenMntF() \
          when={||GEN->IdClj=="56"} \
          value={||HstDcMont("C",SetDevise())} text={|x|ntomf(x)} \
          xsum={|x| ntomf(x) }
 #endif
 #if DlgValue("OnlyD")==" ".and.JnlIdCtr(DlgValue("IdJnlVen"))$"EA"\
     .and."X"$DlgValue("HstVenCols")
-  column header=utr("VAT import","MWSt.imp","TVA imp") width=LenMntF() \
+  column header=utr("Case 57","Fach 57","Case 57") width=LenMntF() \
          when={||GEN->IdClj=="57"} \
          value={||HstDcMont("C",SetDevise())} text={|x|ntomf(x)} \
          xsum={|x| ntomf(x) }
@@ -280,7 +280,7 @@ column header=utr("VAT","MWS","TVA") width=3 text={||HST->IdTax}
     .and."C"$DlgValue("HstVenCols") \
     .and.getvar("Version")==2
   column header=utr("Case 87","Fach 87","Case 87") width=LenMntF() \
-         when={||HST->IdTax$"C  ,NC ,IB "} \
+         when={||HST->IdTax$"C  ,NC ,XS ,XS6,NXS"} \
          value={||HstDcMont("D",SetDevise())} text={|x|ntomf(x)} \
          xsum={|x|ntomf(x)}
 #endif

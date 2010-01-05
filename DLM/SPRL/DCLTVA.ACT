@@ -17,7 +17,7 @@ MemPer1==MemPer2.or.pnQuarter(MemPer1)==pnQuarter(MemPer2)\
     "Les p‚riodes doivent se trouver dans le mˆme trimestre !"\
 ))
 
-setvar("Version",iif(pnYear(MemPer2))>2009,2,1)
+setvar("Version",iif(pnYear(MemPer2)>2009,2,1))
 // Version 1 : bis Dezember 2009
 // Version 2 : ab Januar 2010
 
@@ -47,7 +47,7 @@ DlgDefine("48",iif(getvar("Version")==1,\
   -CttBase('\
     DC=="C".and.IdCtr=="V".and.IdTax$"IM ,IS "\
   ')\
-  )
+))
 // 49 : notes de cr‚dit vente [et corrections n‚gatives] relatives aux
 // autres op‚rations du cadre II
 DlgDefine("49",-CttBase('\
@@ -61,9 +61,15 @@ DlgDefine("54",CttTaxe('\
 '))
 // 55 : taxe due sur les achats intracom de marchandises (grille 86)
 //      ! mais sans prendre les notes de cr‚dit 
-DlgDefine("55",CttTaxe('\
-  DC=="C".and.IdCtr$"EA".and.IdCtf!="**".and.IdTax$"IM ,IM6,NIM,IB ,IB6,NIB,NB6"\
-'))
+DlgDefine("55",\
+  iif(getvar("Version")==1,\
+    CttTaxe('\
+      DC=="C".and.IdCtr$"EA".and.IdCtf!="**".and.IdTax$"IM ,IM6,NIM"\
+    '),\
+    CttTaxe('\
+      DC=="C".and.IdCtr$"EA".and.IdCtf!="**".and.IdTax$"IM ,IM6,NIM,IS ,IS6,NIS"\
+    ')\
+  ))
 
 // 56 : taxe due sur les op‚rations de la grille 87 (sauf celles dont la
 // taxe vient en 57)
@@ -75,9 +81,9 @@ DlgDefine("56",\
     '),\
     CttTaxe('\
       DC=="C".and.IdCtr$"EA".and.IdCtf!="**".and.\
-      IdTax$"C  ,NC ,C04,C06,C12,IB "\
+      IdTax$"C  ,NC ,C04,C06,C12,XS ,XS6,NXS"\
     ')\
-    )
+  ))
 // 57 : taxe due sur importations hors-UE avec report de perception …
 // l'int‚rieur du pays.
 DlgDefine("57",CttTaxe('\
@@ -89,7 +95,7 @@ DlgDefine("57",CttTaxe('\
 //        consid‚r‚s comme d‚ductibles
 DlgDefine("59",CttTaxe('\
   IdCtr$"EA".and.DC=="C".and.IdCtf!="**".and.\
-  left(IdTax,1)$"CDI"\
+  (left(IdTax,1)$"CDI".or.IdTax$"XS ,XS6")\
 '))
 #if empty(DlgValue("IdGenTva"))
   DlgDefine("59bis",0)
@@ -172,9 +178,10 @@ DlgDefine("87",\
   '),\
   CttBase('\
     IdCtr$"EA".and.IdCtf!="**".and.DC=="C"\
-    .and.IdTax$"C  ,NC ,C04,C06,C12,E88,IB "\
-  ')
-)
+    .and.IdTax$"C  ,NC ,C04,C06,C12,E88,XS ,XS6,NXS"\
+  ')\
+))
+
 // base achats B2B
 DlgDefine("88",\
   iif(getvar("Version")==1,0,CttBase('\
