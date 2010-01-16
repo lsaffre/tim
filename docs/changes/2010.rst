@@ -13,3 +13,7 @@
 - Weiter an http://code.google.com/p/tim/wiki/Vat2010
 
 
+20100116
+--------
+- ParSetUsers() wies u.U. einen T2 zu, auch wenn dessen USRATTR_H gesetzt war.
+  

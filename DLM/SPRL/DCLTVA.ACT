@@ -34,9 +34,14 @@ DlgDefine("03",CttBase('DC=="D".and.IdCtr=="V".and.IdCtf!="**".and.IdTax$"20 ,21
 Dlgdefine("44",iif(getvar("Version")==1,0,CttBase('DC=="D".and.IdCtr=="V".and.IdTax=="IS "')))
 DlgDefine("45",CttBase('DC=="D".and.IdCtr=="V".and.IdTax$"C  "'))
 DlgDefine("46",CttBase('DC=="D".and.IdCtr=="V".and.IdTax$"IM "'))
-DlgDefine("47",CttBase('\
-  DC=="D".and.IdCtr=="V".and.IdTax$"IS ,X  ,7  ,15 ,16 ,19 ,19M,L  ,D0 "\
-'))
+DlgDefine("47",iif(getvar("Version")==1,\
+  CttBase('\
+    DC=="D".and.IdCtr=="V".and.IdTax$"IS ,X  ,7  ,15 ,16 ,19 ,19M,L  ,D0 "\
+  '),\
+  CttBase('\
+    DC=="D".and.IdCtr=="V".and.IdTax$"X  ,7  ,15 ,16 ,19 ,19M,L  ,D0 "\
+  ')\
+  ))
 // 48 : notes de cr‚dit vente [et corrections n‚gatives] relatives aux
 // op‚rations inscrites en grille 46 et 44
 
@@ -50,9 +55,14 @@ DlgDefine("48",iif(getvar("Version")==1,\
 ))
 // 49 : notes de cr‚dit vente [et corrections n‚gatives] relatives aux
 // autres op‚rations du cadre II
-DlgDefine("49",-CttBase('\
-  DC=="C".and.IdCtr=="V".and.!IdTax$"IM ,IM6,15 ,16 ,19 ,19M,L  ,07 ,A  ,B  "\
-'))
+DlgDefine("49",iif(getvar("Version")==1,\
+  -CttBase('\
+    DC=="C".and.IdCtr=="V".and.!IdTax$"IM ,IM6,15 ,16 ,19 ,19M,L  ,07 ,A  ,B  "\
+  '),\
+  -CttBase('\
+    DC=="C".and.IdCtr=="V".and.!IdTax$"IS ,IM ,IM6,15 ,16 ,19 ,19M,L  ,07 ,A  ,B  "\
+  ')\
+  ))
 
 // 54 : taxe due sur les ventes (grilles 01, 02 et 03)
 // 20030309 : MWSt DE darf *nicht* drin sein

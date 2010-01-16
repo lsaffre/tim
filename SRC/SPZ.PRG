@@ -1,4 +1,4 @@
-** Copyright (c) 2005-2009 Luc Saffre
+** Copyright (c) 2005-2010 Luc Saffre
 **
 ** This file is part of TIM.
 **
@@ -278,17 +278,18 @@ RETURN .f. if ! DbfScan({oDlp(),oDls(),oPar()},2,;
   PAR->IdPar,;
   "DLP->IdPar=='" + PAR->IdPar + "'",;
   "DlsExist(DLP->IdDls).and."+xlDlsFilter,xlEval,NIL,.f.)
-RETURN .t. if len(a) == 0
 PAR->IdUsr1 := cT1 // a[1][1]
+PAR->IdUsr2 := ''
+PAR->IdUsr3 := ''
 for i := 1 to len(a)
   if USRATTR_H $ UsrField(a[i][1],"USR->Attrib")
     adel(a,i)
     asize(a,len(a)-1)
   endif
 next i
-PAR->IdUsr3 := ''
+RETURN .t. if len(a) == 0
 if len(a) <= 1
-  PAR->IdUsr2 := PAR->IdUsr1
+  PAR->IdUsr2 := a[1][1] // PAR->IdUsr1
   RETURN .t.
 endif
 asort(a,,,{|a,b|a[2]>b[2]})
