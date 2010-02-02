@@ -225,7 +225,7 @@ if rpt[RPT_TOCSV]
   if (fd := fcreate(cOutFile)) == -1
     RETURN !SetMsg(cOutFile+MsgDosError(doserror()))
   endif
-  rpt[RPT_PRINTLINE] := {|cLine|fwrite(fd,dos2latin1(cLine)+CR_LF),.t.}
+  rpt[RPT_PRINTLINE] := {|cLine|iif(cLine==NIL,.t.,fwrite(fd,dos2latin1(cLine)+CR_LF)),.t.}
 elseif rpt[RPT_TOHTML]
   rpt[RPT_PRINTLINE] := {|cLine| toStream(cLine+CR_LF)}
   // n.b: if RPT_TOHTML, then there are also direct calls to toStream()

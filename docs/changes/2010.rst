@@ -17,3 +17,11 @@
 --------
 - ParSetUsers() wies u.U. einen T2 zu, auch wenn dessen USRATTR_H gesetzt war.
   
+20100121
+--------
+- val2csv() kennt jetzt auch den Type GTYPE_LOGICAL. Bei Sh-F7 auf einer Tabelle, die ein Feld mit Typ L enthält, kam bisher ein Laufzeitfehler.
+
+20100128
+--------
+
+- DEF_KITZ. Neue Tabelle ZGR (Zielgruppen)

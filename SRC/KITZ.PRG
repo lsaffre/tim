@@ -1,19 +1,17 @@
-** Copyright (c) 2003-2009 Luc Saffre
+** Copyright (c) 2003-2010 Luc Saffre
 **
 ** This file is part of TIM.
-**
 ** TIM is free software: you can redistribute it and/or modify it
 ** under the terms of the GNU General Public License as published by
 ** the Free Software Foundation; either version 3 of the License, or
 ** (at your option) any later version.
-**
 ** TIM is distributed in the hope that it will be useful, but WITHOUT
 ** ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
 ** or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public
 ** License for more details.
-**
 ** You should have received a copy of the GNU General Public License
 ** along with TIM. If not, see <http://www.gnu.org/licenses/>.
+
 
 * Die Felder Mont und Mont2 in KRL und KRG haben einen schlechten Namen.
 * Mont hieáe besser Prix, und Mont2 ist der Anteil des Patienten an diesem
@@ -35,6 +33,7 @@
 #define ETAT_FILLING "-"
 
 
+#define LEN_IDZGR 3
 #define LEN_IDDIS 3
 #define LEN_IDSES 5
 #define LEN_IDKTG 4
@@ -305,6 +304,36 @@ RETURN DbfPick( ;
 )
 
 
+FUNCTION oZgr // Zielgruppe (groupe cible, groupe pathologique)
+static b := NIL
+if b != NIL ; RETURN b ; endif
+define data b              ;
+       name ZGR
+ddIndex b on  ZGR->IdZgr
+ddFld IdZgr    ,C,  LEN_IDZGR,0 postedit {|x|GetIdZgr(x)} 
+// IdPar : T : Therapeut
+ddFld Name     ,C, 40,0
+ddFld Code     ,C, 6,0 // r‚‚ducation normale
+ddFld CodeT    ,C, 6,0 // bilan (test)
+ddFld CodeG    ,C, 6,0 // groupe pour enseignants
+ddEndDef()
+RETURN b
+
+FUNCTION GetIdZgr(x)
+RETURN x if val(x) == 0
+RETURN padl(trim(x),len(x))
+
+FUNCTION ZgrName(cId)
+RETURN DbfPeek(oZgr(),cId,"ZGR->Name","")
+
+FUNCTION ZgrCode(cId,cSesType)
+RETURN DbfPeek(oZgr(),cId,"ZGR->Code"+trim(cSesType),"")
+
+FUNCTION ZgrExist(cId)
+RETURN .t. if DbfPeek(oZgr(),cId,".t.",.f.)
+RETURN !SetMsg(utos(cId)+": ungltige Zielgruppe!"))
+
+
 
 FUNCTION oDis
 static b := NIL
@@ -359,7 +388,8 @@ define data b name KRG ;
               editprint KrgPrint()
 ddIndex b on  KRG->IdKrg format {|x|padl(x,LenIdDoc())}
 ddIndex b on  KRG->IdPar1+dtos(KRG->Date)
-ddIndex b on  KRG->IdPar4+dtos(KRG->Date)+KRG->Periode+KRG->IdKrg
+ddIndex b on  KRG->IdPar4+dtos(KRG->Date)+KRG->Periode+KRG->IdKrg // Kind / Patient
+ddIndex b on  KRG->IdPar2+dtos(KRG->Date) 
 *
 ddFld IdKrg    ,C, LenIdDoc(),0  picture PIC_ID when .f.
 ddFld Date     ,D, 8,0  when empty(KRG->Etat)
@@ -636,6 +666,47 @@ RETURN DbfScan(;
   KRG->IdKrg,;
   "KRL->IdKrg=='"+KRG->IdKrg+"'",;
   xlFilter,xlEval)
+  
+  
+** wird benutzt in PARZGR.REP
+FUNCTION ParZgrStand(dDate)
+local a := {}  // array of { IdZgr, (Count < 7 years), (Count > 7 years) }
+local i
+local s := ""
+local onKRG := {|| ;
+  PrjExist(KRG->IdPrj1);
+    .and.DbfScan({oKrl()},1,KRG->IdKrg,"KRL->IdKrg==KRG->IdKrg",;
+      NIL,{||_ParZgrStand(a,dDate)},NIL,.f.) ;
+}
+default dDate to UserDate()
+DbfScan({oKrg(),oPrj()},4,PAR->IdPar,NIL,NIL,onKRG,NIL,.f.)
+for i := 1 to len(a)
+  s += a[i][1] + ":"
+  s += ntrim(a[i][2]) + "+"
+  s += ntrim(a[i][3]) + " "
+next i
+RETURN padr(s,30)
+
+FUNCTION _ParZgrStand(a,dDate)
+local i
+local b
+for i := 1 to len(a)
+  if a[i][1] == PRJ->Type
+     b := a[i]
+     exit
+  endif
+next i
+if b == NIL
+  b := { PRJ->Type, 0 , 0 }
+  aadd(a,b)
+endif
+if age(PAR->GebDat,dDate) > 7
+  b[3] += 1
+else
+  b[2] += 1
+endif
+RETURN .t.
+  
 
 FUNCTION KrgKrlEdit()
 local lOkay := .f.
@@ -1511,87 +1582,88 @@ local cIdArt
 local cMont
 local cIdKtg
 local xlFilter
+default cSesType to ""
 if empty(cSesType)
-  xlFilter := 'left(KRL->IdArt,1)!="T"'
+  xlFilter := '!left(KRL->IdArt,1)$"TG"'
 else
   xlFilter := 'left(KRL->IdArt,1)=="'+cSesType+'"'
 endif
 ** n = 1 : "Die Pseudocodenummer der Nomenklatur"
-** n = 2 : Anzahl oder Datum
+** n = 2 : "Anzahl oder Datum"
 ** n = 3 : Sitzungspreis
 ** n = 4 : Sitzungspreis Anteil KK
 ** n = 5 : Sitzungspreis Anteil Patient
 open area oKrl(),oArt(),oKtg(), oPrj()
   softseek KRG->IdKrg
   do while lOkay .and. !eof().and.KRL->IdKrg==KRG->IdKrg
-    *if trim(KRL->IdKtg) == KTG_DG
-    *  skip
-    *else
-      if ArtExist(KRL->IdArt)
-        cIdKtg := KRL->IdKtg
-        cIdArt := KRL->IdArt
-        cMont  := KRL->Mont
-        nCount := 0 // Anzahl Sitzungen
-        nMont := 0 // Gesamtpreis der Sitzungen (KK+Kind)
-        nMont2 := 0 // Anteil Patient
-        do while lOkay .and. !eof() .and. KRL->IdKrg==KRG->IdKrg ;
-                       .and. KRL->IdArt == cIdArt ;
-                       .and. KRL->Mont  == cMont  ;
-                       .and. KRL->IdKtg == cIdKtg
-          if &xlFilter
-            nCount += 1
-            if !empty(KRL->Mont)
-              nMont += val(KRL->Mont) - val(KRL->Mont2)
-            endif
-            nMont2 += val(KRL->Mont2)
-            if n == 1
-              if trim(KRL->IdKtg) != KTG_DG
-                if nCount == 1
-                  if KtgExist(KRL->IdKtg)
-                    seek KRG->IdPrj1 in PRJ
-                    if left(KRL->IdArt,1)=="T".and.trim(PRJ->Type)!="?";
-                      .and.!empty(KRG->IdPrj2)
-                      seek KRG->IdPrj2 in PRJ
-                    endif
-                    * if left(KRL->IdArt,1)=="T"
-                    *   seek KRG->IdPrj2 in PRJ
-                    * else
-                    *   seek KRG->IdPrj1 in PRJ
-                    * endif
-                    cInami := xparse("ART->INAMI"+PRJ->Zentrum+KTG->Phase)
-                    if cInami == NIL
-                      lOkay := .f.
-                      SetMsg("ART->INAMI"+PRJ->Zentrum+KTG->Phase;
-                        +" : ungltige Kombination fr INAMI-Code")
-                    else
-                      toStream( xparse("ART->INAMI"+PRJ->Zentrum+KTG->Phase) )
-                    endif
-                  endif
-                endif
+    if ArtExist(KRL->IdArt)
+      cIdKtg := KRL->IdKtg
+      cIdArt := KRL->IdArt
+      cMont  := KRL->Mont
+      cInami := NIL
+      nCount := 0 // Anzahl Sitzungen
+      nMont := 0  // Gesamtpreis der Sitzungen (KK+Kind)
+      nMont2 := 0 // Anteil Patient
+      do while lOkay .and. !eof() .and. KRL->IdKrg==KRG->IdKrg ;
+                     .and. KRL->IdArt == cIdArt ;
+                     .and. KRL->Mont  == cMont  ;
+                     .and. KRL->IdKtg == cIdKtg
+        if &xlFilter
+          nCount += 1
+          if trim(KRL->IdKtg) != KTG_DG
+            if KtgExist(KRL->IdKtg)
+              seek KRG->IdPrj1 in PRJ
+              if left(KRL->IdArt,1)=="T".and.alltrim(PRJ->Type)!="?";
+                .and.!empty(KRG->IdPrj2)
+                seek KRG->IdPrj2 in PRJ
               endif
-            elseif n == 2
-              if nCount > 1
-                toStream(", ")
+              cInami := xparse("ART->INAMI"+PRJ->Zentrum+KTG->Phase)
+              if cInami == NIL
+                lOkay := .f.
+                SetMsg("ART->INAMI"+PRJ->Zentrum+KTG->Phase;
+                  +" : ungltige Kombination fr INAMI-Code")
+                cInami := "??????"
               endif
-              toStream( ntrim(day(KRL->Date)) )
             endif
           endif
-          skip
-        enddo
-        if nCount > 0
-          if n == 3
-            toStream( ltrim(ntomf((nMont+nMont2)/nCount)) )
-          elseif n == 4
-            toStream( ltrim(ntomf(nMont)) )
-          elseif n == 5
-            toStream( ltrim(ntomf(nMont2)) )
+          if !empty(KRL->Mont)
+            nMont += val(KRL->Mont) - val(KRL->Mont2)
           endif
-          toStream("\par ")
+          nMont2 += val(KRL->Mont2)
+          if n == 1
+            if nCount == 1
+              toStream(ZgrCode(PRJ->Type,cSesType))
+              if !empty(PRJ->Type2)
+                toStream(", "+ZgrCode(PRJ->Type2,cSesType))
+              endif
+              if !empty(PRJ->Type3)
+                toStream(", "+ZgrCode(PRJ->Type3,cSesType))
+              endif
+            endif
+          elseif n == 2
+            if nCount == 1
+              toStream(cInami + ": ")
+            else
+              toStream(", ")
+            endif
+            toStream( ntrim(day(KRL->Date)) )
+          endif
         endif
-      else
-        lOkay := .f.
+        skip
+      enddo
+      if nCount > 0
+        if n == 3
+          toStream( ltrim(ntomf((nMont+nMont2)/nCount)) )
+        elseif n == 4
+          toStream( ltrim(ntomf(nMont)) )
+        elseif n == 5
+          toStream( ltrim(ntomf(nMont2)) )
+        endif
+        toStream("\par ")
       endif
-    * endif
+    else
+      lOkay := .f.
+    endif
   enddo
   if empty(cSesType) .and. !empty(KRG->MontKrm)
     if n == 1

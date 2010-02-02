@@ -1,5 +1,5 @@
 ** Copyright (c) 1992-2001 PAC Systems
-** Copyright (c) 2001-2008 Luc Saffre
+** Copyright (c) 2001-2010 Luc Saffre
 **
 ** This file is part of TIM.
 **
@@ -28,7 +28,10 @@ static slNo00 := .f.
 FUNCTION ntom(nVal,nDec,nLenMont)
 default nLenMont to snLenMont
 default nDec to snDec
-RETURN space(nLenMont) if abs(nVal) < Tolerance(nDec)
+// LogConsole(utos(nVal)+","+utos(nDec)+","+utos(nLenMont))
+if abs(nVal) < Tolerance(nDec)
+  RETURN space(nLenMont) 
+endif
 RETURN _str(nVal,nLenMont,nDec)
 
 FUNCTION ntom0(nVal,nDec,nLenMont)

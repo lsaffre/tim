@@ -3515,6 +3515,8 @@ if cType == GTYPE_MEMO
   RETURN '"'+dos2latin1(strtran(strtran(v,chr(141)," "),'"','""'))+'"'
 elseif cType == GTYPE_CHAR
   RETURN '"'+iif(slExcelUser,"","'")+strtran(dos2latin1(v),'"','""')+'"'
+elseif cType == GTYPE_LOGICAL
+  RETURN iif(v,"1","0")
 elseif cType == GTYPE_DATE
   * if slExcelUser
   *   RETURN dtocf(v,"yyyy-mm-dd")

@@ -2073,6 +2073,7 @@ aadd( a, oDev() )
   aadd( a, oKrg() )
   aadd( a, oKrl() )
   aadd( a, oKtg() )
+  aadd( a, oZgr() )
 #endif DEF_KITZ
 #ifdef DEF_DLS
   aadd( a, oDls() )  // Dienstleistungen
