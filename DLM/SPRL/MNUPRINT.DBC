@@ -1,18 +1,11 @@
 // DruckmenÅ
 |~MWSt|~RechnungsbÅcher           |RepPrint("HSTVEN","HSTVEN","RechnungsbÅcher")
-// |~MWSt|Rechnungsbuch ~Einkauf     |RepPrint("HSTEKR","HSTVEN","Rechnungsbuch Einkauf")
-// |~MWSt|~Journale                  |HistJnl("Journale")
 |~MWSt|MWSt.-Erk~lÑrung           |ActExec("DCLTVA")
-// |~MWSt|MWSt.-Erk~lÑrung           |TplDlgPrint("LST","LST010","JNL->Alias=='VEN'.and.'G'$JNL->Attrib")
-// |~MWSt|~neue MWSt-ErklÑrung       |TplDlgPrint("LST","LST010","JNL->Alias=='VEN'.and.'G'$JNL->Attrib")
-|~MWSt|Kundenliste ~Intracom      |DlgExec("LSTTVAI")
-|~MWSt|Kundenliste ~MWSt          |DlgExec("LSTTVAA")
+|~MWSt|Kundenliste ~Intracom InterVAT  |DlgExec("VATINTRA")
+|~MWSt|Kundenliste Intracom d~rucken   |DlgExec("LSTTVAI")
+|~MWSt|Kundenliste ~MWSt InterVAT      |DlgExec("VATLIST")
+|~MWSt|Kundenliste MWSt dr~ucken        |DlgExec("LSTTVAA")
 |~MWSt|Kundenliste ~Deutschland   |DlgExec("LSTTVAD")
-// |~MWSt|Kundenliste ~Intracom (alt)|VenTvaListe(.f.,"V",".t.",0,"Kundenliste Intracom","TVA-I",NIL,NIL,NIL,"VEN->IdReg$'I'")
-// |~MWSt||
-// |~MWSt|Kundenliste ~MWSt.         |VenTvaListe(.t.,"V",".t.",5000,"Kundenliste MWSt","TVA-A",NIL,NIL,NIL,"VEN->IdReg$'CA'")
-// |~MWSt|Kontrollliste ~1           |VenTvaListe(.t.,"V",".t.",-5000,"Kontrolle 1 : Kunden < 5000",NIL,NIL,NIL,NIL,"VEN->IdReg$'CA'")
-// |~MWSt|Kontrollliste ~2           |VenTvaListe(.t.,"V",".t.",0,"Kontrolle 2 : Sonstige Kunden",NIL,NIL,NIL,NIL,"!VEN->IdReg$'CA'")
 
 |~Buchhaltung|K~assenbÅcher              |RepPrint("HSTFIN","HSTFIN","KassenbÅcher")
 |~Buchhaltung||

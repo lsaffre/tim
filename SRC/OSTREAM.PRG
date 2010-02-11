@@ -954,7 +954,7 @@ if sbHeader != NIL
     scAlign := ALIGN_LEFT
     b := sbHeader
     sbHeader := NIL
-    // debug SendConsole("p_PageBegin() "+ ntrim(snCurPage) + " executes sbHeader")
+    // debug Warning("p_PageBegin() "+ ntrim(snCurPage) + " executes sbHeader")
     eval(b) // execute header template
     PrnFlush()
     RestoreStatus(aStatus)

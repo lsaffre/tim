@@ -221,6 +221,33 @@ endif
 unlock record
 RETURN .t.
 
+#ifdef DEF_IMP
+
+FUNCTION ImpPickFiles(cWildcard,cTitle,lMustLock)
+local c
+local nSelect := select()
+local cId := FIELD->IdJnl+FIELD->IdDoc 
+default lMustLock to .t.
+default cTitle to MnuItemName()
+if alias() != "IMP"
+  seek cId in IMP
+  RETURN .f. if eof() in IMP
+  select IMP
+endif
+if !lMustLock .or. ddRecLock()
+  c := GsbFileList(cWildcard,IMP->Files,cTitle)
+  if c != NIL
+    IMP->Files := c
+  endif
+  if lMustLock
+    unlock record
+  endif
+endif
+select (nSelect)
+RETURN .t.
+
+#endif
+
 * FUNCTION shquote(s)
 * RETURN s if ! " " $ s
 * RETURN '"'+strtran(s,'"','\"')+'"'

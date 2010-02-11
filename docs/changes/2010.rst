@@ -25,3 +25,8 @@
 --------
 
 - DEF_KITZ. Neue Tabelle ZGR (Zielgruppen)
+
+20100202
+--------
+
+- DEF_IMP : Neue Funktion ImpPickFiles() wird mit alt-B auf IMP, IML und MVI aufgerufen.

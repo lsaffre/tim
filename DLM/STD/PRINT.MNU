@@ -19,9 +19,9 @@ MnuAddItem("Kundenliste ~Deutschland drucken",{|| DlgExec("LSTTVAD") })
 #endif
 #if .f.
 MnuAddSep()
-MnuAddItem("Kundenliste ~MWSt.         ",{|| VenTvaListe(.t.,"V",".t.",5000,"Kundenliste MWSt","TVA-A",NIL,NIL,NIL,"VEN->IdReg$'CA'") })
-MnuAddItem("Kontrollliste ~1           ",{|| VenTvaListe(.t.,"V",".t.",-5000,"Kontrolle 1 : Kunden < 5000",NIL,NIL,NIL,NIL,"VEN->IdReg$'CA'") })
-MnuAddItem("Kontrollliste ~2           ",{|| VenTvaListe(.t.,"V",".t.",0,"Kontrolle 2 : Sonstige Kunden",NIL,NIL,NIL,NIL,"!VEN->IdReg$'CA'") })
+MnuAddItem("Kundenliste ~MWSt.",{|| VenTvaListe(.t.,"V",".t.",5000,"Kundenliste MWSt","TVA-A",NIL,NIL,NIL,"VEN->IdReg$'CA'") })
+MnuAddItem("Kontrollliste ~1  ",{|| VenTvaListe(.t.,"V",".t.",-5000,"Kontrolle 1 : Kunden < 5000",NIL,NIL,NIL,NIL,"VEN->IdReg$'CA'") })
+MnuAddItem("Kontrollliste ~2  ",{|| VenTvaListe(.t.,"V",".t.",0,"Kontrolle 2 : Sonstige Kunden",NIL,NIL,NIL,NIL,"!VEN->IdReg$'CA'") })
 #endif
 
 MnuAddTitle(utr("~Accounting","~Buchhaltung","~Comptabilit‚"))

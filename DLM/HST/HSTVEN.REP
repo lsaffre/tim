@@ -77,7 +77,7 @@ column header=utr("VAT","MWS","TVA") width=3 text={||HST->IdTax}
            text={|x|ntomf(x)} xsum={|x| ntomf(x) }
 #endif
 #if DlgValue("OnlyD")==" ".and.JnlIdCtr(DlgValue("IdJnlVen"))=="V".and.\
-    "2"$DlgValue("HstVenCols")
+    "B"$DlgValue("HstVenCols")
     column header=utr("TO 12%","Umsatz 12%","C.A. 12%") width=LenMntF() \
            when={||GEN->IdClj=="02".or.(GEN->IdClj=="..".and.HST->IdTax$"12 ")} \
            value={||HstDcMont("C",SetDevise())} \

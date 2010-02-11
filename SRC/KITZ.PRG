@@ -331,7 +331,7 @@ RETURN DbfPeek(oZgr(),cId,"ZGR->Code"+trim(cSesType),"")
 
 FUNCTION ZgrExist(cId)
 RETURN .t. if DbfPeek(oZgr(),cId,".t.",.f.)
-RETURN !SetMsg(utos(cId)+": ungÅltige Zielgruppe!"))
+RETURN !SetMsg(utos(cId)+": ungÅltige Zielgruppe!")
 
 
 
