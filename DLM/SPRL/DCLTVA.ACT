@@ -57,10 +57,10 @@ DlgDefine("48",iif(getvar("Version")==1,\
 // autres op‚rations du cadre II
 DlgDefine("49",iif(getvar("Version")==1,\
   -CttBase('\
-    DC=="C".and.IdCtr=="V".and.!IdTax$"IM ,IM6,15 ,16 ,19 ,19M,L  ,07 ,A  ,B  "\
+    DC=="C".and.IdCtr=="V".and.IdCtf!="**".and.!IdTax$"IM ,IM6,15 ,16 ,19 ,19M,L  ,07 ,A  ,B  "\
   '),\
   -CttBase('\
-    DC=="C".and.IdCtr=="V".and.!IdTax$"IS ,IM ,IM6,15 ,16 ,19 ,19M,L  ,07 ,A  ,B  "\
+    DC=="C".and.IdCtr=="V".and.IdCtf!="**".and.!IdTax$"IS ,IM ,IM6,15 ,16 ,19 ,19M,L  ,07 ,A  ,B  "\
   ')\
   ))
 
