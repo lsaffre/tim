@@ -1600,7 +1600,6 @@ open area oKrl(),oArt(),oKtg(), oPrj()
       cIdKtg := KRL->IdKtg
       cIdArt := KRL->IdArt
       cMont  := KRL->Mont
-      cInami := NIL
       nCount := 0 // Anzahl Sitzungen
       nMont := 0  // Gesamtpreis der Sitzungen (KK+Kind)
       nMont2 := 0 // Anteil Patient
@@ -1609,6 +1608,7 @@ open area oKrl(),oArt(),oKtg(), oPrj()
                      .and. KRL->Mont  == cMont  ;
                      .and. KRL->IdKtg == cIdKtg
         if &xlFilter
+          cInami := ''
           nCount += 1
           if trim(KRL->IdKtg) != KTG_DG
             if KtgExist(KRL->IdKtg)
@@ -1622,7 +1622,9 @@ open area oKrl(),oArt(),oKtg(), oPrj()
                 lOkay := .f.
                 SetMsg("ART->INAMI"+PRJ->Zentrum+KTG->Phase;
                   +" : ungÅltige Kombination fÅr INAMI-Code")
-                cInami := "??????"
+                cInami := "?????? :"
+              else
+                cInami += " :"
               endif
             endif
           endif
@@ -1642,7 +1644,7 @@ open area oKrl(),oArt(),oKtg(), oPrj()
             endif
           elseif n == 2
             if nCount == 1
-              toStream(cInami + ": ")
+              toStream(cInami)
             else
               toStream(", ")
             endif
