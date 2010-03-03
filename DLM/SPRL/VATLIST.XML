@@ -20,7 +20,7 @@
 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"  
 xsi:schemaLocation="http://www.minfin.fgov.be/VatList http://www.minfin.fgov.be/VatList/VatList.xsd"
 RecipientId="VAT-ADMIN"  
-SenderId="[=trim(substr(tvatrim(MemNoTva),3))]"
+SenderId="[=trim(tvatrim(MemNoTva))]"
 ControlRef="[=trim(substr(tvatrim(MemNoTva),3))]0001"
 MandataireId="xxxx"  
 SenderDate="[=dtocf(UserDate(),"yyyy-mm-dd")]"  
@@ -31,7 +31,7 @@ VersionTech="1.2">
 
 <AgentRepr DecNumber="1">
 <CompanyInfo>
-<VATNum>[=substr(TvaTrim(MemNoTva),3)]</VATNum>
+<VATNum>[=TvaTrim(MemNoTva)]</VATNum>
 <Name>[=trim(MemName1)]</Name>
 <Street>[=trim(MemName2)]</Street>
 <CityAndZipCode>[=trim(MemName3)]</CityAndZipCode>
@@ -46,7 +46,7 @@ VersionTech="1.2">
   TurnOverSum="[=ntrim0(getvar("LSTTVA.TurnOver")*100)]" \
   TaxSum="[=ntrim0(getvar("LSTTVA.Amount")*100)]">
 <CompanyInfo>
-<VATNum>[=substr(TvaTrim(MemNoTva),3)]</VATNum>
+<VATNum>[=TvaTrim(MemNoTva)]</VATNum>
 <Name>[=trim(MemName1)]</Name>
 <Street>[=trim(MemName2)]</Street>
 <CityAndZipCode>[=trim(MemName3)]</CityAndZipCode>
@@ -70,7 +70,7 @@ VersionTech="1.2">
 [=DlgPlus("i",1)]
 <ClientList SequenceNum="[=ntrim0(getvar("i"))]">
 <CompanyInfo>
-<VATNum>[=substr(tvatrim(PAR->NoTva),3)]</VATNum>
+<VATNum>[=tvatrim(PAR->NoTva)]</VATNum>
 <Country>[=left(PAR->NoTva,2)]</Country>
 </CompanyInfo>
 <Amount>[=ntrim0(getvar("MontT")*100)]</Amount>
