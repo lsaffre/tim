@@ -46,7 +46,7 @@ VersionTech="1.2">
   TurnOverSum="[=ntrim0(getvar("LSTTVA.TurnOver")*100)]" \
   TaxSum="[=ntrim0(getvar("LSTTVA.Amount")*100)]">
 <CompanyInfo>
-<VATNum>[=TvaTrim(MemNoTva)]</VATNum>
+<VATNum>[=substr(TvaTrim(MemNoTva),3)]</VATNum>
 <Name>[=trim(MemName1)]</Name>
 <Street>[=trim(MemName2)]</Street>
 <CityAndZipCode>[=trim(MemName3)]</CityAndZipCode>
@@ -70,7 +70,7 @@ VersionTech="1.2">
 [=DlgPlus("i",1)]
 <ClientList SequenceNum="[=ntrim0(getvar("i"))]">
 <CompanyInfo>
-<VATNum>[=tvatrim(PAR->NoTva)]</VATNum>
+<VATNum>[=tvatrim(substr(PAR->NoTva,3))]</VATNum>
 <Country>[=left(PAR->NoTva,2)]</Country>
 </CompanyInfo>
 <Amount>[=ntrim0(getvar("MontT")*100)]</Amount>
