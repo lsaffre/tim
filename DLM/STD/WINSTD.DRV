@@ -13,6 +13,7 @@ FormFeed       chr(12)
 Font  5cpi  5 28/72 chr(27)+"c5 "
 Font 10cpi 10 11.69/64 chr(27)+"c10 "
 Font 11cpi 11 11.69/69 chr(27)+"c11 "
+Font 12.5cpi 12.5 11.69/73 chr(27)+"c12.5 "
 Font 12cpi 12 11.69/76 chr(27)+"c12 "
 Font 13cpi 13 11.69/82 chr(27)+"c13 "
 Font 14cpi 14 11.69/88 chr(27)+"c14 "

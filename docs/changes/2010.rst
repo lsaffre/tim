@@ -48,3 +48,13 @@ Korrektur: nur beim Deklaranten, nicht bei den Kunden, muss das "BE" in der Numm
 
 Korrektur: auch nicht beim Deklaranten, sondern nur beim "Representing Agent" musste das BE davor bleiben.
 
+20100311
+--------
+
+DLM\STD\PROG.MNU ruft Druck- und Verwaltermenü jetzt mit lActive = .t. auf. Sonst kriegen Benutzer, die fürs Hauptmenü noch eine alte MNU.DBC haben, die alte (nicht mehr unterstützte) Version dieser Menüs.
+
+
+20100325
+--------
+
+- CopyRight() zeigt jetzt auch endlich mal 2010 an...

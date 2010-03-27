@@ -84,7 +84,7 @@ setvar("b",{||\
   setvar("PRN2PDF.out",trim(getvar("GL2PDF.path"))+"DCL"+DCL->IdDcl+".pdf"),\
   RepPrint("DCLDCF",NIL,"foo")\
   })
-empty(getvar("GL2PDF.Deklarationen")).or.\
+!HasDlm('DCL').or.empty(getvar("GL2PDF.Deklarationen")).or.\
   DbfScan({oDcl()},1,NIL,NIL,".t.",getvar("b"))
 
 SetUserDate(NIL)

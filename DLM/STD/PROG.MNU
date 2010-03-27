@@ -1,8 +1,8 @@
 MnuAddTitle(utr("~Program","~Programm","~Programme"))
 #if SetDialog() .and. "C"$UsrAttrib()
   MnuAddItem(utr("~User menu           ","Ben~utzermenÅ        ","Menu ~utilisateur    "),{||AppRefresh()})
-  MnuAddItem(utr("~Reports menu        ","D~ruckmenÅ           ","Menu imp~ressions    "),{||AppRefresh("PRINT")})
-  MnuAddItem(utr("~Admin menu          ","Verw~altermenÅ       ","Menu ~administrateur "),{||AppRefresh("BOSS")})
+  MnuAddItem(utr("~Reports menu        ","D~ruckmenÅ           ","Menu imp~ressions    "),{||AppRefresh("PRINT",.t.)})
+  MnuAddItem(utr("~Admin menu          ","Verw~altermenÅ       ","Menu ~administrateur "),{||AppRefresh("BOSS",.t.)})
   MnuAddItem("E~xplorer menu       ",{||AppRefresh("EXPLORER",.t.)})
   MnuAddSep()
 #endif
