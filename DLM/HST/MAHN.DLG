@@ -1,0 +1,41 @@
+before SetTplIni("MAHN")
+before empty(PAR->IdDev).or.SetDevise(PAR->IdDev)
+field caption="Datum  " \
+      name="MahnDate" \
+      default=UserDate()
+field caption="Mahngrad  " \
+      name="MahnLevel" \
+      picture="@!"\
+      default="0"\
+      attrib="N"\
+      pick={|x|PickDbcCode("MAHN.DBC",x,"Mahngrad")}\
+      valid={||\
+        ph_refresh(),\
+        !empty(DbcText("MAHN.DBC",getvar("MahnLevel")))\
+        .or.!SetMsg(utos(getvar("MahnLevel")) \
+              + " : ungltiger Mahngrad!")}
+field block={||padr(DbcText("MAHN.DBC",getvar("MahnLevel")),20)} \
+      color="N/W" \
+      when={||.f.} \
+      caption=" "
+field caption="W„hrung  " \
+      block={|x|SetDevise(x)}\
+      picture="@k@!"\
+      pick={|x|PickDev(x)}\
+      valid={||DevExist(SetDevise())}
+
+#include "PREVIEW.DLG"
+before setvar("PRN2PDF.out",padr(AppRoot()+"\pdf\"+PAR->IdPar+".pdf",200))
+#include "ASPDF.DLG"
+
+field caption="Zus„tzlicher Text: "
+field name="MahnMemo" \
+      default="" \
+      picture="72x6"\
+      reader={|x|MemoReader(x)}
+
+
+
+after fprint("MAHN.INC","[]",\
+  NIL,NIL,NIL,NIL,NIL,NIL,SetAsPdf(),SetAsMail())
+after .f.

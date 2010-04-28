@@ -1594,6 +1594,10 @@ open area oMvi(), oBud(), oImp()
                               NIL,NIL,cName ;
                             )
                           #endif
+                        else
+                          fwrite(fd, ;
+                            " DocCreate(" + jnlClose[JNL_IDJNL] + ") -> " + SetMsg();
+                          )
                         endif
                         if ! CtbUpdate(aCtb)
                           aadd(aLines, ;

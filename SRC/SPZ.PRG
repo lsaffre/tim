@@ -1523,3 +1523,31 @@ FUNCTION IdStruct(cId,nStep)
 RETURN padr(space((len(trim(cId))-1)*nStep)+cId,len(cId)*(nStep+1)-1)
 
 
+FUNCTION ParCleanup()
+RETURN !SetMsg("Kann Akte nicht l”schen, weil Rechnungen existieren.") ;
+  if HasRecords(oVen(),2,"VEN->IdPar",PAR->IdPar)
+RETURN !SetMsg("Kann Akte nicht l”schen, weil Buchungen existieren.") ;
+  if HasRecords(oHst(),1,"HST->IdPar",PAR->IdPar)
+RETURN !SetMsg("Kann Akte nicht l”schen, weil Dienstleistungen existieren.") ;
+  if HasRecords(oDls(),4,"DLS->IdPar",PAR->IdPar)
+RETURN !SetMsg("Kann Akte nicht l”schen, weil Anwesenheiten existieren.") ;
+  if HasRecords(oDlp(),2,"DLP->IdPar",PAR->IdPar)
+RETURN TryRecLock({||ParClean_()})
+
+STATIC FUNCTION ParClean_()
+#ifdef DEF_PRB
+RETURN .f. if !DbfDelete(NIL,NIL,{oPpr()},1,PAR->IdPar)
+#endif DEF_PRB
+#ifdef DEF_PLP
+RETURN .f. if !DbfDelete(NIL,NIL,{oPlp()},1,PAR->IdPar)
+RETURN .f. if !DbfDelete(NIL,NIL,{oPlp()},2,PAR->IdPar)
+#endif DEF_PRB
+#ifdef DEF_DLS
+// RETURN .f. if !DbfDelete(NIL,NIL,{oDls()},4,PAR->IdPar)
+// RETURN .f. if !DbfDelete(NIL,NIL,{oDlp()},2,PAR->IdPar)
+#endif DEF_DLS
+#ifdef DEF_MSG
+RETURN .f. if !DbfDelete(NIL,NIL,{oMsg()},3,PAR->IdPar)
+#endif DEF_MSG
+dbdelete()
+RETURN .t.

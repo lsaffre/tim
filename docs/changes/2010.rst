@@ -58,3 +58,22 @@ DLM\STD\PROG.MNU ruft Druck- und Verwaltermenü jetzt mit lActive = .t. auf. Son
 --------
 
 - CopyRight() zeigt jetzt auch endlich mal 2010 an...
+
+
+20100420
+--------
+
+- ImpAuto() meldete Fehler während DocCreate() (u.a. z.B. "Periode nicht definiert" nicht). Behoben.
+
+20100426
+--------
+- Neue Funktion ParCleanup() löscht einen Partner und alle verknüpften Daten. 
+  Wird benutzt für Aktenlöschliste. Das ist ein Report, der während des 
+  Ausdruckens löscht (wenn die entsprechende Option angekreuzt und bestätigt wurde).
+  
+  TODO: PARCLEAN.LOG erstellen, die manuell gelöscht werden muss, um den nächsten 
+  Löschvorgang freizugeben.
+  
+- Neuer Eintrag `CSVFile` in .REP-Dateien. Bisher hieß die erzeugte CSV-Datei immer TMP.CSV. Jetzt kann man sie im Report explizit benennen.
+
+- Neue Funktion RptLineCount() gibt die Gesamtzahl der gedruckten Detail-Zeilen zurück.

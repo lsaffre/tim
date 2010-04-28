@@ -10,10 +10,10 @@ MnuAddItem(tr("Invoice ~daybooks","Rechnungs~bÅcher","~Facturiers"),{|| RepPrint
 MnuAddItem("MWSt.-Erk~lÑrung drucken",{|| ActExec("DCLTVA") })
 MnuAddSep()
 MnuAddItem("Kundenliste ~Intracom InterVAT",{|| DlgExec("VATINTRA") })
-MnuAddItem("Kundenliste Intracom d~rucken" ,{|| DlgExec("LSTTVAI") })
+// MnuAddItem("Kundenliste Intracom d~rucken" ,{|| DlgExec("LSTTVAI") })
 MnuAddSep()
 MnuAddItem("Kundenliste ~MWSt InterVAT",{|| DlgExec("VATLIST") })
-MnuAddItem("Kundenliste MWSt dr~ucken",{|| DlgExec("LSTTVAA") })
+// MnuAddItem("Kundenliste MWSt dr~ucken",{|| DlgExec("LSTTVAA") })
 MnuAddSep()
 MnuAddItem("Kundenliste ~Deutschland drucken",{|| DlgExec("LSTTVAD") })
 #endif

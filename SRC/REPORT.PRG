@@ -52,7 +52,9 @@
 #define RPT_FORLOOP     29
 #define RPT_LINES       30
 #define RPT_TOHTML      31
-#define RPT_ALEN        31
+#define RPT_CSVFILE     32
+#define RPT_LINECOUNT   33
+#define RPT_ALEN        33
 
 
 #define GRP_KEY        1
@@ -208,7 +210,7 @@ RETURN RepExec(cIdRep,cIdDlg,cTitle,.f.,.t.)
 **
 **
 STATIC FUNCTION _Report(lEmbedded,nLIndent)
-local cOutFile := "TMP.CSV"
+local cOutFile := rpt[RPT_CSVFILE] // "TMP.CSV"
 local fd
 local nForValue
 local i
@@ -216,6 +218,7 @@ local j
 local nRecNo
 local nRecNo2
 local lOkay
+local lNothing := .t.
 local lStop
 local nOldLMargin := p_setlmargin()
 MsgDisplay(trim1(rpt[RPT_HDR1]);
@@ -489,9 +492,12 @@ if nLIndent != NIL
 endif
 if rpt[RPT_TOCSV]
   fclose(fd)
-  if lOkay
-    OpenCsv(cOutFile)
-    // AppShell("excel.bat " + cOutFile)
+  if lOkay 
+    if rpt[RPT_LINECOUNT] > 0
+      OpenCsv(cOutFile)
+    else
+      Warning("Nichts zu drucken.")
+    endif
   endif
 elseif rpt[RPT_TOHTML]
   RETURN .f. if ! toStream("</TABLE>")
@@ -597,6 +603,7 @@ if rpt[RPT_TOHTML]
   cLine += "</tr>"
 endif
 aadd(rpt[RPT_LINES],cLine)
+rpt[RPT_LINECOUNT] += 1
 RETURN .t.
 
 FUNCTION rwriteln(cLine)
@@ -685,6 +692,7 @@ rpt[RPT_ORDER]   := 1
 rpt[RPT_TOTALS]  := {}
 rpt[RPT_COLUMNS] := {}
 rpt[RPT_LINES] := {}
+rpt[RPT_LINECOUNT] := 0
 rpt[RPT_GROUPS]  := {}
 rpt[RPT_VALRECORD]  := {}
 rpt[RPT_ONEACH]  := {||.t.}
@@ -700,6 +708,7 @@ else
   DlgDefault("ToCSV",BUTTON_OFF)
   rpt[RPT_TOCSV]   := getvar("ToCSV") == BUTTON_ON
 endif
+rpt[RPT_CSVFILE] = "TMP.CSV"
 default lToHtml to .f.
 rpt[RPT_TOHTML] := lToHtml
 rpt[RPT_WHILE]   := {||.t.}
@@ -747,6 +756,7 @@ aadd(a, { "before",     {|x| AddIfNotNil(rpt[RPT_BEFORE],cblock(x)) } } )
 aadd(a, { "after",      {|x| AddIfNotNil(rpt[RPT_AFTER],cblock(x)) } } )
 aadd(a, { "PrintLine",  {|x| (rpt[RPT_PRINTLINE]  := xparse(x)) != NIL } })
 aadd(a, { "ToCSV",      {|x| (rpt[RPT_TOCSV]  := xparse(x)) != NIL } })
+aadd(a, { "CSVFile",    {|x| (rpt[RPT_CSVFILE] := xparse(x)) != NIL } })
 RETURN NIL if ! IniLoad(a,cIdRpt+".REP")
 RETURN rpt
 
@@ -1415,3 +1425,5 @@ if x != NIL
 endif
 RETURN rpt[RPT_TOCSV]
 
+FUNCTION RptLineCount
+RETURN rpt[RPT_LINECOUNT]
