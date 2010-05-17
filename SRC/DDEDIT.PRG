@@ -1284,9 +1284,11 @@ FldFreshAll( msk, ad, .t. )
 SayLeg(LEG_READ)
 ddBefore(ad)
 setcursor(if(readinsert(),SC_INSERT,SC_NORMAL))
-if DBFATTR_S $ ad[AD_ATTRIB]
-  aBuf := CopyRec()
-endif
+#ifdef DEF_CHANGELOG
+  if DoChangeLog(ad[AD_NAME]) .or. DBFATTR_S $ ad[AD_ATTRIB]
+    aBuf := CopyRec()
+  endif
+#endif DEF_CHANGELOG
 ReadModal(GetList,NIL,NIL,msk) ; GetList := {} // 19980422
 setcursor(SC_NONE)
 SayLeg(cLeg)
@@ -1299,7 +1301,7 @@ if updated() .or. snRecStat == RS_UNKNOWN .or. lastkey() != K_ESC
   ddPostEdit()
   #ifdef DEF_CONSOLE
     if aBuf != NIL
-      RecConsole(aBuf)
+      Log_PUT(aBuf)
     endif
   #endif DEF_CONSOLE
 endif
@@ -1639,9 +1641,11 @@ if ! ddOnPreEdit(saData)
 endif
 * nRecNo := recno()
 RETURN .f. if ! ddRecLock()
-if DBFATTR_S $ saData[AD_ATTRIB]
-  aBuf := CopyRec()
-endif
+#ifdef DEF_CHANGELOG
+  if DoChangeLog(saData[AD_NAME]) .or. DBFATTR_S $ saData[AD_ATTRIB]
+    aBuf := CopyRec()
+  endif
+#endif DEF_CHANGELOG
 slModify := .f.
 ddBefore(saData)
 if ! empty(indexkey())
@@ -1703,11 +1707,14 @@ ddAfter() // 20051019 jetzt erst nach unlock record und Warning()
 *   Warning("recno() changed unexpectedly!")
 * endif
 unlock record
-#ifdef DEF_CONSOLE
-  if aBuf != NIL // "S" $ ad[AD_ATTRIB]
+#ifdef DEF_CHANGELOG
+  if DBFATTR_S $ saData[AD_ATTRIB]
     RecConsole(aBuf)
   endif
-#endif DEF_CONSOLE
+  if DoChangeLog(saData[AD_NAME])
+    Log_PUT(aBuf)
+  endif
+#endif DEF_CHANGELOG
 ddChkWhile()
 RETURN .f. if ! lOkay
 if column:cargo[COL_ONEDIT] == NIL
@@ -2024,6 +2031,9 @@ else
   RETURN .f. if ! eval(saData[AD_PREDELETE])
 endif
 RETURN .f. if ! DoEvents(saData[AD_ONDELETE],saData[AD_NAME]+":onDelete")
+#ifdef DEF_CHANGELOG
+  if DoChangeLog(saData[AD_NAME]) ; Log_DELETE() ; endif
+#endif DEF_CHANGELOG
 RETURN .f. if ! ddRecLock()
 ddBefore(saData)
 delete
@@ -2121,6 +2131,9 @@ slIsEof := .f. // since the new record now exists
 saData[AD_UPDATED] := .t.
 snSkipOffset := 0
 DoEvents(saData[AD_ONCREATE],saData[AD_NAME]+":onCreate")
+#ifdef DEF_CHANGELOG
+  if DoChangeLog(saData[AD_NAME]) ; Log_POST() ; endif
+#endif DEF_CHANGELOG
 ddAfter()
 dbcommit()  // 980627
 unlock record // das wird hier erst seit 19980424 gemacht...
@@ -2578,6 +2591,9 @@ RETURN .t.
 FUNCTION TryDelete(bPreDelete)
 RETURN .t. if ! eval(bPreDelete)
 RETURN .f. if ! DoEvents(saData[AD_ONDELETE],saData[AD_NAME]+":onDelete")
+#ifdef DEF_CHANGELOG
+  if DoChangeLog(saData[AD_NAME]) ; Log_DELETE() ; endif
+#endif DEF_CHANGELOG
 RETURN .f. if ! ddRecLock()
 delete
 unlock record
@@ -4035,6 +4051,9 @@ else
   endif
 endif
 DoEvents(ad[AD_ONCREATE],ad[AD_NAME]+":onCreate")
+#ifdef DEF_CHANGELOG
+  if DoChangeLog(ad[AD_NAME]) ; Log_POST() ; endif
+#endif DEF_CHANGELOG
 unlock record
 RETURN .T.
 

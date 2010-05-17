@@ -328,4 +328,42 @@ if valtype(c) == "A"
 endif
 RETURN valtype(c)
 
+#ifdef DEF_CHANGELOG
+
+FUNCTION val2json(c)
+local r
+local i
+RETURN "None" if c == NIL
+RETURN '"' + trim(strtran(strtran(c,'"','\"'),CR_LF,'\n')) + '"' if valtype(c) $ "CM"
+RETURN '{"__date__":{year:'+ntrim(year(c));
+  +',"month":'+ntrim(month(c))+',"day":'+ntrim(day(c));
+  +"}}" if valtype(c) == "D"
+RETURN (if(c,"true","false")) if valtype(c) == "L"
+if valtype(c) == "N"
+  r := ltrim(str(c,20,2))
+  if "." $ r
+    do while right(r,1) == "0"
+      r := left(r,len(r)-1)
+    enddo
+    if right(r,1) == "."
+      r := left(r,len(r)-1)
+    endif
+  endif
+  RETURN r
+endif
+if valtype(c) == "A"
+  r := "["
+  for i := 1 to len(c)
+    if i > 1
+      r += ", "
+    endif
+    r += val2json(c[i])
+  next i
+  r += "]"
+  RETURN r
+endif
+RETURN utos(c)
+
+#endif DEF_CHANGELOG
+
 

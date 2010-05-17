@@ -964,6 +964,9 @@ open area b, oPar(), oPlz(), oNat(), oPrj()
           if blOnCreate != NIL
             eval(blOnCreate)
           endif
+          #ifdef DEF_CHANGELOG
+            if DoChangeLog(b[AD_NAME]) ; Log_POST() ; endif
+          #endif DEF_CHANGELOG
           // die kamen vorher erst sp„ter
           if (a := VenVnlInit(jnl)) == NIL
             SetMsg(MsgIdJnlDoc() + " : " + SetMsg())

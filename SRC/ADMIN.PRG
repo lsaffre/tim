@@ -130,7 +130,9 @@ static sbPerDevFixed := {|| .f. }
 #ifdef DEF_PXT
 static sbParPxtTable := {||iif(PAR->IdPrt$"SZI",oPxs(),NIL)}
 #endif DEF_PXT
-
+#ifdef DEF_CHANGELOG
+static sbDoChangeLog := {|cAlias|.f.}
+#endif DEF_CHANGELOG
 
 
 #ifdef DEF_PLP
@@ -5867,6 +5869,10 @@ AddIniCmd( { "PerShift" , {|x| snPerShift := val(x),.t. } } )
 #ifdef DEF_PXT
   AddIniCmd( { "ParPxtTable" , {|x|(sbParPxtTable:=cblock(x)) != NIL }})
 #endif DEF_PXT
+#ifdef DEF_CHANGELOG
+  AddIniCmd( { "DoChangeLog" , {|x|(sbDoChangeLog:=xparse(x)) != NIL }})
+#endif DEF_CHANGELOG
+
 RETURN NIL
 
 
@@ -6018,3 +6024,9 @@ FUNCTION ParPxtTable()
 RETURN eval(sbParPxtTable)
 
 #endif DEF_PXT
+
+#ifdef DEF_CHANGELOG
+FUNCTION DoChangeLog(cAlias)
+RETURN eval(sbDoChangeLog,cAlias)
+//~ RETURN cAlias $ scDoChangeLog
+#endif

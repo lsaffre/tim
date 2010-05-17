@@ -1238,6 +1238,9 @@ open area b, oPar(), oPlz(), oNat()
           endif
           if cIdPar2 != NIL ; VEN->IdPar2 := cIdPar2 ; endif
           DoEvents(b[AD_ONCREATE],"VenAppend")
+          #ifdef DEF_CHANGELOG
+            if DoChangeLog(b[AD_NAME]) ; Log_POST() ; endif
+          #endif DEF_CHANGELOG
           if lCopy
             if lVnlReset.or.lTaxReset
               if (a := VenVnlInit(jnl)) == NIL
@@ -1405,6 +1408,9 @@ open area b
             FIN->Remarq := cNB1
           endif
           DoEvents(b[AD_ONCREATE],"VenAppend")
+          #ifdef DEF_CHANGELOG
+            if DoChangeLog(b[AD_NAME]) ; Log_POST() ; endif
+          #endif DEF_CHANGELOG
           if lCopy
             open area oFnl(),oPar(),oGen()
               lOkay := .t.

@@ -390,15 +390,20 @@ RETURN uReturn
 ** only available in __XPP__ because name is too long for Clipper
 
 ** http://tim.saffre-rumma.ee/src/22.html
+** 
 FUNCTION TryRecLockM(aAliases,bTry)
 local uReturn := .f.
 local aLocked := {}
+local aBufs := {}
 local i
 local lOkay := .t.
 for i := 1 to len(aAliases)
   select (aAliases[i])
   if ddRecLock()
     aadd(aLocked,alias())
+    #ifdef DEF_CHANGELOG
+    aadd(aBufs,iif(DoChangeLog(aAliases[i]),CopyRec(),NIL))
+    #endif DEF_CHANGELOG
   else
     lOkay := .f.
     exit
@@ -406,6 +411,12 @@ for i := 1 to len(aAliases)
 next i
 if lOkay
   uReturn := eval(bTry)
+  #ifdef DEF_CHANGELOG
+  for i := 1 to len(aAliases)
+    select (aAliases[i])
+    Log_PUT(aBufs[i])
+  next i
+  #endif DEF_CHANGELOG
 endif
 for i := 1 to len(aLocked)
   select (aLocked[i])

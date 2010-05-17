@@ -1848,6 +1848,9 @@ begin sequence
     if ! xeval(blOnCreate)
       lOkay := .f.
     endif
+    #ifdef DEF_CHANGELOG
+      if DoChangeLog(b[AD_NAME]) ; Log_POST() ; endif
+    #endif DEF_CHANGELOG
     unlock record
   else
     SetMsg("reclock() failed")

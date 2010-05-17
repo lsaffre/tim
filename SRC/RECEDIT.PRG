@@ -62,13 +62,13 @@ next i
 RETURN .t.
 
 
-
 #ifdef DEF_CONSOLE
-
+// called from ddedit.prg when DBFATTR_S is set
 FUNCTION RecConsole(aBuf)
 local i, cName
 local lFound := .f.
 local cMsg := alias() + "(" + ntrim(recno()) + ") modified :"
+local cData := ""
 for i = 1 to fcount()
   cName := fieldname(i)
   if FIELD->&cName != aBuf[i]
@@ -80,6 +80,67 @@ for i = 1 to fcount()
 next i
 RETURN .t. if ! lFound
 RETURN LogConsole(cMsg)
+
+#ifdef DEF_CHANGELOG
+
+FUNCTION Log_PUT(aBuf)
+local i, cName
+local lFound := .f.
+local cData := ""
+RETURN .t. if aBuf == NIL
+for i = 1 to fcount()
+  cName := fieldname(i)
+  if FIELD->&cName != aBuf[i]
+    if lFound ; cData += "," ; endif
+    cData += '"'+cName + '":' + val2json(FIELD->&cName)
+    lFound := .t.
+  endif
+next i
+RETURN .t. if ! lFound
+RETURN Log_changelog('PUT',cData)
+
+FUNCTION Log_POST
+local cData := ""
+local i, cName
+for i = 1 to fcount()
+  cName := fieldname(i)
+  if i > 1 ; cData += "," ; endif
+  cData += '"'+cName + '":' + val2json(FIELD->&cName)
+next i
+Log_changelog('POST',cData)
+RETURN .t.
+
+FUNCTION Log_DELETE
+Log_changelog('DELETE')
+RETURN .t.
+
+FUNCTION Log_changelog(cMethod,cData)
+local cCmd := '{"method":'+val2json(cMethod)+',"alias":' + val2json(alias()) 
+if alias() == 'PAR'
+  cCmd += ',"id":'+val2json(PAR->IdPar) 
+elseif alias() == 'PXS'
+  cCmd += ',"id":'+val2json(PXS->IdPar) 
+elseif alias() == 'PLZ'
+  cCmd += ',"id":'+val2json({PLZ->Pays,PLZ->CP}) 
+elseif alias() == 'NAT'
+  cCmd += ',"id":'+val2json(NAT->IdNat) 
+elseif alias() == 'MSG'
+  cCmd += ',"id":'+val2json(MSG->IdMsg) 
+else
+  cCmd += ',"id":None'
+endif
+cCmd += ',"time":' + val2json(dtos(date())+" "+time())
+// cCmd += ',"date":' + val2json(date())
+// cCmd += ',"time":' + val2json(time())
+cCmd += ',"user":' + val2json(UserId())
+if cdata != NIL
+  cCmd += ',"data":{' + cData + "}"
+endif
+cCmd += "}"
+RETURN LogRawMsg(DbPath()+'\changelog.json',cCmd+CR_LF)
+
+#endif DEF_CHANGELOG
+
 
 #endif DEF_CONSOLE
 

@@ -261,4 +261,4 @@ if (<lIf>) ; RETURN (<uReturn>) ; endif
 #include "XBP.CH"
 #endif DEF_GUI
 
-#define DBFATTR_S "S" // detailed changelog. ddSetAttrib()
+#define DBFATTR_S "S" // detailed changelog in console.msg. ddSetAttrib()

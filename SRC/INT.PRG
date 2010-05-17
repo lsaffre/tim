@@ -341,6 +341,9 @@ open area b
         HSI->Mont    := ntom(saHsi[i][HSI_MONT])
         HSI->MontDev := ntom(saHsi[i][HSI_MONTDEV],saDev[DEV_DECPOS])
         DoEvents(b[AD_ONCREATE],b[AD_NAME]+":onCreate")
+        #ifdef DEF_CHANGELOG
+          if DoChangeLog(b[AD_NAME]) ; Log_POST() ; endif
+        #endif DEF_CHANGELOG
         unlock record
       else
         exit

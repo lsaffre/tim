@@ -228,6 +228,11 @@ RETURN eval(sbLogConsole,cMsg)
 
 
 FUNCTION LogMsg(cFilename,cMsg)
+cMsg := left(dtoc(date()),5) + " " + time() + " " + ;
+  UserId() + " " + getvar("PC",.f.,"NIL") + " " + cMsg + CR_LF
+RETURN LogRawMsg(cFilename,cMsg)
+
+FUNCTION LogRawMsg(cFilename,cMsg)
 local nCount := 0
 local fd := -1
 local i
@@ -257,10 +262,7 @@ do while fd == -1
   endif
 enddo
 fseek(fd,0,FS_END)
-fwrite(fd, ;
-  left(dtoc(date()),5) + " " + time() + " " + ;
-  UserId() + " " + getvar("PC",.f.,"NIL") + " " + cMsg + CR_LF ;
-)
+fwrite(fd, cMsg)
 fclose(fd)
 RETURN .t.
 

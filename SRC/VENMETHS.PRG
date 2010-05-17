@@ -2009,6 +2009,9 @@ endif
                      .and. VNA->IdJnl == VEN->IdJnl
       if ddReclock()
         if DoEvents(b[AD_ONDELETE],"VenUndo()")
+          #ifdef DEF_CHANGELOG
+            if DoChangeLog(b[AD_NAME]) ; Log_DELETE() ; endif
+          #endif DEF_CHANGELOG
           delete
         else
           lOkay := .f.

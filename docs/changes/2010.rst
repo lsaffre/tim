@@ -77,3 +77,19 @@ DLM\STD\PROG.MNU ruft Druck- und Verwaltermenü jetzt mit lActive = .t. auf. Son
 - Neuer Eintrag `CSVFile` in .REP-Dateien. Bisher hieß die erzeugte CSV-Datei immer TMP.CSV. Jetzt kann man sie im Report explizit benennen.
 
 - Neue Funktion RptLineCount() gibt die Gesamtzahl der gedruckten Detail-Zeilen zurück.
+
+
+20100514
+--------
+   
+ - Neues #define DEF_TIM2LINO definiert neuen Eintrag `DoChangeLog` in
+   der TIM.DBI. Zum Beispiel::
+
+     DoChangeLog {|cAlias|cAlias $ "PAR PXT"}
+
+   Das bewirkt, dass für PAR und PXT jede einzelne Änderung in eine
+   Datei changelog.json geschrieben wird, die im Datenbankverzeichnis
+   steht. Diese Datei wird dann von Lino tim2lino.py eingelesen, der
+   die verarbeiteten Zeilen nach changelog.done.json schreibt.
+   Neue Funktion val2json(). 
+   
