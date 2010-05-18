@@ -93,3 +93,12 @@ DLM\STD\PROG.MNU ruft Druck- und Verwaltermenü jetzt mit lActive = .t. auf. Son
    die verarbeiteten Zeilen nach changelog.done.json schreibt.
    Neue Funktion val2json(). 
    
+   
+20100518
+--------
+  - changelog.json wird nun nach CPAS\changelog statt nach CPAS 
+    geschrieben.
+  - Wenn mindestens ein Feld bearbeitet wurde, dann werden nun dennoch 
+    alle Datenfelder in den changelog-Eintrag gesetzt. Denn nur so ist 
+    eine sinnvolle Datenreparatur möglich im (theoretisch unmöglichen) 
+    Fall, dass changelog-Einträge verloren gehen.

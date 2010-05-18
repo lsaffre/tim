@@ -91,10 +91,10 @@ RETURN .t. if aBuf == NIL
 for i = 1 to fcount()
   cName := fieldname(i)
   if FIELD->&cName != aBuf[i]
-    if lFound ; cData += "," ; endif
-    cData += '"'+cName + '":' + val2json(FIELD->&cName)
     lFound := .t.
   endif
+  if i > 1 ; cData += "," ; endif
+  cData += '"'+cName + '":' + val2json(FIELD->&cName)
 next i
 RETURN .t. if ! lFound
 RETURN Log_changelog('PUT',cData)
@@ -133,11 +133,11 @@ cCmd += ',"time":' + val2json(dtos(date())+" "+time())
 // cCmd += ',"date":' + val2json(date())
 // cCmd += ',"time":' + val2json(time())
 cCmd += ',"user":' + val2json(UserId())
-if cdata != NIL
+if cData != NIL
   cCmd += ',"data":{' + cData + "}"
 endif
 cCmd += "}"
-RETURN LogRawMsg(DbPath()+'\changelog.json',cCmd+CR_LF)
+RETURN LogRawMsg(DbPath()+'\changelog\changelog.json',cCmd+CR_LF)
 
 #endif DEF_CHANGELOG
 
