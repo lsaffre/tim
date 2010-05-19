@@ -334,8 +334,15 @@ FUNCTION val2json(c)
 local r
 local i
 RETURN "None" if c == NIL
-RETURN '"' + trim(strtran(strtran(c,'"','\"'),CR_LF,'\n')) + '"' if valtype(c) $ "CM"
-RETURN '{"__date__":{year:'+ntrim(year(c));
+if valtype(c) $ "CM"
+  c := strtran(c,chr(141),' ')
+  c := strtran(c,'"','\"')
+  c := strtran(c,CR_LF,'\n')
+  c := strtran(c,chr(10),'\n')
+  c := strtran(c,chr(13),'\n')
+  RETURN '"' + trim(c) + '"' 
+endif
+RETURN '{"__date__":{"year":'+ntrim(year(c));
   +',"month":'+ntrim(month(c))+',"day":'+ntrim(day(c));
   +"}}" if valtype(c) == "D"
 RETURN (if(c,"true","false")) if valtype(c) == "L"
