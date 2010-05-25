@@ -116,6 +116,9 @@ MnuAddItem(utr("~Balance","~Bilanz","~Balance"),{|| RepPrint("GENBIL","GENBIL",M
 MnuAddItem(utr("~P & L Statement","~G/V-Rechnung","~G/V-Rechnung"),{|| RepPrint("GENBIL2","GENBIL2",MnuItemName()) })
 MnuAddItem(utr("~Export to Excel","~Export nach Excel"),{|| ActExec("GENBIL2") })
 #endif
+#if HasDlm("HST")
+MnuAddItem("Statement of changes in ~equity",{|| RepPrint("HSTKAP","HSTKAP",MnuItemName()) })
+#endif
 #if HasDlm("DCL")
 MnuAddItem(utr(\
   "Cash-~Flow Statement",\

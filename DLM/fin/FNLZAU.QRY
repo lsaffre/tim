@@ -1,15 +1,16 @@
 //
-// FNLZAU.QRY - generated 16.04.03
-// for FNL.DBF
+// FNLZAU.QRY - generated 24.05.10
+// for FNL.FOX
 //
 window 16 80 6 0 
 column 5 =utr("P-acc","P-Kto","Cpte.p") pict @K@!
+column 6 Z pict @K@!
 column 14 Match pict @K@!
 column 8 Name pict @k@s15
 column 9 Mitteilung pict @k@s14
 column 16 ÿ pict @K@!
-column 11 Betrag pict @K@! expr VAL(FNL->MONT) say ntomf(nSum)
-column 0 Kontonummer block ParExpr(FNL->IdCpt,"PAR->Compte1") pict @k@s14 skip .t. say "Total"
+column 11 Betrag pict @K@! expr VAL(FNL->MONT) sumfmt ntomf(nSum)
+column 0 Kontonummer block ParExpr(FNL->IdCpt,"PAR->Compte1") pict @k@s14 skip .t. sumfmt "Total"
 column 17 =utr("Amnt ccy","Betrag FW","Mont Dev") pict @K@! skip .t.
 column 3 Op. pict @K@!
 column 15 =utr("Remark","Bemerkung","Remarque") pict @K@S25

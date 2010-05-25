@@ -39,6 +39,13 @@ filter {|| "A"$DCF->Attrib\
       "padr(RptGrpKey(),LenIdDcf()+1)+space(len(trim(DCF->IdDcf))-1)+trim(LngExpr('DCF->Name'))",\
       NIL))})
 
+group key={||left(DCF->IdDcf,5) } \
+  text=getvar("bcDcfHeader") \
+  when={|nCount,nDtlCount|nDtlCount>1} \
+  header={|cText|rwriteln(trim(cText)+":")} \
+  afterTotals={||rwriteln()}\
+  format="B"
+
 group key={||left(DCF->IdDcf,4) } \
   text=getvar("bcDcfHeader") \
   when={|nCount,nDtlCount|nDtlCount>1} \

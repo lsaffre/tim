@@ -102,3 +102,7 @@ DLM\STD\PROG.MNU ruft Druck- und Verwaltermenü jetzt mit lActive = .t. auf. Son
     alle Datenfelder in den changelog-Eintrag gesetzt. Denn nur so ist 
     eine sinnvolle Datenreparatur möglich im (theoretisch unmöglichen) 
     Fall, dass changelog-Einträge verloren gehen.
+
+20100524
+--------
+- utos() vertrug bisher keine Gänsefüßchen ('"'). Jetzt wohl.

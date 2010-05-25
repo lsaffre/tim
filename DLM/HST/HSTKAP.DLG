@@ -1,0 +1,7 @@
+// Omakapitali muutuste aruanne
+
+#include "PERIODE.DLG"
+#include "PREVIEW.DLG"
+#include "ASPDF.DLG"
+
+after AppSaveMem()

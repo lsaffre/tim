@@ -300,7 +300,10 @@ FUNCTION utos(c)
 local r
 local i
 RETURN "NIL" if c == NIL
-RETURN '"' + c + '"' if valtype(c) $ "CM"
+if valtype(c) $ "CM"
+  c := strtran(c,'"','"+chr(34)+"')
+  RETURN '"' + c + '"' 
+endif
 if valtype(c) == "N"
   r := ltrim(str(c,20,2))
   if "." $ r

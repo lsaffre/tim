@@ -1,0 +1,60 @@
+before SetMntFormat("Z14")
+header1 MnuItemName() // Statement of changes in equity (Omakapitali muutuste aruanne)
+header2 PerText()
+header3 ""
+area { oHst(), oPar(), oGen(), oVen() }
+order 10 // HST->Periode+dtos(HST->Date), sh. HST.DEF
+// start  space(4) // MemPer1
+while {||ChkPeriode(HST->Periode) <= 0}
+filter {||left(HST->IdGen,1)=="1"}
+ValidateRecord {||\
+  GenExist(HST->IdGen).and.(empty(HST->IdCtr).or.ParExist(HST->IdPar)) }
+OnNoValue {|| Confirm(\
+  MsgIdJnlDoc() + " : Buchung " + HST->IdGen + \
+  " konnte keiner Kolonne zugewiesen werden !", \
+  MsgContinue() \
+)}
+
+detail {|| ChkPeriode(HST->Periode)==0}
+
+
+column header="Per." width=4 text={||HST->Periode} // when={|grp|IsFirst(1)}
+column header="Datum" width=8 text={||dtoc(HST->Date)} // when={|grp|IsFirst(1)}
+column header="Jnl" width=LenIdJnl() text={||HST->IdJnl}
+column header="Dok.Nr" width=6 text={||HST->IdDoc}
+column header="Bemerkung" width=20 text={||padr(DocName(IdJnl,IdDoc,Line),20)}
+column header="G-Kto" width=LenIdGen() text={||HST->IdGen}
+column header="Osakapital" width=LenMntF() \
+       when={||HST->IdGen=="100000"} \
+       value={||HstDcMont("C",SetDevise())} \
+       text={|x|ntomf(x)} xsum={|x| ntomf(x) }
+column header="Koh.reserv." width=LenMntF() \
+       when={||HST->IdGen=="103000"} \
+       value={||HstDcMont("C",SetDevise())} \
+       text={|x|ntomf(x)} xsum={|x| ntomf(x) }
+column header="Eelm.p. k/k..." width=LenMntF() \
+       when={||HST->IdGen=="140000"} \
+       value={||HstDcMont("C",SetDevise())} \
+       text={|x|ntomf(x)} xsum={|x| ntomf(x) }
+column header="Aruanne k/k" width=LenMntF() \
+       when={||HST->IdGen=="141000"} \
+       value={||HstDcMont("C",SetDevise())} \
+       text={|x|ntomf(x)} xsum={|x| ntomf(x) }
+// column header="P-Kto" width=LenIdPar() text={||HST->IdPar}
+// column header="Name" width=30 text={||padr(\
+  if(empty(HST->IdCtr),GenName(),ParName()),30)}
+// column header="Match" width=6+LenIdJnl() text={||HST->Match}
+// column header="*"     width=1            text={||HST->Satis}
+
+total for={||ChkPeriode(HST->Periode)<0} \
+      text={||tr("Start balance","Beginnsaldo","Solde initial")} \
+      when={|nCount|nCount>0}
+total for={||ChkPeriode(HST->Periode)==0} \
+      text={||tr("Total ","Summe ","Total ")+PerText(cblock(".f."))}
+total text={||tr("Final balance","Endsaldo","Solde final") } \
+      when={||.t.}
+
+// group key={|| HST->Periode+dtos(HST->Date) } after={||.f.} text={|x|NIL} align="R"
+// group key={|| HST->Periode } text={|x|HST->Periode } align="R" after={||RptTit3()}
+group text={|x|""} align="L" \
+      before={|nCount| nCount>0.and.PrintTotal(1,1) }
