@@ -127,8 +127,6 @@
 
 
 #define DEF_ADS // request ADS-specific functions
-// build CPASANA linkt ohne axs
-// build cpasana linkt mit axs
 
 #define DEF_TPLTEXT
 

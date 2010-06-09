@@ -150,6 +150,9 @@ static snLenIdDoc := 6
 static snLenIdCtr := 1
 static snLenIdTpl := 6
 static slUseAdsDbe := .t.
+#ifdef DEF_ADS
+static scAdsConnect := NIL
+#endif
 #ifdef __XPP__
   #include "COLLAT.CH"
   static snCollation := COLLAT_GERMAN
@@ -3923,6 +3926,13 @@ FUNCTION LenIdRub ; RETURN snLenIdRub
 FUNCTION LenIdNts ; RETURN snLenIdNts
 #endif DEF_BIBLIO
 FUNCTION UseAdsDbe ; RETURN slUseAdsDbe
+#ifdef DEF_ADS
+FUNCTION AdsConnect 
+// Illegal initialization of STATIC variable
+RETURN "DBE=ADSDBE;SERVER="+left(AppName(.t.),2) IF scAdsConnect == NIL 
+RETURN scAdsConnect
+
+#endif
 #ifdef __XPP__
 FUNCTION DbeCollation ; RETURN snCollation
 #endif __XPP__
@@ -5573,6 +5583,9 @@ FUNCTION TimInit()
 * #endif
 AddIniCmd( { "set epoch" , {|x| set(_SET_EPOCH,val(x)),.t. } } )
 AddIniCmd( { "UseAdsDbe" , {|x| slUseAdsDbe:= ctol(x),.t. } } )
+#ifdef DEF_ADS
+AddIniCmd( { "AdsConnect" , {|x| (scAdsConnect:= xparse(x))!=NIL } } )
+#endif
 #ifdef __XPP__
   AddIniCmd( { "SetCollation" , {|x| (snCollation:= xparse(x))!=NIL } } )
 #endif

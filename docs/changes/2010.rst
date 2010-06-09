@@ -106,3 +106,26 @@ DLM\STD\PROG.MNU ruft Druck- und Verwaltermenü jetzt mit lActive = .t. auf. Son
 20100524
 --------
 - utos() vertrug bisher keine Gänsefüßchen ('"'). Jetzt wohl.
+
+20100609
+--------
+- DEF_ADS : 
+
+  - AdsDiag() gibt jetzt noch einige Infos mehr: 
+    SERVER_TYPE, SERVER_VERSION, ANSI_LANG und OEM_LANG
+  
+  - AdsDiag() gibt jetzt nicht mehr .t. zurück, sondern den Text.  
+    Dadurch kann man TIM wie folgt starten, um auch ohne Anmeldung 
+    AdsDiag() sehen zu können:
+    
+      tim /exec:warning(AdsDiag())
+  
+  - Neuer Eintrag `AdsConnect` in der TIM.INI, dessen Standardwert äquivalent zum bisherigen Verhalten ist::
+
+      AdsConnect "DBE=ADSDBE;SERVER="+left(AppName(.t.),2)
+
+    Bisher musste die Datenbank obligatorisch auf dem gleichen Laufwerk wie die TIM4.EXE stehen. 
+    Jetzt kann man außerdem mit den DacSession connection parameters experimentieren, zum Beispiel:
+    
+      AdsConnect "DBE=ADSDBE;SERVER=\\alaska01\data;ADS_LOCAL_SERVER;UID=demo;PWD=demo"
+    

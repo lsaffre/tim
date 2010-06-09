@@ -48,7 +48,8 @@ PROCEDURE dbeSys()
  *   which will be combined to a new abstract database engine.
  */
 #ifdef DEF_ADS
-LOCAL cServerDrive := left(AppName(.t.),2)
+// LOCAL cServerDrive := left(AppName(.t.),2)
+local cAdsConnect := AdsConnect()
 #endif DEF_ADS
 * LOCAL aDbes := { { "DBFDBE", .T.},;
 *                  { "NTXDBE", .T.},;
@@ -128,14 +129,17 @@ LOCAL cServerDrive := left(AppName(.t.),2)
 
   #ifdef DEF_ADS
     if UseAdsDbe()
+    
       DbeSetDefault("ADSDBE")
 
       // connect to the ADS server
-      soSession := dacSession():New( "DBE=ADSDBE;SERVER="+cServerDrive )
+      soSession := dacSession():New( cAdsConnect )
+      // soSession := dacSession():New( "DBE=ADSDBE;SERVER="+cServerDrive )
 
       // check if we are connected to the ADS server
       IF ( !soSession:isConnected( ) )
-        raise("Error connecting to ADS on "+cServerDrive+" : "+utos(soSession:getLastError()))
+        //~ raise("Error connecting to ADS on "+cServerDrive+" : "+utos(soSession:getLastError()))
+        raise("Error connecting to ADS using "+cAdsConnect+" : "+utos(soSession:getLastError()))
       ENDIF
       // SetCollation(DbeCollation())
       // Warning(ntrim(DbeCollation()))
@@ -174,20 +178,44 @@ RETURN "."+DbeInfo( COMPONENT_ORDER, DBE_EXTENSION )
 
 #ifdef DEF_ADS
 
+// #defines taken from ADSDBE.CH and DAC.CH
+
+#define DAC_USER              0x0000FFFF
+#define ADSDBE_SERVER_TYPE    (DAC_USER+1)  // RO
+#define ADSDBE_SERVER_VERSION (DAC_USER+2)  // RO
+#define ADSDBE_OEM_LANG       (DAC_USER+3)  // RO
+#define ADSDBE_ANSI_LANG      (DAC_USER+4)  // RO
+
+FUNCTION ADS_ServerType()
+local x := soSession:setProperty(ADSDBE_SERVER_TYPE)
+RETURN "NETWARE"  if x == 1
+RETURN "NT"       if x == 2
+RETURN "LOCAL"    if x == 3
+RETURN "WIN9X"    if x == 4
+RETURN "NETWARE5" if x == 5
+RETURN "LINUX"    if x == 6
+RETURN "Unknown (" + utos(x) + ")"
+               
+
 FUNCTION AdsDiag()
+local s := ''
 if soSession == NIL
-  writeln("soSession is NIL")
+  s += "soSession is NIL"
 elseif ! soSession:isConnected()
-  writeln("Connection to server failed!")
-  writeln("Error code :" + utos(soSession:getLastError()))
-  writeln("Description:" + utos(soSession:getLastMessage()))
+  s += ("Connection to server failed!") + CR_LF
+  s += ("Error code :" + utos(soSession:getLastError())) + CR_LF
+  s += ("Description:" + utos(soSession:getLastMessage())) 
 else
-  writeln("Active DacSession: "+soSession:getConnectionString())
-  writeln("isUsed() : " + utos(soSession:isUsed()))
-  writeln("isCompound() : " + utos(soSession:isCompound()))
-  writeln("isDefault() : " + utos(soSession:isDefault()))
+  s += ("Active DacSession: "+soSession:getConnectionString()) + CR_LF
+  s += ("isUsed() : " + utos(soSession:isUsed())) + CR_LF
+  s += ("isCompound() : " + utos(soSession:isCompound())) + CR_LF
+  s += ("isDefault() : " + utos(soSession:isDefault())) + CR_LF
+  s += "Server Type : "+ADS_ServerType() 
+  s += ", Version : "+utos(soSession:setProperty(ADSDBE_SERVER_VERSION)) + CR_LF
+  s += "ANSI_LANG : "+utos(soSession:setProperty(ADSDBE_ANSI_LANG)) 
+  s += ", OEM_LANG : "+utos(soSession:setProperty(ADSDBE_OEM_LANG))
 endif
-RETURN .t.
+RETURN s
 
 FUNCTION AdsDisconnect
 if soSession != NIL
