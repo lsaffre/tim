@@ -464,4 +464,23 @@ local nMonth := val(substr(cDate,5,2))
 local nDay := val(right(cDate,2))
 RETURN ntod(nYear,nMonth,nDay)
 
+FUNCTION stod_ca(cDate)
+local nYear := val(left(cDate,4))
+local nMonth := val(substr(cDate,5,2))
+local nDay := val(right(cDate,2))
+local lCirca := .f.
+if nDay == 0
+  lCirca := .t.
+  if nMonth == 0
+    nDay := 30
+  else
+    nDay := 15
+  endif
+endif
+if nMonth == 0
+  lCirca := .t.
+  nMonth := 6
+endif
+RETURN { ntod(nYear,nMonth,nDay), lCirca }
+
 #endif

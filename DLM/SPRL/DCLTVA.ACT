@@ -34,12 +34,18 @@ DlgDefine("03",CttBase('DC=="D".and.IdCtr=="V".and.IdCtf!="**".and.IdTax$"20 ,21
 Dlgdefine("44",iif(getvar("Version")==1,0,CttBase('DC=="D".and.IdCtr=="V".and.IdTax=="IS "')))
 DlgDefine("45",CttBase('DC=="D".and.IdCtr=="V".and.IdTax$"C  "'))
 DlgDefine("46",CttBase('DC=="D".and.IdCtr=="V".and.IdTax$"IM "'))
+
+// 47 : base d'imposition des livraisons de biens et prestations de services
+// … destination de pays non membres de la Communaut‚ europ‚enne, destin‚es
+// … des ambassades ou des organismes internationaux, meme lorsque ces
+// ambassades ou organismes internationaux sont situ‚s sur le territoire
+// belge ou relatives … des biens en entrep“t TVA
 DlgDefine("47",iif(getvar("Version")==1,\
   CttBase('\
-    DC=="D".and.IdCtr=="V".and.IdTax$"IS ,X  ,7  ,15 ,16 ,19 ,19M,L  ,D0 "\
+    DC=="D".and.IdCtr=="V".and.IdTax$"IS ,X  ,7  ,15 ,16 ,19 ,19M,L  ,D0 ,15L"\
   '),\
   CttBase('\
-    DC=="D".and.IdCtr=="V".and.IdTax$"X  ,7  ,15 ,16 ,19 ,19M,L  ,D0 "\
+    DC=="D".and.IdCtr=="V".and.IdTax$"X  ,7  ,15 ,16 ,19 ,19M,L  ,D0 ,15L"\
   ')\
   ))
 // 48 : notes de cr‚dit vente [et corrections n‚gatives] relatives aux

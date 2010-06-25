@@ -1299,11 +1299,11 @@ endif
 if updated() .or. snRecStat == RS_UNKNOWN .or. lastkey() != K_ESC
   snRecStat := RS_UNKNOWN
   ddPostEdit()
-  #ifdef DEF_CONSOLE
+  #ifdef DEF_CHANGELOG
     if aBuf != NIL
       Log_PUT(aBuf)
     endif
-  #endif DEF_CONSOLE
+  #endif DEF_CHANGELOG
 endif
 ddAfter()
 unlock record

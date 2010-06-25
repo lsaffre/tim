@@ -129,3 +129,15 @@ DLM\STD\PROG.MNU ruft Druck- und Verwaltermenü jetzt mit lActive = .t. auf. Son
     
       AdsConnect "DBE=ADSDBE;SERVER=\\alaska01\data;ADS_LOCAL_SERVER;UID=demo;PWD=demo"
     
+20100615
+--------
+- DCLTVA.ACT setzt jetzt Basisbetrag von Verkäufen mit 15L nach Case 47.
+
+
+20100623
+--------
+ - :func:`VenDoPrint` hat jetzt einen weiteren optionalen Parameter `blExec`. Wenn der angegeben ist, übernimmt der den eigentlichen Ausdruck. Wir benutzt in VENBATCH.ACT bei MN.
+ 
+20100625
+--------
+- Neue Funktion `stod_ca()` in time.prg, und das von `GetEid()` zurückgegebene array hat jetzt 27 statt bisher 26 Elemente. Element 27 ist .t. wenn das Geburtsdatum im Monat oder Tag eine 0 enthielt (also unpräzise ist). Und wenn das Jahr < 1800 oder größer als 2100 ist, macht er jetzt nicht mehr raise(), sondern setzt "nur" `a[EID_BIRTH_CA]` auf `.t.`.

@@ -81,6 +81,7 @@ next i
 RETURN .t. if ! lFound
 RETURN LogConsole(cMsg)
 
+
 #ifdef DEF_CHANGELOG
 
 FUNCTION Log_PUT(aBuf)
@@ -98,6 +99,7 @@ for i = 1 to fcount()
 next i
 RETURN .t. if ! lFound
 RETURN Log_changelog('PUT',cData)
+
 
 FUNCTION Log_POST
 local cData := ""

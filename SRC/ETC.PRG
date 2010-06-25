@@ -74,8 +74,9 @@ static sbOnDecExceed := {|cMont,nMaxDec| ;
 #define EID_ZIP 24
 #define EID_MUNICIPALTIY 25
 #define EID_COUNTRY 26
+#define EID_BIRTH_CA 27 // ungenaues Geburtsdatum
 
-#define EID_ALEN       26
+#define EID_ALEN       27
 
 * request EID_GET
 
@@ -118,11 +119,13 @@ RETURN a
 
 FUNCTION GetEid(lTest)
 local nYear
+local aDate_ca
 #ifdef SIMULATE_CARD_READER
   local a := EID_GET_TEST()
 #else
   local a := EID_GET()
 #endif
+aadd(a,.f.) // EID_BIRTH_CA 27 // ungenaues Geburtsdatum
 // Confirm("foo "+utos(a[EID_ERROR]))
 RETURN a if a[EID_ERROR] != NIL
 a[EID_NATIONALITY] := eid2nat(a[EID_NATIONALITY])
@@ -132,6 +135,11 @@ a[EID_VALIDITY_END] := stod(a[EID_VALIDITY_END])
 if a[EID_GENDER] == "F"
   a[EID_GENDER] := "W"
 endif
+aDate_ca := stod_ca(a[EID_BIRTHDATE])
+a[EID_BIRTHDATE] := aDate_ca[1]
+a[EID_BIRTH_CA] := aDate_ca[2]
+nYear := year(a[EID_BIRTHDATE])
+/*
 nYear := year(stod(a[EID_BIRTHDATE]))
 if nYear == 0
   // 20090716 Leute mit unbekanntem Tag und Monat im BIRTHDATE
@@ -146,8 +154,10 @@ if nYear == 0
   // a[EID_BIRTHDATE] := stod(left(a[EID_BIRTHDATE],4)+"0101")
 endif
 a[EID_BIRTHDATE] := stod(a[EID_BIRTHDATE])
+*/
 if nYear < 1800
-  raise("Geboren im 18. Jahrhundert!?")
+  // raise("Geboren im 18. Jahrhundert!?")
+  a[EID_BIRTH_CA] := .t.
 elseif nYear < 1900
   a[EID_NATIONAL_NUMBER] := left(a[EID_NATIONAL_NUMBER],6);
     + "*" + substr(a[EID_NATIONAL_NUMBER],7)
@@ -158,7 +168,8 @@ elseif nYear < 2100
   a[EID_NATIONAL_NUMBER] := left(a[EID_NATIONAL_NUMBER],6);
     + "=" + substr(a[EID_NATIONAL_NUMBER],7)
 else
-  raise("Geboren im 22. Jahrhundert!?")
+  // raise("Geboren im 22. Jahrhundert!?")
+  a[EID_BIRTH_CA] := .t.
 endif
 a[EID_NATIONAL_NUMBER] := left(a[EID_NATIONAL_NUMBER],10);
     + "-" + substr(a[EID_NATIONAL_NUMBER],11)

@@ -248,7 +248,7 @@ RETURN MnuDone()
 
 **
 **
-FUNCTION VenDoPrint(jnl,cIdTpl,cPreview,lDlg)
+FUNCTION VenDoPrint(jnl,cIdTpl,cPreview,lDlg,blExec)
 local aSaveMvt := saMvt
 local nSaveDevise := SetDevise()
 local ifc
@@ -266,7 +266,9 @@ RETURN .f. if (a := VenVnlInit(jnl)) == NIL
 SetTplLang(PAR->Langue)
 saMvt := {}
 SetDevise(VEN->IdDev)
-if empty(jnl[JNL_IDTPT])
+if blExec != NIL
+  lOkay := eval(blExec)
+elseif empty(jnl[JNL_IDTPT])
   lOkay := ActExec("VENPRINT") // fprint(cFilename)
 else
   if empty(cIdTpl)
