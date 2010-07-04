@@ -287,6 +287,103 @@ if ! empty(scIdGrj) ; cText += scIdGrj + " " ; endif
 if ! empty(scIdJnl) ; cText += scIdJnl + " " ; endif
 RETURN cText
 
+
+#ifdef DEF_CODA
+
+
+
+FUNCTION ImlMvmCopy()
+local aLn := {}
+local aTagActions := {}
+local aTag := {}
+local cIdDoc2 := IMP->IdDoc
+local jnlDest := JnlLocate(IMP->IdJnl)
+local b := oIml()
+local a
+local i
+local cFltText := ""
+local lOkay
+local cIdPar  := IMP->IdPar
+local cIdPar2 := IMP->IdPar2
+local cIdExt := NIL
+local cNoCpt := strtran(jnlDest[JNL_COMPTE],"-",'')
+local cTitle := "CODA-Buchungen Åbernehmen"
+
+aadd(aTagActions, { K_SPACE, {|tag| TagToggle(tag) } } )
+aadd(aTagActions, { asc("*"), {|| TagInvert(aTag) } } )
+
+if ddRecStat() == RS_INVALID
+  Warning("Lîschen Sie zuerst den aktuellen Record !")
+  RETURN MnuDone()
+endif
+open area oMvm()
+  set order to 2 // IdJnl+IdDoc+Line
+  softseek cNoCpt
+  do while !eof() .and. trim(MVM->NoCpt) == cNoCpt .and. empty(MVM->Match)
+    a = array(IML_ALEN)
+    a[IML_NB1      ] := MVM->Communic
+    a[IML_DATE     ] := MVM->DatVal
+    a[IML_DC       ] := iif(val(MVM->Montant)>0,jnlDest[JNL_DC],DcInvert(jnlDest[JNL_DC]))
+    a[IML_MONT     ] := ntom(abs(val(MVM->Montant)))
+    a[IML_MONTDEV  ] := ""
+    a[IML_IDMVM    ] := MVM->NoExt+MVM->NoMvm
+    a[IML_IDPAR    ] := ''
+    a[IML_IDPAR2   ] := ''
+    a[IML_IDBUD    ] := ''
+    a[IML_MATCH    ] := ''
+    a[IML_EAMATCH  ] := ''
+    a[IML_IDPRJ    ] := ''
+    a[IML_NB2      ] := ''
+    a[IML_COMPTE1  ] := MVM->CptContre
+    a[IML_BACKMATCH] := ''
+    //~ a[IML_PERIODE  ] := IMP->Periode
+    * seek MVI->IdJnl + MVI->IdDoc + MVI->Line in IML
+    * a[IML_MEMO     ] := IML->Memo
+    * a[IML_DATE3    ] := MVI->Date3
+    if cIdExt == NIL
+      cIdExt := MVM->NoExt
+    endif
+    aadd(aTag, {MVM->NoExt == cIdExt, a})
+    skip
+  enddo
+close area
+if (len(aTag)) == 0
+  RETURN !SetMsg(jnlDest[JNL_COMPTE] + " : keine offenen CODA-AuszÅge gefunden.")
+endif
+SetMsg(ntrim(len(aTag)) + " Buchungen gefunden.")
+browse array aTag using {|tag| MvmTagText(tag) } ;
+                  actions aTagActions ;
+                  title (cTitle) ;
+                  delete {||.f. } ;
+                  help "MVMTAG" ;
+                  legend (LEG_IMLTAG)
+if lastkey() == K_ESC
+  RETURN .f.
+endif
+for i := 1 to len(aTag)
+  if aTag[i][1]
+    aadd(aLn,aTag[i][2])
+  endif
+next i
+RETURN !SetMsg("Abbruch: keine Buchungen ausgewÑhlt.") if len(aLn) == 0
+ImlGenerate(aLn,jnlDest[JNL_IDJNL],cIdDoc2)
+ddSetUpdated(.t.) // b[AD_UPDATED] := .t.
+ddGoBottom(.t.)
+SetMnuDone()
+RETURN .t.
+
+STATIC FUNCTION MvmTagText(tag)
+local cLine := if(tag[1],"˚"," ")
+cLine += " " + dtoc(tag[2][IML_DATE])
+//~ cLine += " " + tag[2][IML_IDJNL]
+cLine += " " + tag[2][IML_MONT]
+cLine += " " + tag[2][IML_DC]
+cLine += " " + padr(tag[2][IML_NB1],20)
+RETURN cLine
+
+#endif DEF_CODA
+
+
 **
 ** ImlCopy()
 **

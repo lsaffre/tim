@@ -105,39 +105,46 @@ DLM\STD\PROG.MNU ruft Druck- und Verwaltermenü jetzt mit lActive = .t. auf. Son
 
 20100524
 --------
-- utos() vertrug bisher keine Gänsefüßchen ('"'). Jetzt wohl.
+- :func:`utos` vertrug bisher keine Gänsefüßchen ('"'). Jetzt wohl.
 
 20100609
 --------
-- DEF_ADS : 
+- :staticmod:`DEF_ADS` : 
 
-  - AdsDiag() gibt jetzt noch einige Infos mehr: 
+  - :func:`AdsDiag` gibt jetzt noch einige Infos mehr: 
     SERVER_TYPE, SERVER_VERSION, ANSI_LANG und OEM_LANG
   
-  - AdsDiag() gibt jetzt nicht mehr .t. zurück, sondern den Text.  
+  - :func:`AdsDiag` gibt jetzt nicht mehr .t. zurück, sondern den Text.  
     Dadurch kann man TIM wie folgt starten, um auch ohne Anmeldung 
     AdsDiag() sehen zu können:
     
       tim /exec:warning(AdsDiag())
   
-  - Neuer Eintrag `AdsConnect` in der TIM.INI, dessen Standardwert äquivalent zum bisherigen Verhalten ist::
+  - Neuer Eintrag :configcmd:`AdsConnect` in der TIM.INI, dessen Standardwert äquivalent zum bisherigen Verhalten ist::
 
       AdsConnect "DBE=ADSDBE;SERVER="+left(AppName(.t.),2)
 
     Bisher musste die Datenbank obligatorisch auf dem gleichen Laufwerk wie die TIM4.EXE stehen. 
-    Jetzt kann man außerdem mit den DacSession connection parameters experimentieren, zum Beispiel:
+    Jetzt kann man außerdem mit den DacSession connection parameters experimentieren, zum Beispiel::
     
       AdsConnect "DBE=ADSDBE;SERVER=\\alaska01\data;ADS_LOCAL_SERVER;UID=demo;PWD=demo"
     
 20100615
 --------
-- DCLTVA.ACT setzt jetzt Basisbetrag von Verkäufen mit 15L nach Case 47.
+- :xfile:`DCLTVA.ACT` setzt jetzt Basisbetrag von Verkäufen mit 15L nach Case 47.
 
 
 20100623
 --------
- - :func:`VenDoPrint` hat jetzt einen weiteren optionalen Parameter `blExec`. Wenn der angegeben ist, übernimmt der den eigentlichen Ausdruck. Wir benutzt in VENBATCH.ACT bei MN.
+- :func:`VenDoPrint` hat jetzt einen weiteren optionalen Parameter `blExec`. Wenn der angegeben ist, übernimmt der den eigentlichen Ausdruck. Wir benutzt in VENBATCH.ACT bei MN.
  
 20100625
 --------
-- Neue Funktion `stod_ca()` in time.prg, und das von `GetEid()` zurückgegebene array hat jetzt 27 statt bisher 26 Elemente. Element 27 ist .t. wenn das Geburtsdatum im Monat oder Tag eine 0 enthielt (also unpräzise ist). Und wenn das Jahr < 1800 oder größer als 2100 ist, macht er jetzt nicht mehr raise(), sondern setzt "nur" `a[EID_BIRTH_CA]` auf `.t.`.
+- Neue Funktion :func:`stod_ca()` in :srcref:`SRC/TIME.PRG`, und das von `GetEid()` zurückgegebene array hat jetzt 27 statt bisher 26 Elemente. Element 27 ist .t. wenn das Geburtsdatum im Monat oder Tag eine 0 enthielt (also unpräzise ist). Und wenn das Jahr < 1800 oder größer als 2100 ist, macht er jetzt nicht mehr raise(), sondern setzt "nur" `a[EID_BIRTH_CA]` auf `.t.`.
+
+20100702
+--------
+
+- :staticmod:`DEF_CODA` : Neue Funktion `ImlMvmCopy` zum Einlesen von CODA-Daten in einen Kontoauszug.
+
+- :srcref:`DLM/STD/PARAM.DLG` erlaubt es jetzt, im Feld "Druckeranschluss" auch längere Namen einzugeben. Das funktioniert dann freilich nur mit Druckertreiber STDWIN. Es wird benutzt wenn alle TIM-Benutzer auf einen bestimmten Netzwerkdrucker drucken wollen, unabhängig davon ob das ihr Windows-Standarddrucker ist oder nicht.

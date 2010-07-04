@@ -2163,6 +2163,11 @@ for i := 1 to len(aIml)
     IML->NB2         := aIml[i][IML_NB2      ]
     IML->Compte1     := aIml[i][IML_COMPTE1  ]
     IML->DC          := aIml[i][IML_DC       ]
+    #ifdef DEF_CODA
+      if !empty(aIml[i][IML_IDMVM])
+        IML->IdMvm := aIml[i][IML_IDMVM]
+      endif
+    #endif
     unlock record
   else
     exit

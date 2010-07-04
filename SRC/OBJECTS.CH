@@ -521,7 +521,8 @@
   #define IML_EAMATCH  14
   #define IML_PERIODE  15
   #define IML_MONTDEV  16
-  #define IML_ALEN     16
+  #define IML_IDMVM    17
+  #define IML_ALEN     17
 
   #define MVI_LINE       1
   #define MVI_DC         2

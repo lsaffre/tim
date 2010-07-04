@@ -623,7 +623,7 @@ default cParams to ""
   endif
   RETURN !SetMsg(cMsg)
 #endif
-RETURN AppShell(cProgram+" "+cParams)
+RETURN AppShell(cProgram+" "+cParams) // ,NIL,.t.,.t.)
 
 **
 ** AppShell()

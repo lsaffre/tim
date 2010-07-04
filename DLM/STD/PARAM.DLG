@@ -16,9 +16,9 @@ title "Standardeinstellungen"
     block=DlgBlock("FacIdDoc")\
     postedit={|x|GetIdDoc(x)}
 field caption=padr("Druckeranschluss",25) \
-      picture="@k@!"\
+      picture="@k@s15"\
       pick={|x|PickPort(x)} \
-      block={|x|if(x==NIL,padr(MemLpt,4),MemLpt:=x)}
+      block={|x|if(x==NIL,padr(MemLpt,50),MemLpt:=trim(x))}
 field caption=padr("Druckertreiber",25) \
       picture="@k@!"\
       pick={|x|PickDrv(x)}\
