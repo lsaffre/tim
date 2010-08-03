@@ -357,6 +357,7 @@ RETURN .t.
 
 FUNCTION ddPrePick(b)
 if valtype(b)=="C"; b := cblock(b) ; endif
+if valtype(b)=="C"; b := cblock(b) ; endif
 RETURN .f. if b == NIL
 sadCurrent[AD_PREPICK] := b
 RETURN .t.

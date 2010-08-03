@@ -1,5 +1,5 @@
 ** Copyright (c) 1992-2001 PAC Systems
-** Copyright (c) 2001-2009 Luc Saffre
+** Copyright (c) 2001-2010 Luc Saffre
 **
 ** This file is part of TIM.
 **
@@ -1223,20 +1223,14 @@ FUNCTION LockData(cMsg)
 local fd
 local cRlbFile := DbPath() + "\dblock.ind"
 MsgDisplay("Datenbank sperren...")
-if ! UsrIsAlone()
-  #ifdef LG_GERMAN
-    Warning( ;
-      "Die Datenbank kann momentan nicht gesperrt werden", ;
-      "weil andere Benutzer darin arbeiten." ;
+do while ! UsrIsAlone()
+  RETURN .f. if ! Confirm( ;
+    utr("Cannot lock database because other users are working.",;
+      "Die Datenbank kann momentan nicht gesperrt werden, weil andere Benutzer darin arbeiten.", ;
+      "Il n'est pas possible de verrouiller la base de donn‚es car d'autres utilisateurs y travaillent.";
+    ),MsgRetry() ;
     )
-  #else
-    Warning( ;
-      "Il n'est pas possible de verrouiller la base de donn‚es", ;
-      "tant que d'autres utilisateurs travaillent." ;
-    )
-  #endif
-  RETURN .f.
-endif
+enddo
 if file(cRlbFile)
   Warning(cMsg,cRlbFile + " existiert bereits !")
   RETURN .f.

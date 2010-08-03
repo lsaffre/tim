@@ -198,6 +198,7 @@ else
         SendConsole("CODA import " + cFileName + " : okay")
         delete file (cFileName)
       else
+        SendConsole("CODA import " + cFileName + " failed : "+SetMsg())
         exit
       endif
     next i

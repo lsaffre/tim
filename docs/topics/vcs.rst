@@ -84,6 +84,7 @@ Funktionen
 
    Formatiert den angegeben Primärschlüssel entweder als VCS-Nummer 
    oder als klassische Referenz. ``cLine`` darf leer sein.
+   
 
 Konfigurationsbefehle
 ---------------------
@@ -104,6 +105,8 @@ Konfigurationsbefehle
    Beispiel::
    
      VcsJournals FFO1 FFO2
+
+   
 
 Dateien
 -------

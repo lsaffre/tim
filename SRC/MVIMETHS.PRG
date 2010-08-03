@@ -292,7 +292,7 @@ RETURN cText
 
 
 
-FUNCTION ImlMvmCopy()
+FUNCTION ImlMvmCopy(xlAfter)
 local aLn := {}
 local aTagActions := {}
 local aTag := {}
@@ -307,14 +307,16 @@ local cIdPar  := IMP->IdPar
 local cIdPar2 := IMP->IdPar2
 local cIdExt := NIL
 local cNoCpt := strtran(jnlDest[JNL_COMPTE],"-",'')
-local cTitle := "CODA-Buchungen Åbernehmen"
+local cTitle := " : CODA-Buchungen Åbernehmen"
 
 aadd(aTagActions, { K_SPACE, {|tag| TagToggle(tag) } } )
 aadd(aTagActions, { asc("*"), {|| TagInvert(aTag) } } )
 
+if empty(jnlDest[JNL_COMPTE]) .or. ! JNLATTR_S $ jnlDest[JNL_ATTRIB]
+  RETURN !SetMsg(jnlDest[JNL_IDJNL] + " : Journal nicht vorgesehen fÅr CODA-Buchungen")
+endif
 if ddRecStat() == RS_INVALID
-  Warning("Lîschen Sie zuerst den aktuellen Record !")
-  RETURN MnuDone()
+  RETURN !SetMsg("Lîschen Sie zuerst den aktuellen Record !")
 endif
 open area oMvm()
   set order to 2 // IdJnl+IdDoc+Line
@@ -353,7 +355,7 @@ endif
 SetMsg(ntrim(len(aTag)) + " Buchungen gefunden.")
 browse array aTag using {|tag| MvmTagText(tag) } ;
                   actions aTagActions ;
-                  title (cTitle) ;
+                  title (jnlDest[JNL_COMPTE] + cTitle) ;
                   delete {||.f. } ;
                   help "MVMTAG" ;
                   legend (LEG_IMLTAG)
@@ -366,7 +368,7 @@ for i := 1 to len(aTag)
   endif
 next i
 RETURN !SetMsg("Abbruch: keine Buchungen ausgewÑhlt.") if len(aLn) == 0
-ImlGenerate(aLn,jnlDest[JNL_IDJNL],cIdDoc2)
+ImlGenerate(aLn,jnlDest[JNL_IDJNL],cIdDoc2,xlAfter)
 ddSetUpdated(.t.) // b[AD_UPDATED] := .t.
 ddGoBottom(.t.)
 SetMnuDone()

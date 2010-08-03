@@ -531,6 +531,7 @@ local i
 local j
 local cHeader
 local aCtb
+local aMvm
 local aLines := {}
 local aImlSuite
 local cIdDoc
@@ -609,13 +610,14 @@ if lDoIt // == BUTTON_ON
           ** TRE-Buchung okay ist.
           aImlSuite := {}
           aCtb      := {}
+          aMvm      := {}
           if empty(aCtl[i][CTL_DATE2])
             aCtl[i][CTL_DATE2] := UserDate()
           endif
           if DocCreate(aCtl[i][CTL_JNL], ;
             {|x| cIdDoc := x, ;
             ImpAppend( ;
-              aCtl[i][CTL_JNL],x,aCtl[i][CTL_AIML],aCtb, ;
+              aCtl[i][CTL_JNL],x,aCtl[i][CTL_AIML],aCtb,aMvm, ;
               aCtl[i][CTL_PERIODE], ;
               UserDate(), aCtl[i][CTL_DATE2], aImlSuite, ;
               aLines ;
@@ -624,7 +626,7 @@ if lDoIt // == BUTTON_ON
             aCtl[i][CTL_IDDOC] := aCtl[i][CTL_JNL][JNL_IDJNL] + " : ImpAppend() failed"
             lOkay := .f.
           * elseif ! CtlGenSuite(aCtl[i],aImlSuite,aCtb,aLines)
-          elseif ! ImpGenSuite(aImlSuite, aCtb, ;
+          elseif ! ImpGenSuite(aImlSuite, aCtb,aMvm, ;
             aCtl[i][CTL_PERIODE], UserDate(), ;
             aLines)
             aCtl[i][CTL_IDDOC] := aCtl[i][CTL_JNL][JNL_IDJNL] + " : CtlGenSuite() failed"
@@ -637,7 +639,7 @@ if lDoIt // == BUTTON_ON
             aCtl[i][CTL_OKAY]  := .t.
             RptWrite("ImpAppend " + aCtl[i][CTL_JNL][JNL_IDJNL] + cIdDoc + " : okay")
           endif
-          if ! CtbUpdate(aCtb)
+          if ! CtbUpdate(aCtb,aMvm)
             aadd(aLines, ;
               aCtl[i][CTL_JNL][JNL_IDJNL] +  " " + aCtl[i][CTL_IDDOC] ;
               + " : CtbUpdate() failed !" ;

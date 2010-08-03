@@ -2127,10 +2127,10 @@ RETURN .t.
 #endif DEF_VCS
 
 **
-FUNCTION ImlGenerate(aIml,cIdJnl,cIdDoc) // ,cIdPar,cIdPar2)
+FUNCTION ImlGenerate(aIml,cIdJnl,cIdDoc,xlAfter) // ,cIdPar,cIdPar2)
 local i
 local cLine
-RETURN NIL if aIml == NIL
+RETURN .t. if aIml == NIL
 MsgDisplay(cIdJnl + " " + cIdDoc + MsgGenerating() )
 KeyGoBottom(cIdJnl + cIdDoc, "IML->IdJnl+IML->IdDoc" )
 cLine := NextNum(IML->Line)
@@ -2168,6 +2168,11 @@ for i := 1 to len(aIml)
         IML->IdMvm := aIml[i][IML_IDMVM]
       endif
     #endif
+    if xlAfter != NIL
+      if ! xeval(xlAfter)
+        LogConsole("ImlGenerate.xlAfter failed : "+IML->IdJnl+IML->IdDoc+IML->Line+":"+SetMsg())
+      endif
+    endif
     unlock record
   else
     exit
@@ -2176,7 +2181,7 @@ for i := 1 to len(aIml)
   ImlAfter()
 next i
 ddSetUpdated(.t.) // oIml()[AD_UPDATED] := .t.
-RETURN NIL
+RETURN .t.
 
 #endif DEF_IMP
 

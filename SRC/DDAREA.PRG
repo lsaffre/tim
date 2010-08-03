@@ -166,6 +166,7 @@ for i := len(aData) to 1 step -1 // 20020924
     if (oTable := ddOpen( aData[i], lExcl, lRdOnly, cSuffix)) == NIL
       for i := 1 to len(aTables)
         if ! ddClose(aTables[i],lExcl,lRdOnly,cSuffix)
+          rpt_write(SetMsg())
           Warning(SetMsg())
         endif
       next i

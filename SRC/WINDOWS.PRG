@@ -444,6 +444,11 @@ if slDialog
 else
   SetMsg(cMemo)
 endif
+#ifdef DEF_CONSOLE
+  if SetLogDetailed()
+    LogConsole('answered ' + cAnswer + ' to Confirm("' + cMemo + '")')
+  endif
+#endif
 RETURN ( cAnswer $ "YJO" )
 
 **
@@ -470,7 +475,7 @@ for i := 1 to nHeight
 next i
 nLen += 5
 #ifdef DEF_CONSOLE
-  default lConsole to .f.
+  default lConsole to SetLogDetailed()
   if lConsole
     SendConsole(cTitle + " : " + cMemo)
   endif

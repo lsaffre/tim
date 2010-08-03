@@ -69,6 +69,23 @@ Global settings
 Date functions
 --------------
 
+.. function:: GetTime(x,lDuration)
+
+   Formatter fucntion for a time field.
+   If len(x) is 5, then it is formatted as a daytime indication with
+   leading "0" (ex.: 01:30 o'clock), otherwise it is formatted as a
+   duration without leading "0" (ex.: 1:30 hours). You can force it to
+   return a duration also when len(x) is 5 by specifying lDuration .t.
+   
+   Entering '15' will give '15:00'.
+   Entering '015' will give '0:15'.
+   Entering '060' will give '1:00'.
+   Entering '090' will give '1:30'.
+   Entering '100' will give '1:00'.
+   Entering '123' will give '1:23'.
+   Entering '1230' will give '12:30'.
+
+
 .. function:: SkipMonth(dDate,nSkip)
 
 .. function:: FirstOfMonth(dDate)

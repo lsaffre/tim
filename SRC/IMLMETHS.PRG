@@ -603,6 +603,7 @@ endif
 IML->MontDev := x
 RETURN NIL
 
+
 **
 ** ImpDlgClose()
 **
@@ -611,6 +612,7 @@ local a
 local aCtb := {}
 local aImlSuite := {}
 local aMvi := {}
+local aMvm := {}
 local lOkay := .f.
 // local jnl := JnlLocate(IMP->IdJnl)
 local nMont
@@ -640,6 +642,9 @@ elseif IMP->Etat == DocStatError() .or. IMP->Etat == DocStatClosed()
       if ! empty(IML->IdIml)
         lOkay := .f.
       endif
+      if ! empty(IML->IdMvm)
+        aadd(aMvm,IML->IdMvm)
+      endif
     endif
   close area
   if ! lOkay
@@ -665,6 +670,21 @@ elseif IMP->Etat == DocStatError() .or. IMP->Etat == DocStatClosed()
       skip
     enddo
   close area
+  #ifdef DEF_CODA
+  if lOkay
+    open area oMvm()
+      for i := 1 to len(aMvm)
+        seek aMvm[i]
+        if !eof()
+          if ddReclock()
+            MVM->Match := ''
+            unlock record
+          endif
+        endif
+      next i
+    close area
+  endif
+  #endif DEF_CODA
   if lOkay
     IMP->Etat := DocStatOpen()
     SetMsg("Dokument wurde entregistriert.")
@@ -675,7 +695,7 @@ else // registrieren
     RETURN .f. if ! ImpMvaTest()
   #endif DEF_ANA
   if (a := ImpImlInit(jnl)) != NIL
-    if ImpPreClose(jnl,aImlSuite,aCtb,aMvi,aMviUpdate)
+    if ImpPreClose(jnl,aImlSuite,aCtb,aMvi,aMviUpdate,aMvm)
       if ImpMviScan(jnl,aMvi,aImlSuite,aMviUpdate,aCtb)
         if CtbChkAvail(aCtb,jnl)
           if ImpChkSuite(jnl,aImlSuite)
@@ -684,7 +704,7 @@ else // registrieren
                 IMP->Etat := DocStatError() // neu 20011123
                 commit // neu 20011123
                 if ImpMviGenerate(jnl,aMvi,aMviUpdate)
-                  if ImpGenSuite(aImlSuite,aCtb,;
+                  if ImpGenSuite(aImlSuite,aCtb,aMvm,;
                     IMP->Periode,IMP->Date2,aLines;
                   )
                     aImlSuite := {}
@@ -699,7 +719,7 @@ else // registrieren
                     Warning(aLines[i],NIL,"WRN015")
                   next i
                   **
-                  if ! CtbUpdate(aCtb)
+                  if ! CtbUpdate(aCtb,aMvm)
                     SendConsole("CtbUpdate() failed")
                   else
                     * 20030523
@@ -896,7 +916,7 @@ Siehe auch CtlGenSuite()
 **
 ** ImpGenSuite() after 20021206
 **
-FUNCTION ImpGenSuite(aImlSuite,aCtb,cPeriode,dDate,aLines)
+FUNCTION ImpGenSuite(aImlSuite,aCtb,aMvm,cPeriode,dDate,aLines)
 local i
 local lOkay := .t.
 local a := {}
@@ -907,7 +927,7 @@ RETURN .t. if len(aImlSuite) == 0
 for i := 1 to len(aImlSuite)
   if ! ImpCollSuite(aImpSuite,aImlSuite[i])
     if DocCreate(aImlSuite[i][IML_JNL], {|cIdDoc| ImpAppend( ;
-      aImlSuite[i][IML_JNL], cIdDoc, { aImlSuite[i] }, aCtb, ;
+      aImlSuite[i][IML_JNL], cIdDoc, { aImlSuite[i] }, aCtb, aMvm, ;
       cPeriode, dDate, dDate, a, aLines ;
     ) } ) != DDCREATE_DONE
       lOkay := .f.
@@ -917,7 +937,8 @@ next i
 // Dokumente mit Sammelbuchungen generieren
 for i := 1 to len(aImpSuite)
   if DocCreate(aImpSuite[i][IMP_JNL], {|cIdDoc| ImpAppend( ;
-    aImpSuite[i][IMP_JNL], cIdDoc, aImpSuite[i][IMP_AIML] , aCtb, ;
+    aImpSuite[i][IMP_JNL], cIdDoc, aImpSuite[i][IMP_AIML] , ;
+    aCtb, aMvm, ;
     cPeriode, dDate, dDate, a, aLines ;
   ) } ) != DDCREATE_DONE
     lOkay := .f.
@@ -965,7 +986,7 @@ RETURN .t.
 ** ImpAppend() : ABE/EBE automatisch generieren
 **
 FUNCTION ImpAppend( ;
-  jnl,cIdDoc,aIml,aCtb, ;
+  jnl,cIdDoc,aIml,aCtb,aMvm, ;
   cPeriode,dDate1,dDate2,aImlSuite, ;
   aLines, dDate3, cMemo ;
 )
@@ -1083,7 +1104,7 @@ open area oImp()
           endif
           nReturn := DDCREATE_ERROR
           * lOkay := .f.
-          if ImpPreClose(jnl,aImlSuite,aCtb,aMvi,aMviUpdate)
+          if ImpPreClose(jnl,aImlSuite,aCtb,aMvi,aMviUpdate,aMvm)
             if ImpMviScan(jnl,aMvi,aImlSuite,aMviUpdate,aCtb)
               if OnImpClose()
                 IMP->Etat := DocStatError() // neu 20011123
@@ -1142,10 +1163,7 @@ close area
 RETURN nReturn // lOkay
 
 
-**
-** ImpPreClose() (vorher ImpClose())
-**
-FUNCTION ImpPreClose(jnl,aImlSuite,aCtb,aMvi,aMviUpdate)
+FUNCTION ImpPreClose(jnl,aImlSuite,aCtb,aMvi,aMviUpdate,aMvm)
 local lOkay := .f.
 local nCount := 0
 local aCta := {}
@@ -1155,10 +1173,10 @@ RETURN .f. if ! ImpCheckSolde(jnl)
     aCta,IMP->IdJnl,IMP->IdDoc,IMP->IdPar,IMP->Periode ;
   )
 #endif DEF_ANA
-open area oIml(), oBud()
+open area oIml(), oBud(), oPar(), oPrj()
   lOkay := .t.
   softseek IMP->IdJnl + IMP->IdDoc
-  do while ! eof() .and. IML->IdDoc == IMP->IdDoc ;
+  do while lOkay .and. ! eof() .and. IML->IdDoc == IMP->IdDoc ;
                    .and. IML->IdJnl == IMP->IdJnl
     if ! empty(jnl[JNL_CODEBQE])
       if empty(IML->Compte1)
@@ -1188,6 +1206,9 @@ open area oIml(), oBud()
         exit
       endif
     endif
+    if ! BudExist(IML->DC,IML->IdBud)
+      lOkay := .f.
+    endif
     if JNLATTR_P $ jnl[JNL_ATTRIB]
       if IML->IdPar != IMP->IdPar
         SetMsg( ;
@@ -1198,6 +1219,12 @@ open area oIml(), oBud()
         exit
       endif
     endif
+    if ! ParExist(IML->IdPar)
+      lOkay := .f.
+    endif
+    if ! empty(IML->IdPrj) .and. ! PrjExist(IML->IdPrj)
+      lOkay := .f.
+    endif
     if ! ImlMviCollect(aMvi)
       lOkay := .f.
       exit
@@ -1206,6 +1233,11 @@ open area oIml(), oBud()
       lOkay := .f.
       exit
     endif
+    #ifdef DEF_CODA
+      if !empty(IML->IdMvm)
+        aadd(aMvm,{IML->IdMvm,IML->IdJnl+IML->IdDoc+IML->Line})
+      endif
+    #endif DEF_CODA    
     nCount++
     skip
   enddo
@@ -1633,7 +1665,7 @@ RETURN .t.
 **
 ** CtbUpdate()
 **
-FUNCTION CtbUpdate(aCtb)
+FUNCTION CtbUpdate(aCtb,aMvm)
 local i
 local lOkay := .f.
 open area oCtb()
@@ -1671,6 +1703,23 @@ open area oCtb()
     endif
   next i
 close area
+#ifdef DEF_CODA
+// Fr jede IML, deren IdMvm ausgefllt war, wird das nun im entsprechenden MVM eingetragen
+// Das hat nichts mit CTB zu tun, findet aber in allen F„llen gleichzeitig statt.
+if len(aMvm) > 0
+  open area oMvm()
+    for i := 1 to len(aMvm)
+      seek aMvm[i][1]
+      if !eof()
+        if ddRecLock()
+          MVM->Match := aMvm[i][2]
+          unlock record
+        endif
+      endif
+    next i
+  close area  
+endif
+#endif DEF_CODA
 RETURN lOkay
 
 **

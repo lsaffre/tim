@@ -15,11 +15,11 @@
 
 20100116
 --------
-- ParSetUsers() wies u.U. einen T2 zu, auch wenn dessen USRATTR_H gesetzt war.
+- (DEF_SPZ) ParSetUsers() wies u.U. einen T2 zu, auch wenn dessen USRATTR_H gesetzt war.
   
 20100121
 --------
-- val2csv() kennt jetzt auch den Type GTYPE_LOGICAL. Bei Sh-F7 auf einer Tabelle, die ein Feld mit Typ L enthält, kam bisher ein Laufzeitfehler.
+- :func:`val2csv` kennt jetzt auch den Type `GTYPE_LOGICAL`. Bei Sh-F7 auf einer Tabelle, die ein Feld mit Typ L enthält, kam bisher ein Laufzeitfehler.
 
 20100128
 --------
@@ -145,6 +145,73 @@ DLM\STD\PROG.MNU ruft Druck- und Verwaltermenü jetzt mit lActive = .t. auf. Son
 20100702
 --------
 
-- :staticmod:`DEF_CODA` : Neue Funktion `ImlMvmCopy` zum Einlesen von CODA-Daten in einen Kontoauszug.
+- :staticmod:`DEF_CODA` : Neue Funktion :func:`ImlMvmCopy` zum Einlesen von CODA-Daten in einen Kontoauszug.
 
 - :srcref:`DLM/STD/PARAM.DLG` erlaubt es jetzt, im Feld "Druckeranschluss" auch längere Namen einzugeben. Das funktioniert dann freilich nur mit Druckertreiber STDWIN. Es wird benutzt wenn alle TIM-Benutzer auf einen bestimmten Netzwerkdrucker drucken wollen, unabhängig davon ob das ihr Windows-Standarddrucker ist oder nicht.
+
+20100705
+--------
+
+- :func:`csv2array` verträgt keine Gänsefüßchen innerhalb eines Strings. Jetzt meldet er dann wenigstens die Zeilennummer.
+
+- :func:`ImlGenerate` hat jetzt einen neuen optionalen Parameter `xlAfter`. Das ist ein Codeblock, der auf jedem neu erstellten Record ausgeführt wird. Wird benutzt von :func:`ImlMvmCopy`.
+
+- Datei :xfile:`IMLMVMCP.ACT` prüft, ob die aktuelle IML eine VCS enthält (Siehe :ref:`topics_vcs`). Wenn ja, werden IdPar, IdBud, Backmatch usw. ausgefüllt. Wird aufgerufen als `xlAfter` für :func:`ImlMvmCopy` in der `IML.DEF`. 
+
+20100715
+--------
+
+- :staticmod:`DEF_IMP` : TIM machte beim Registrieren einer IMP keine Kontrolle, ob Partner und Artikel ausgefüllt sind. Er testete das nur bei der Eingabe, was fast das Gleiche ist (aber eben nur fast, deshalb fand man immer wieder im Integritätstest Warnungen über IMLs und MVIs mit leerem IdPar oder IdBud).
+  Jetzt wird das in :func:`ImpPreClose` kontrolliert. Das ist wichtig wenn man mit :func:`ImlMvmCopy` gearbeitet hat, die diese Felder ja nicht immer ausfüllt. TIM muss dann das Registrieren verweigern, solange man sie nicht manuell korrigiert hat.
+  
+- Bug behoben: :func:`CodaImport` machte keine Meldung in der Console, wenn ein Import fehlschlug.
+- :func:`ImlMvmCopy` sagt jetzt "Journal nicht vorgesehen fr CODA-Buchungen", wenn JNLATTR_S nicht gesetzt ist oder gar JNL->Compte leer ist.
+
+- (Storniert:) :func:`IsCommStruct` erkennt jetzt neben "/" auch "-" als Trenner an. 
+  Bisher wurden nur Mitteilungen im Format 123/1234/12345 als strukturiert erkennt, jetzt auch 123-1234-12345.
+  Storniert weil unnötig. Außerdem müsste dann auch z.B. :func:`vcs2hst` angepasst werden.
+  
+  
+20100719
+--------
+
+- Interne Änderungen, um IML->IdMvm und MVM->Match synchron zu halten:
+
+  - ImpDlgClose() : beim Entregistrieren werden die MVM->Match aller im Dokument verwendeten
+    MVMs auf leer gesetzt, beim Registrieren werden sie gefüllt.
+  - ImpPreClose() hat einen neuen Parameter aMvm, darin werden die {IML->IdMvm,Match} gesammelt
+  - ImpAppend(), ImpGenSuite() neuer Parameter aMvm hinter aCtb wird lediglich weitergereicht.
+  - aMvm wird in CtbUpdate() ausgeführt (d.h. in die MVM eingetragen).
+
+  Bis auf weiteres macht TIM keinen Integritätstest für diese beiden Felder. Also wenn z.B. jemand es schaffen sollte, den gleichen MVM in mehrere IMLs zu importieren, würde MVM->Match auf die zuletzt registrierte IML zeigen.
+  
+  
+20100720
+--------
+
+- AreaOpen() macht jetzt nicht nur Warning(), sondern auch rpt_write(SetMsg()), wenn er die Area nicht öffnen kann.
+- Rebuild() macht jetzt auch rpt_write(SetMsg()) wenn eine Operation fehlschlug.
+
+20100729
+--------
+
+:func:`GetTime` erlaubte Eingabe '060' oder '090' und machte daraus '0:60' bzw. '0:90'. Jetzt konvertiert sie das nach '1:00' bzw. '1:30'.
+
+:func:`val2csv` machte einen RTE in Datenbankfeldern, die mit Type "L" definiert waren. TIM speichert solche Felder ja trotzdem als type CHAR (deren Wert " " oder "X" ist) und nicht als booleans.
+
+:func:`ddOnTest`-Einträge in der DLS.DEF wurden bisher im Integritätstest nicht berücksichtigt. Jetzt wohl.
+
+
+20100802
+--------
+
+- TIM behandelt das Reorganisieren nach Sitzungsunterbrechungen jetzt narrensicherer und benutzerfreundlicher denn je:
+
+  - :func:`LogMsg` macht jetzt ein leichter lesbares Format: Datum/Uhrzeit wie bisher, dann ``<PC>(<USER>) : <msg>`` statt ``<USER> <PC> <msg>``. Das Analysieren von Situationen auf mehreren Stationen müsste nun angenehmer sein.
+
+  - Neue Funktion :func:`SetLogDetailed` setzt interne Variable `slLogDetailed` (.t. oder .f., default .f.). Wird automatisch eingeschaltet, wenn eine Sitzungsunterbrechung festgestellt wurde. Wenn die eingeschaltet ist, werden alle SetMsg(), Warning() und Confirm() zur Konsole geloggt.
+
+  - :func:`Rebuild` macht jetzt auch ein LockData/UnlockData (d.h. weigert sich zu starten, wenn andere Benutzer drin sind). Denn zumindest das DbZap() von CttRebuild() konnte die Datei korrumpieren, wenn ein anderer Benutzer die CTT geöffnet hatte.
+
+  - :func:`LockData` : Bei der Warnung "Die Datenbank kann momentan nicht gesperrt werden, weil andere Benutzer aktiv sind" fragt TIM jetzt auch, ob man neu probieren will.
+

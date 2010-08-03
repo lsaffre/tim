@@ -8,9 +8,10 @@ OnRebuild {|cText| IndCreate("REBUILD",cText)}
 OnRebuild {|cText| IndDelete("TIMTEST")}
 OnRebuild {|cText| Warning( \
     cText,NIL,"REBUILD",.t.,CfgDataBase() + " : " + \
-    tr("System messages","Systemmeldungen","Messages systäme") \
+    utr("System messages","Systemmeldungen","Messages systäme") \
 ) }
-PreLogin !IndExist("DBCHECK").or.ActExec("DBCHECK").or.Confirm(\
+PreLogin !IndExist("DBCHECK").or.ActExec("DBCHECK")\
+.or.Confirm(\
   "Das Reorganisieren hat nicht ganz geklappt. "\
   +"Wollen Sie trotzdem in der Datenbank arbeiten ?"\
 )

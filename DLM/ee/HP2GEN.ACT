@@ -1,34 +1,34 @@
 // called from FNLHP.IMP
-#static
+// #static
 
 // X : Valuutavahetus
-RETURN "580000" if i_fields[10] == "X"
+RETURN "580000" if i_fields[12] == "X"
 
 // TT : Teenustasu
 // teenistasu
-RETURN "655000" if i_fields[10] == "TT"
+RETURN "655000" if i_fields[12] == "TT"
 
 // MK : Maksed (Bank orders)
 // these should be corrected manually before closing the document
 RETURN "" if i_fields[10] == "MK"
-// RETURN "603000" if i_fields[10] == "MK"
+// RETURN "603000" if i_fields[12] == "MK"
 
 // M : Maksed (Bank orders)
 // nt. Toimingu kinnitamine, kaardi hooldustasu
-// RETURN "655000" if i_fields[10] == "M"
-RETURN "600000" if i_fields[10] == "M"
+// RETURN "655000" if i_fields[12] == "M"
+RETURN "600000" if i_fields[12] == "M"
 
 // PT : perioodilise maksekorralduse teenustasu
-RETURN "655000" if i_fields[10] $ "PT"
+RETURN "655000" if i_fields[12] $ "PT"
 
 // K : Kaardiga makstud väi sularaha
-RETURN "600000" if i_fields[10] == "K"
+RETURN "600000" if i_fields[12] == "K"
 
 // S :
-RETURN "700000" if i_fields[10] == "S"
+RETURN "700000" if i_fields[12] == "S"
 
 // I : Intressid
-RETURN "755000" if i_fields[10] == "I"
+RETURN "755000" if i_fields[12] == "I"
 
 
 RETURN "?"

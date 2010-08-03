@@ -1,5 +1,5 @@
 ** Copyright (c) 1992-2001 PAC Systems
-** Copyright (c) 2001-2008 Luc Saffre
+** Copyright (c) 2001-2010 Luc Saffre
 **
 ** This file is part of TIM.
 **
@@ -55,6 +55,10 @@ static saKeyStack := { }
 static slTerminate := .F.
 #ifdef DEF_DEBUG
 static scTechLeg := 'alias() + " " + ltrim(str(recno())) + "/" + ltrim(str(lastrec()))'
+#endif
+
+#ifdef DEF_CONSOLE
+static slLogDetailed := .f.
 #endif
 
 static snScreenBlankDelay   := 300
@@ -449,10 +453,23 @@ else
 endif
 RETURN NIL
 
+#ifdef DEF_CONSOLE
+
+FUNCTION SetLogDetailed(x)
+RETURN slLogDetailed if x == NIL
+slLogDetailed  = x
+RETURN .t.
+
+#endif
 
 FUNCTION SetMsg(cMsg)
 RETURN scMsg if cMsg == NIL
 scMsg := cMsg
+#ifdef DEF_CONSOLE
+  if slLogDetailed .and. !empty(cMsg)
+    LogConsole(cMsg)
+  endif
+#endif
 RETURN .t.
 
 FUNCTION SetSta(msg)

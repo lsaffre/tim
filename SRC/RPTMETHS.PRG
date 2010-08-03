@@ -1,5 +1,5 @@
 ** Copyright (c) 1992-2001 PAC Systems
-** Copyright (c) 2001-2008 Luc Saffre
+** Copyright (c) 2001-2010 Luc Saffre
 **
 ** This file is part of TIM.
 **
@@ -229,7 +229,7 @@ RETURN eval(sbLogConsole,cMsg)
 
 FUNCTION LogMsg(cFilename,cMsg)
 cMsg := left(dtoc(date()),5) + " " + time() + " " + ;
-  UserId() + " " + getvar("PC",.f.,"NIL") + " " + cMsg + CR_LF
+  getvar("PC",.f.,"NIL") + trims(UserId(),"(",")") + " " + cMsg + CR_LF
 RETURN LogRawMsg(cFilename,cMsg)
 
 FUNCTION LogRawMsg(cFilename,cMsg)

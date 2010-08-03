@@ -680,6 +680,7 @@ RETURN .t.
 
 FUNCTION IsCommStruct(x)
 x := strtran(x," ")
+// x := strtran(x,"-","/")
 RETURN .f. if substr(x,4,1) != "/"
 RETURN .f. if substr(x,9,1) != "/"
 x := strtran(x,"/")

@@ -109,7 +109,7 @@ open area oBud()
     endif
   next i
 close area
-if ! CtbUpdate(aCtb)
+if ! CtbUpdate(aCtb,{})
   Warning("CtbUpdate() failed !")
 endif
 RETURN aCtbSum
@@ -1378,6 +1378,7 @@ local cLine
 local aImlSuite := {}
 local aLines := {}
 local aCtb      := {}
+local aMvm      := {}
 local aLni
 local aBuf
 local i
@@ -1576,9 +1577,10 @@ open area oMvi(), oBud(), oImp()
                         **
                         aImlSuite := {}
                         aCtb      := {}
+                        aMvm      := {}
                         if DocCreate(jnlClose, ;
                           {|x| cIdDoc := x, ;
-                          ImpAppend( jnlClose,x,aIml,aCtb, ;
+                          ImpAppend( jnlClose,x,aIml,aCtb,aMvm, ;
                             cPeriode1, UserDate(), UserDate(), ;
                             aImlSuite, aLines ;
                           ) ;
@@ -1599,7 +1601,7 @@ open area oMvi(), oBud(), oImp()
                             " DocCreate(" + jnlClose[JNL_IDJNL] + ") -> " + SetMsg();
                           )
                         endif
-                        if ! CtbUpdate(aCtb)
+                        if ! CtbUpdate(aCtb,aMvm)
                           aadd(aLines, ;
                             jnlClose[JNL_IDJNL] +  " " + cIdDoc ;
                             + " : CtbUpdate() failed !" ;
@@ -1698,10 +1700,11 @@ open area oMvi(), oBud(), oImp()
                         if SRVATTR_U $ srv[SRV_ATTRIB]
                           aImlSuite := {}
                           aCtb      := {}
+                          aMvm      := {}
                           if DocCreate(jnlHH, ;
                             {|x| cIdDoc := x, ;
                             ImpAppend( ;
-                              jnlHH,x,aIml,aCtb, ;
+                              jnlHH,x,aIml,aCtb,aMvm, ;
                               cPeriode2, UserDate(), UserDate(), aImlSuite, ;
                               aLines ;
                             ) ;
@@ -1717,7 +1720,7 @@ open area oMvi(), oBud(), oImp()
                               )
                             #endif
                           endif
-                          if ! CtbUpdate(aCtb)
+                          if ! CtbUpdate(aCtb,aMvm)
                             aadd(aLines, ;
                               jnlHH[JNL_IDJNL] +  " " + cIdDoc ;
                               + " : CtbUpdate() failed !" ;
@@ -1730,10 +1733,11 @@ open area oMvi(), oBud(), oImp()
                         **
                         aImlSuite := {}
                         aCtb      := {}
+                        aMvm      := {}
                         if DocCreate(jnlReport, ;
                           {|x| cIdDoc := x, ;
                           ImpAppend( ;
-                            jnlReport,x,aIml,aCtb, ;
+                            jnlReport,x,aIml,aCtb,aMvm, ;
                             cPeriode2, MVI->Date1, MVI->Date2, aImlSuite, ;
                             aLines, MviDate3(), MviMemo() ;
                           ) ;
@@ -1748,7 +1752,7 @@ open area oMvi(), oBud(), oImp()
                             )
                           #endif
                         endif
-                        if ! CtbUpdate(aCtb)
+                        if ! CtbUpdate(aCtb,aMvm)
                           aadd(aLines, ;
                             jnlReport[JNL_IDJNL] +  " " + cIdDoc ;
                             + " : CtbUpdate() failed !" ;

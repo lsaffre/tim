@@ -1,5 +1,5 @@
 ** Copyright (c) 1992-2001 PAC Systems
-** Copyright (c) 2001-2008 Luc Saffre
+** Copyright (c) 2001-2010 Luc Saffre
 **
 ** This file is part of TIM.
 **
@@ -997,6 +997,9 @@ open area oDls(), oDla(), oPar()
       cOldId := DLS->IdDls
     endif
     if ! DlsTestRec()
+      it_warning("DLS " + DLS->IdDls + " : " + SetMsg())
+    endif
+    if !OnTest(oDls())
       it_warning("DLS " + DLS->IdDls + " : " + SetMsg())
     endif
     skip
@@ -2760,6 +2763,9 @@ endif
 *   close printer
 *   RETURN .f.
 * endif
+#ifdef DEF_NETWORK
+  RETURN .f. if ! LockData(MsgRebuild)
+#endif DEF_NETWORK
 SetKeepReport(.t.)
 snErrCount := 0
 #ifdef DEF_HST
@@ -2770,6 +2776,7 @@ snErrCount := 0
       rpt_write(MSG092 + MsgDone())
     else
       lOkay := .f.
+      if SetMsg() != NIL; rpt_write(SetMsg()) ; endif
       rpt_write(MSG092 + MsgFailed())
     endif
   endif
@@ -2782,6 +2789,7 @@ snErrCount := 0
       rpt_write(MSG_CTS + MsgDone())
     else
       lOkay := .f.
+      if SetMsg() != NIL; rpt_write(SetMsg()) ; endif
       rpt_write(MSG_CTS + MsgFailed())
     endif
   endif
@@ -2794,6 +2802,7 @@ snErrCount := 0
       rpt_write(MSG_CTA + MsgDone())
     else
       lOkay := .f.
+      if SetMsg() != NIL; rpt_write(SetMsg()) ; endif
       rpt_write(MSG_CTA + MsgFailed())
     endif
   endif
@@ -2806,6 +2815,7 @@ snErrCount := 0
       rpt_write(MSG_CTP + MsgDone())
     else
       lOkay := .f.
+      if SetMsg() != NIL; rpt_write(SetMsg()) ; endif
       rpt_write(MSG_CTP + MsgFailed())
     endif
   endif
@@ -2818,6 +2828,7 @@ snErrCount := 0
       rpt_write(MSG085 + MsgDone())
     else
       lOkay := .f.
+      if SetMsg() != NIL; rpt_write(SetMsg()) ; endif
       rpt_write(MSG085 + MsgFailed())
     endif
   endif
@@ -2830,12 +2841,16 @@ snErrCount := 0
       rpt_write(MSG_CTGEDIT + MsgDone())
     else
       lOkay := .f.
+      if SetMsg() != NIL; rpt_write(SetMsg()) ; endif
       rpt_write(MSG_CTGEDIT + MsgFailed())
     endif
   endif
 #endif DEF_CTG
 * ClosePrinter(.t.)
 ddCloseAll()
+#ifdef DEF_NETWORK
+  UnlockData()
+#endif DEF_NETWORK
 if ! lOkay
   Warning(MsgRebuild + MsgFailed(), SetMsg())
   IndCreate("REBUILD",MsgRebuild + MsgFailed())

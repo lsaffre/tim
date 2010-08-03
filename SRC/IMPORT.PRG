@@ -1,5 +1,5 @@
 ** Copyright (c) 1992-2001 PAC Systems
-** Copyright (c) 2001-2009 Luc Saffre
+** Copyright (c) 2001-2010 Luc Saffre
 **
 ** This file is part of TIM.
 **
@@ -676,14 +676,57 @@ enddo
 RETURN (scAction != ACTION_Q)
 
 
-FUNCTION csv2array(cLine)
+/*
+ new version 20100704 : supports " inside strings
+ !not finished!
+*/
+FUNCTION csv2array2(cLine)
 local a := {}
 local nPos
+local cStr := NIL
 do while .t.
   if left(cLine,1) == '"'
     cLine := substr(cLine,2)
+    if cStr == NIL 
+      cStr := '' 
+    else
+      cStr += '"'
+    endif
+    if (nPos := at('"',cLine)) != 0 
+      cStr += left(cLine,nPos-1)
+      cLine := substr(cLine,nPos+1)
+    endif
+  elseif (nPos := at(',',cLine)) == 0
+    if cStr != NIL ; aadd(a,cStr) ; cStr := NIL ; endif
+    aadd(a,cLine)
+    cLine := ""
+  else
+    if cStr == NIL 
+      cStr := left(cLine,nPos-1)
+    else
+      cStr += left(cLine,nPos-1)
+    endif
+    aadd(a,left(cLine,nPos-1))
+    cLine := substr(cLine,nPos+1)
+  endif
+  RETURN a if empty(cLine)
+  if left(cLine,1) $ ';,'
+    if cStr != NIL ; aadd(a,cStr) ; cStr := NIL ; endif
+    cLine := substr(cLine,2)
+  endif
+enddo
+RETURN a
+
+FUNCTION csv2array(cLine)
+local a := {}
+local nPos
+local nLine := 0
+do while .t.
+  nLine += 1
+  if left(cLine,1) == '"'
+    cLine := substr(cLine,2)
     if (nPos := at('"',cLine)) == 0
-      SetMsg('parse error : missing second " at '+ntrim(len(a)))
+      SetMsg('Line "+ntrim(nLine)+": missing second " at '+ntrim(len(a)))
       RETURN NIL
     endif
     aadd(a,left(cLine,nPos-1))
@@ -697,7 +740,7 @@ do while .t.
   endif
   RETURN a if empty(cLine)
   if .not. left(cLine,1) $ ';,'
-    SetMsg(', or ; expected at '+ntrim(len(a)))
+    SetMsg("Line "+ntrim(nLine)+': , or ; expected at '+ntrim(len(a)))
     RETURN NIL
   endif
   cLine := substr(cLine,2)

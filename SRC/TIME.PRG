@@ -333,14 +333,6 @@ RETURN GetTime(x,.t.) if cFmt == ":"
 RETURN GetNum(x,val(cFmt))
 
 FUNCTION GetTime(x,lDuration)
-/**
- Formatter for a time field.
- If len(x) is 5, then it is formatted as a daytime indication with
- leading "0" (ex.: 01:30 o'clock), otherwise it is formatted as a
- duration without leading "0" (ex.: 1:30 hours). You can force it to
- return a duration also when len(x) is 5 by specifying lDuration .t.
-
-**/
 local nLen
 local nHours
 local nMinutes
@@ -383,6 +375,10 @@ if x != NIL
     nMinutes := val(right(x,2))
   endif
 endif
+do while nMinutes >= 60
+  nMinutes -= 60
+  nHours += 1
+enddo
 if lMinus
   RETURN padl("-"+ntrim(nHours),nLen-3) + ":" + strtran(str(nMinutes,2)," ","0")
 elseif nLen == 5 .and. lDuration != .t.

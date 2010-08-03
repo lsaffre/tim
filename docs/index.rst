@@ -1,7 +1,5 @@
-﻿TIM -- nicht totzukriegen
-=========================
-
-This is just another attempt to tell the world about TIM, and another example showing that `Sphinx <http://sphinx.pocoo.org/>`_ makes programmers *want* to write documentation...
+﻿Die neue TIM-Webseite
+=====================
 
 
 .. toctree::

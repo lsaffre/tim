@@ -739,6 +739,9 @@ fwrite(snLogFile,getvar("USER")+"@"+getvar("PC")+CR_LF)
 if lInterrupt
   IndCreate("INDEX")
   SetKeepReport(.t.)
+  #ifdef DEF_CONSOLE
+  SetLogDetailed(.t.)
+  #endif
   OnRebuild(cMemo,"OnRebuild() failed !")
   * RETURN .f. if ! AppConvert(lCheck)
 endif

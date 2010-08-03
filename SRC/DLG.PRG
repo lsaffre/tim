@@ -327,6 +327,11 @@ saDlgBefore  := aDlgBefore
 saActions    := aActions
 * slIsStatic   := lIsStatic
 SetOnShowTime(bOldShowTime)
+#ifdef DEF_CONSOLE
+if lOkay .and. SetLogDetailed()
+  LogConsole("Confirmed Dialog " + cIdDlg)
+endif
+#endif
 RETURN lOkay
 
 /**
