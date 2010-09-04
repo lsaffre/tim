@@ -1000,7 +1000,9 @@ if !empty(TRL->IdTrt)
   trt := TrtLocate(TRL->IdTrt)
   RETURN !SetMsg(TRL->IdTrt+MsgTrtExist()) if trt == NIL
   if lTrtDocs .and. !empty(trt[TRT_IDTPL])
-     RETURN .f. if ! PrintTemplate(TPLTYPE_TRL,trt[TRT_IDTPL],BUTTON_OFF)
+     if ! PrintTemplate(TPLTYPE_TRL,trt[TRT_IDTPL],BUTTON_OFF)
+       RETURN !SetMsg(TRL->IdJnl+TRL->IdDoc+TRL->Line + ": PrintTemplate('TRL') meldet "+SetMsg())
+     endif 
   endif
 endif
 for i := 1 to len(aCtl)

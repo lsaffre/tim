@@ -1,5 +1,5 @@
 ** Copyright (c) 1992-2001 PAC Systems
-** Copyright (c) 2001-2008 Luc Saffre
+** Copyright (c) 2001-2010 Luc Saffre
 **
 ** This file is part of TIM.
 **
@@ -290,6 +290,10 @@ RETURN cText
 
 #ifdef DEF_CODA
 
+FUNCTION ImlNoCpt
+local jnlDest := JnlLocate(IML->IdJnl)
+RETURN "" if jnlDest == NIL
+RETURN strtran(jnlDest[JNL_COMPTE],"-",'')
 
 
 FUNCTION ImlMvmCopy(xlAfter)
@@ -433,6 +437,55 @@ if (aLn := MviLnCollect( ;
 endif
 * MviRestFilter(a)
 RETURN .t.
+
+/*
+
+*/
+FUNCTION ImlCopy1()
+local aLn
+local aIml
+local jnlDest := JnlLocate(IMP->IdJnl)
+MviSetFilter( ;
+  BUTTON_ON, JnlList({|jnl| JnlSatisfies(jnl,jnlDest)}), ;
+  space(LEN_IDGRJ),space(LenIdJnl()), space(LenIdDoc()), space(LenIdDoc()), ;
+  JnlDC(IMP->IdJnl), IMP->IdBud, ;
+  left(IMP->Periode,LEN_YEAR), ;
+  IMP->IdPar, BUTTON_ON ;
+)
+RETURN .f. if (aLn := MviLnCollect({||ImpMviPreCollect()},.t.,"Buchung Åbernehmen" ) ) == NIL
+RETURN .f. if len(aLn) != 1
+RETURN .f. if !ddRecLock()
+aIml = aLn[1]
+if aIml[IML_IDPAR] != NIL
+  IML->IdPar       := aIml[IML_IDPAR    ]
+  IML->IdPar2      := aIml[IML_IDPAR2   ]
+else
+  IML->IdPar       := IMP->IdPar
+  IML->IdPar2      := IMP->IdPar2
+endif
+IML->NB1         := aIml[IML_NB1      ]
+if empty(IML->Mont) .or. IML->Mont == aIml[IML_MONT]
+  IML->Mont        := aIml[IML_MONT     ]
+  IML->MontDev     := aIml[IML_MONTDEV  ] // 20011221
+  ImlMontValidate()
+  IML->DC          := aIml[IML_DC       ]
+endif
+IML->Date        := UserDate() // aIml[i][IML_DATE     ]
+IML->IdBud       := aIml[IML_IDBUD    ]
+IML->BackMatch   := aIml[IML_BACKMATCH]
+if empty(aIml[IML_MATCH])
+  IML->Match       := IML->IdJnl + IML->IdDoc + IML->Line
+else
+  IML->Match       := aIml[IML_MATCH    ]
+endif
+IML->EaMatch     := aIml[IML_EAMATCH  ]
+IML->IdPrj       := aIml[IML_IDPRJ    ]
+IML->NB2         := aIml[IML_NB2      ]
+IML->Compte1     := aIml[IML_COMPTE1  ]
+ddSetUpdated(.t.) // b[AD_UPDATED] := .t.
+unlock record
+RETURN .t.
+
 
 *do while ! AppTerminate()
 *  RETURN .f. if ! MviGetFilter("Buchungen Åbernehmen",cFltText)
@@ -670,15 +723,15 @@ RETURN cMatch
 *RETURN cMatch
 
 
-FUNCTION MviLnCollect(bPreCollect,lIdPar)
+FUNCTION MviLnCollect(bPreCollect,lIdPar,cTitle)
 local i
 local aTag
 local aLn := {}
 local cFltText := ""
-local cTitle := "Buchungen Åbernehmen"
 local aTagActions := {}
 aadd(aTagActions, { K_SPACE, {|tag| TagToggle(tag) } } )
 aadd(aTagActions, { asc("*"), {|| TagInvert(aTag) } } )
+default cTitle to "Buchungen Åbernehmen"
 do while ! AppTerminate()
   aTag := {}
   RETURN NIL if ! MviGetFilter(cTitle,cFltText,lIdPar)
@@ -698,6 +751,10 @@ do while ! AppTerminate()
         if lastkey() == K_ESC
           exit
         endif
+        
+        // Neu seit 20100831
+        aTag[lastchoice()][1] := .t.
+        
         open area oMvi(), oIml()
           for i := 1 to len(aTag)
             if aTag[i][1]

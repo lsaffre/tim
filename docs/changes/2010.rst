@@ -165,6 +165,7 @@ DLM\STD\PROG.MNU ruft Druck- und Verwaltermenü jetzt mit lActive = .t. auf. Son
   Jetzt wird das in :func:`ImpPreClose` kontrolliert. Das ist wichtig wenn man mit :func:`ImlMvmCopy` gearbeitet hat, die diese Felder ja nicht immer ausfüllt. TIM muss dann das Registrieren verweigern, solange man sie nicht manuell korrigiert hat.
   
 - Bug behoben: :func:`CodaImport` machte keine Meldung in der Console, wenn ein Import fehlschlug.
+
 - :func:`ImlMvmCopy` sagt jetzt "Journal nicht vorgesehen fr CODA-Buchungen", wenn JNLATTR_S nicht gesetzt ist oder gar JNL->Compte leer ist.
 
 - (Storniert:) :func:`IsCommStruct` erkennt jetzt neben "/" auch "-" als Trenner an. 
@@ -205,7 +206,7 @@ DLM\STD\PROG.MNU ruft Druck- und Verwaltermenü jetzt mit lActive = .t. auf. Son
 20100802
 --------
 
-- TIM behandelt das Reorganisieren nach Sitzungsunterbrechungen jetzt narrensicherer und benutzerfreundlicher denn je:
+TIM behandelt das Reorganisieren nach Sitzungsunterbrechungen jetzt narrensicherer und benutzerfreundlicher:
 
   - :func:`LogMsg` macht jetzt ein leichter lesbares Format: Datum/Uhrzeit wie bisher, dann ``<PC>(<USER>) : <msg>`` statt ``<USER> <PC> <msg>``. Das Analysieren von Situationen auf mehreren Stationen müsste nun angenehmer sein.
 
@@ -215,3 +216,41 @@ DLM\STD\PROG.MNU ruft Druck- und Verwaltermenü jetzt mit lActive = .t. auf. Son
 
   - :func:`LockData` : Bei der Warnung "Die Datenbank kann momentan nicht gesperrt werden, weil andere Benutzer aktiv sind" fragt TIM jetzt auch, ob man neu probieren will.
 
+
+20100831
+--------
+
+- (Wieder storniert, weil die Info im Sitzungsbericht verfügbar ist) :func:`SetLogDetailed` eingeschaltet ist, werden jetzt auch Meldungen, die mit :func:`MsgDisplay` angezeigt werden, in die Konsole geschrieben. Auszug aus einer console.log von heute morgen::
+
+
+  31.08 09:15:33 PC1 DATA : Systemmeldungen : Sitzung 2 [PC-01@PC-01] (31.08.10 08:48:07) wurde unterbrochen !
+  Sitzung 5 [PC-01@PC-01] (31.08.10 09:03:24) wurde unterbrochen !
+  Sitzung 6 [PC-01@PC-01] (31.08.10 09:08:41) wurde unterbrochen !
+
+  31.08 09:15:43 PC1 Confirmed Dialog DBCHECK
+  31.08 09:18:22 PC1 Error BASE/5
+  Description : Internal data structures corrupted
+  Operation : DbZap;Thread ID : 1
+  Arguments : {}
+  31.08 09:18:35 PC1 Error BASE/0
+  Description : 
+  Operation : DbZap;Thread ID : 1
+  Arguments : {}
+
+
+
+- DEF_IMP. Buchungen übernehmen. Wenn man hier in Liste eine einzige Buchung übernehmen wollte (der häufigste Fall, nehme ich an), dann musste man bisher Leertaste drücken um sie anzukreuzen, und anschließend ENTER um die Liste zu bestätigen. Jetzt reicht ENTER. 
+  Die Warnung "Sie haben keine einzige Buchung ausgewählt !" dürfte somit etwas seltener kommen.
+  
+ - Neue Funktion :func:`ImlCopy1` ("Einzelbuchung übernehmen"), die vom Dialog her ähnlich wie F5 (:func:`ImlCopy`, "Dokument kopieren"/"Buchungen auswählen") aussieht, die aber keine Zeilen ins Dokument einfügt, sondern die aktuelle Zeile mit den Angaben der ausgewählten Buchung überschreibt. Man darf also nur eine einzige Buchung auswählen.
+ 
+20100901
+--------
+
+- `DEF_TRA`. Meine Versuche, die Kassenzentralisierung zu testen, schlug im Vorlauf mit der lapidaren Meldung `PRN : printer port not ready.` fehl. Die kam aus CtlCollect() und ist jetzt etwas deutlicher::
+   
+    TRA 099528001: PrintTemplate('TRL') meldet PRN : printer port not ready.
+ 
+  N.B.: Also zum Testen der Kassenzentralisierung einfach Umgebungsvariable PC auf AMK setzen.
+  
+  

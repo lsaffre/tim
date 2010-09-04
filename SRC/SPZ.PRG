@@ -1250,6 +1250,7 @@ RETURN DrgPostEdit()
 * FUNCTION ParDlsCollect(jnl,dDate1,dDate2,lTagged,xlDlsFilter)
 FUNCTION Par2Naf(jnl,dDate1,dDate2,lTagged,xlDlsFilter)
 local aNaf := {}
+//~ local blCollect
 local xcRemark := "trim(DLA->Name1)"
 xcRemark += "+iif(DLS->Etat=='V',' (verpasst)','')"
 xcRemark += "+iif(empty(DLS->QuitNr),'',' ('+alltrim(DLS->QuitNr)+')')"
@@ -1257,7 +1258,15 @@ xcRemark += "+' am '+dtocf(DLS->Date)"
 xcRemark += "+' mit '+trim(UsrName(DLS->IdUsr))"
 default lTagged to .t.
 * default xlDlsFilter to ".t."
+// Akten mit unbekanntem Tarif/ArztHon kriegen keine Rechnung:
 RETURN aNaf if left(PAR->Tarif,1)!="1".and.!right(PAR->IdPgp,1)$"123"
+//~ if "D" $ PAR->Attrib
+  
+  //~ open area oPar()
+  //~ close
+  //~ RETURN aNaf
+//~ endif
+//~ blCollect := {||
 RETURN NIL if ! ParDls2Naf(aNaf,jnl,dDate1,dDate2,lTagged,xlDlsFilter,;
   xcRemark,"''","''","''","DLS->Mont",;
   ".f.",{||"(VNL->IdDls:='"+DLS->IdDls+"')!=NIL"})

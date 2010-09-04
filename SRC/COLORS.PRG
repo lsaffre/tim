@@ -89,6 +89,11 @@ FUNCTION MsgDisplay(cMsg)
 #ifndef DEF_GUI
 @ maxrow()-2,0 say padr(cMsg,maxcol()+1) color (scMessageColor)
 #endif
+//~ #ifdef DEF_CONSOLE
+  //~ if SetLogDetailed() .and. !empty(cMsg)
+    //~ LogConsole(cMsg)
+  //~ endif
+//~ #endif
 #ifdef DEF_VERBOSE
   if SetLogVerbose()
     if ! empty(cMsg)
