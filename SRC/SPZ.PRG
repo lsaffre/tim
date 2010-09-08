@@ -1246,11 +1246,13 @@ RETURN DrgPostEdit()
 
 #ifdef DEF_DLS
 
+
 * Wird nur im SPZ benutzt
 * FUNCTION ParDlsCollect(jnl,dDate1,dDate2,lTagged,xlDlsFilter)
 FUNCTION Par2Naf(jnl,dDate1,dDate2,lTagged,xlDlsFilter)
 local aNaf := {}
-//~ local blCollect
+local blCollect
+local lVertraulich
 local xcRemark := "trim(DLA->Name1)"
 xcRemark += "+iif(DLS->Etat=='V',' (verpasst)','')"
 xcRemark += "+iif(empty(DLS->QuitNr),'',' ('+alltrim(DLS->QuitNr)+')')"
@@ -1258,20 +1260,82 @@ xcRemark += "+' am '+dtocf(DLS->Date)"
 xcRemark += "+' mit '+trim(UsrName(DLS->IdUsr))"
 default lTagged to .t.
 * default xlDlsFilter to ".t."
-// Akten mit unbekanntem Tarif/ArztHon kriegen keine Rechnung:
-RETURN aNaf if left(PAR->Tarif,1)!="1".and.!right(PAR->IdPgp,1)$"123"
-//~ if "D" $ PAR->Attrib
-  
-  //~ open area oPar()
-  //~ close
-  //~ RETURN aNaf
-//~ endif
-//~ blCollect := {||
-RETURN NIL if ! ParDls2Naf(aNaf,jnl,dDate1,dDate2,lTagged,xlDlsFilter,;
-  xcRemark,"''","''","''","DLS->Mont",;
-  ".f.",{||"(VNL->IdDls:='"+DLS->IdDls+"')!=NIL"})
-RETURN NIL if ! _ParDlpCollect(aNaf,jnl,dDate1,dDate2,lTagged,xlDlsFilter)
+/* 
+*/
+blCollect := {|a| ;
+  ParDls2Naf(a,jnl,dDate1,dDate2,lTagged,xlDlsFilter,;
+    xcRemark,"''","''","''","DLS->Mont",;
+    ".f.",{||"(VNL->IdDls:='"+DLS->IdDls+"')!=NIL"});
+  .and. _ParDlpCollect(a,jnl,dDate1,dDate2,lTagged,xlDlsFilter);
+}
+if PARATTR_S $ PAR->Attrib
+  //~ SendConsole("Found PARATTR_Z: "+ParName())
+  lVertraulich := PARATTR_V $ PAR->Attrib
+  RETURN NIL if ! DbfScan(;
+    {oPar()},9,PAR->IdPar,"PAR->Zahler=="+utos(PAR->IdPar),;
+    NIL,{||Par2Naf_S(aNaf,blCollect,jnl,lVertraulich)})
+  //~ SendConsole(ParName()+" : DbfScan() collected "+utos(aNaf))
+else
+  // Performance : Akten mit unbekanntem Tarif/ArztHon kriegen sowieso keine Rechnung:
+  RETURN aNaf if left(PAR->Tarif,1)!="1".and.!right(PAR->IdPgp,1)$"123"
+  RETURN aNaf if PARATTR_S $ DbfPeek(oPar(),PAR->Zahler,"Attrib","")
+  //~ SendConsole("No PARATTR_Z: "+ParName())
+  RETURN NIL if ! eval(blCollect,aNaf)
+  //~ SendConsole(ParName()+" : DbfScan() collected "+utos(aNaf))
+endif
 RETURN aNaf
+
+
+/*
+added 20100904. collects all items for this PAR using the normal method (blCollect) but with a temporary naf array. if there are any items for this PAR, then insert the ParName() into the real aNaf before appending the items.
+*/
+FUNCTION Par2Naf_S(aNaf,blCollect,jnl,lVertraulich)
+local a := {}
+local i
+local naf
+RETURN .f. if ! eval(blCollect,a)
+RETURN .t. if len(a) == 0
+naf := array(NAF_ALEN)
+naf[NAF_TAGGED] := .t.
+if lVertraulich
+  naf[NAF_NB1] := "-- Akte "+VEN->IdPar2+",  Ihre Ref. "+PAR->Code1
+  naf[NAF_MEMO] := ''
+else
+  naf[NAF_NB1] := "-- Akte "+VEN->IdPar2+", "+trim1(PAR->Vorname)+trim(PAR->Firme)
+  naf[NAF_MEMO] := trim(ParStreet())+", "+trim1(ParCity(),", ")+"*"+dtoc(PAR->GebDat)
+  if !empty(PAR->Code1)
+    naf[NAF_MEMO] += crlf() + "Ihre Ref. "+PAR->Code1
+  endif
+endif
+//~ naf[NAF_DATE 
+naf[NAF_HTVA] := ''
+naf[NAF_QTE] := ''
+naf[NAF_IDART] := ''
+naf[NAF_PRIXU] := ''
+//~ naf[NAF_BACKMATCH
+naf[NAF_MTVA] := ''
+naf[NAF_CODE] := LNCODE_REMARQ
+
+naf[NAF_IDJNL] := "DLS"   
+naf[NAF_IDDOC] := DLS->IdDls
+naf[NAF_LINE] := "000"
+naf[NAF_DC] := jnl[JNL_DC]
+//~ naf[NAF_QTEFORM     // virtual
+naf[NAF_UPDATE] := .f.
+//~ naf[NAF_IDPAR   
+//~ naf[NAF_IDINT   
+//~ naf[NAF_QTESTAT 
+//~ naf[NAF_PRIXL   
+//~ naf[NAF_ATTRIB  
+//~ naf[NAF_AFTER   
+naf[NAF_TVAC] := ''
+naf[NAF_EDIT] := .f.
+aadd(aNaf,naf)
+for i := 1 to len(a)
+  aadd(aNaf,a[i])
+next i
+RETURN .t.
+
 
 * wird indirekt im SPZ und direkt bei PAC benutzt
 FUNCTION ParDls2Naf(aNaf,jnl,dDate1,dDate2,lTagged,xlDlsFilter,;

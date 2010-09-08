@@ -126,6 +126,8 @@ elseif alias() == 'PLZ'
   cCmd += ',"id":'+val2json({PLZ->Pays,PLZ->CP}) 
 elseif alias() == 'NAT'
   cCmd += ',"id":'+val2json(NAT->IdNat) 
+elseif alias() == 'ADR'
+  cCmd += ',"id":'+val2json(ADR->IdAdr) 
 elseif alias() == 'MSG'
   cCmd += ',"id":'+val2json(MSG->IdMsg) 
 else

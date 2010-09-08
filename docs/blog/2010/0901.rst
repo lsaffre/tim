@@ -1,0 +1,9 @@
+2011-09-01 Kassenzentralisierung testen
+---------------------------------------
+
+- `DEF_TRA`. Meine Versuche, die Kassenzentralisierung zu testen, schlug im Vorlauf mit der lapidaren Meldung `PRN : printer port not ready.` fehl. Die kam aus CtlCollect() und ist jetzt etwas deutlicher::
+   
+    TRA 099528001: PrintTemplate('TRL') meldet PRN : printer port not ready.
+ 
+  N.B.: Also zum Testen der Kassenzentralisierung einfach Umgebungsvariable PC auf AMK setzen.
+  

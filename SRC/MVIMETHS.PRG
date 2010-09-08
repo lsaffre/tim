@@ -729,6 +729,7 @@ local aTag
 local aLn := {}
 local cFltText := ""
 local aTagActions := {}
+local lFound 
 aadd(aTagActions, { K_SPACE, {|tag| TagToggle(tag) } } )
 aadd(aTagActions, { asc("*"), {|| TagInvert(aTag) } } )
 default cTitle to "Buchungen Åbernehmen"
@@ -752,8 +753,17 @@ do while ! AppTerminate()
           exit
         endif
         
-        // Neu seit 20100831
-        aTag[lastchoice()][1] := .t.
+        // Neu seit 20100831-0908
+        lFound := .f.
+        for i := 1 to len(aTag)
+          if aTag[i][1]
+            lFound := .t.
+            exit
+          endif
+        next i
+        if ! lFound
+          aTag[lastchoice()][1] := .t.
+        endif
         
         open area oMvi(), oIml()
           for i := 1 to len(aTag)

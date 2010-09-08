@@ -1,5 +1,5 @@
 ** Copyright (c) 1992-2001 PAC Systems
-** Copyright (c) 2001-2008 Luc Saffre
+** Copyright (c) 2001-2010 Luc Saffre
 **
 ** This file is part of TIM.
 **
@@ -816,6 +816,8 @@ memvar MemPickArtMode
 #define PARATTR_N "N" // Seriennummer vergeben
 #define PARATTR_2 "2" // Zahlungsempf„nger
 #define PARATTR_X "X" // nicht exportieren
+#define PARATTR_V "V" // (SPZ) Vertraulich fakturieren
+//~ #define PARATTR_Z "Z" // (SPZ) Drittzahler 
 
 #define MODATTR_D "D"
 

@@ -1,0 +1,27 @@
+2010-08-31
+----------
+
+- (Wieder storniert, weil die Info im Sitzungsbericht verfügbar ist) :func:`SetLogDetailed` eingeschaltet ist, werden jetzt auch Meldungen, die mit :func:`MsgDisplay` angezeigt werden, in die Konsole geschrieben. Auszug aus einer console.log von heute morgen::
+
+
+  31.08 09:15:33 PC1 DATA : Systemmeldungen : Sitzung 2 [PC-01@PC-01] (31.08.10 08:48:07) wurde unterbrochen !
+  Sitzung 5 [PC-01@PC-01] (31.08.10 09:03:24) wurde unterbrochen !
+  Sitzung 6 [PC-01@PC-01] (31.08.10 09:08:41) wurde unterbrochen !
+
+  31.08 09:15:43 PC1 Confirmed Dialog DBCHECK
+  31.08 09:18:22 PC1 Error BASE/5
+  Description : Internal data structures corrupted
+  Operation : DbZap;Thread ID : 1
+  Arguments : {}
+  31.08 09:18:35 PC1 Error BASE/0
+  Description : 
+  Operation : DbZap;Thread ID : 1
+  Arguments : {}
+
+
+
+- DEF_IMP. Buchungen übernehmen. Wenn man hier in Liste eine einzige Buchung übernehmen wollte (der häufigste Fall, nehme ich an), dann musste man bisher Leertaste drücken um sie anzukreuzen, und anschließend ENTER um die Liste zu bestätigen. Jetzt reicht ENTER. 
+  Die Warnung "Sie haben keine einzige Buchung ausgewählt !" dürfte somit etwas seltener kommen.
+  
+ - Neue Funktion :func:`ImlCopy1` ("Einzelbuchung übernehmen"), die vom Dialog her ähnlich wie F5 (:func:`ImlCopy`, "Dokument kopieren"/"Buchungen auswählen") aussieht, die aber keine Zeilen ins Dokument einfügt, sondern die aktuelle Zeile mit den Angaben der ausgewählten Buchung überschreibt. Man darf also nur eine einzige Buchung auswählen.
+ 

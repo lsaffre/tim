@@ -1,0 +1,6 @@
+20100904 Sammelrechnungen :staticmod:`DEF_DLS`
+----------------------------------------------
+
+- :staticmod:`DEF_DLS` : Par2Naf() behandelt Partner mit PARATTR_S ("Sammelrechnungen") jetzt anders. Für Zahler mit Attribut S werden jetzt keine individuellen Rechnungen pro Akte mehr erstellt, sondern Sammelrechnungen. 
+
+
