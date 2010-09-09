@@ -1,0 +1,4 @@
+2010-09-09 ImlMvmCopy() jetzt mit `xlMvmFilter`
+===============================================
+
+ImlMvmCopy() erwartet jetzt einen neuen Parameter `xlMvmFilter`.

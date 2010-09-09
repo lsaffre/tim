@@ -296,7 +296,7 @@ RETURN "" if jnlDest == NIL
 RETURN strtran(jnlDest[JNL_COMPTE],"-",'')
 
 
-FUNCTION ImlMvmCopy(xlAfter)
+FUNCTION ImlMvmCopy(xlAfter,xlMvmFilter)
 local aLn := {}
 local aTagActions := {}
 local aTag := {}
@@ -323,33 +323,36 @@ if ddRecStat() == RS_INVALID
   RETURN !SetMsg("L”schen Sie zuerst den aktuellen Record !")
 endif
 open area oMvm()
-  set order to 2 // IdJnl+IdDoc+Line
+  set order to 2 // MVM->NoCpt+MVM->Match
   softseek cNoCpt
   do while !eof() .and. trim(MVM->NoCpt) == cNoCpt .and. empty(MVM->Match)
-    a = array(IML_ALEN)
-    a[IML_NB1      ] := MVM->Communic
-    a[IML_DATE     ] := MVM->DatVal
-    a[IML_DC       ] := iif(val(MVM->Montant)>0,jnlDest[JNL_DC],DcInvert(jnlDest[JNL_DC]))
-    a[IML_MONT     ] := ntom(abs(val(MVM->Montant)))
-    a[IML_MONTDEV  ] := ""
-    a[IML_IDMVM    ] := MVM->NoExt+MVM->NoMvm
-    a[IML_IDPAR    ] := ''
-    a[IML_IDPAR2   ] := ''
-    a[IML_IDBUD    ] := ''
-    a[IML_MATCH    ] := ''
-    a[IML_EAMATCH  ] := ''
-    a[IML_IDPRJ    ] := ''
-    a[IML_NB2      ] := ''
-    a[IML_COMPTE1  ] := MVM->CptContre
-    a[IML_BACKMATCH] := ''
-    //~ a[IML_PERIODE  ] := IMP->Periode
-    * seek MVI->IdJnl + MVI->IdDoc + MVI->Line in IML
-    * a[IML_MEMO     ] := IML->Memo
-    * a[IML_DATE3    ] := MVI->Date3
-    if cIdExt == NIL
-      cIdExt := MVM->NoExt
+    if &xlMvmFilter
+      a = array(IML_ALEN)
+      a[IML_NB1      ] := MVM->Communic
+      a[IML_DATE     ] := MVM->DatVal
+      a[IML_DC       ] := iif(val(MVM->Montant)>0,jnlDest[JNL_DC],DcInvert(jnlDest[JNL_DC]))
+      a[IML_MONT     ] := ntom(abs(val(MVM->Montant)))
+      a[IML_MONTDEV  ] := ""
+      a[IML_IDMVM    ] := MVM->NoExt+MVM->NoMvm
+      a[IML_IDPAR    ] := ''
+      a[IML_IDPAR2   ] := ''
+      a[IML_IDBUD    ] := ''
+      a[IML_MATCH    ] := ''
+      a[IML_EAMATCH  ] := ''
+      a[IML_IDPRJ    ] := ''
+      a[IML_NB2      ] := ''
+      a[IML_COMPTE1  ] := MVM->CptContre
+      a[IML_BACKMATCH] := ''
+      //~ a[IML_PERIODE  ] := IMP->Periode
+      * seek MVI->IdJnl + MVI->IdDoc + MVI->Line in IML
+      * a[IML_MEMO     ] := IML->Memo
+      * a[IML_DATE3    ] := MVI->Date3
+      if cIdExt == NIL
+        cIdExt := MVM->NoExt
+      endif
+      //~ aadd(aTag, {MVM->NoExt == cIdExt, a})
+      aadd(aTag, {.t., a})
     endif
-    aadd(aTag, {MVM->NoExt == cIdExt, a})
     skip
   enddo
 close area
