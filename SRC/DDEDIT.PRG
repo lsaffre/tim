@@ -1300,7 +1300,7 @@ if updated() .or. snRecStat == RS_UNKNOWN .or. lastkey() != K_ESC
   snRecStat := RS_UNKNOWN
   ddPostEdit()
   #ifdef DEF_CHANGELOG
-    if aBuf != NIL
+    if DoChangeLog(ad[AD_NAME]) // aBuf != NIL
       Log_PUT(aBuf)
     endif
   #endif DEF_CHANGELOG

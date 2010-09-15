@@ -128,6 +128,8 @@ elseif alias() == 'NAT'
   cCmd += ',"id":'+val2json(NAT->IdNat) 
 elseif alias() == 'ADR'
   cCmd += ',"id":'+val2json(ADR->IdAdr) 
+//~ elseif alias() == 'BUD'
+  //~ cCmd += ',"id":'+val2json(BUD->IdBud) 
 elseif alias() == 'MSG'
   cCmd += ',"id":'+val2json(MSG->IdMsg) 
 else

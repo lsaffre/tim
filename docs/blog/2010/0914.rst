@@ -1,0 +1,4 @@
+2010-09-14
+==========
+
+:func:`ddReadPage` machte in manchem Fällen (wenn `DBFATTR_S $ ad[AD_ATTRIB]`) fälschlicherweise ein Log_PUT, obwohl dieser Alias gar nicht im :configcmd:`DoChangeLog` stand.
