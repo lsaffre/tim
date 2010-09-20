@@ -29,9 +29,11 @@ static saRecStack := {}
 **             The previous buffer contents is lost, except if the calling
 **             module retained it.
 **
-FUNCTION CopyRec(cAlias)
+** FUNCTION CopyRec(cAlias)
+FUNCTION CopyRec()
 local i, cName
 local aBuf
+local cAlias := "FIELD"
 RETURN {} if eof()
 default cAlias to "FIELD"
 aBuf := array(fcount())

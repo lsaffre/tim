@@ -2709,11 +2709,12 @@ RETURN nQte
 
 
 #define ROW_LABEL 1
-#define ROW_FIELD 2
-#define ROW_VALUE 3
+#define ROW_LOG_CHANGE 2
+#define ROW_FIELD 3
+#define ROW_VALUE 4
 
 ** http://tim.saffre-rumma.ee/src/23.html
-FUNCTION TagUpdate(aData,cTitle,lDlg)
+FUNCTION TagUpdate(aData,cTitle,lDlg,cMailTpl)
 // { label, datafield, suggested new value }
 * local cHeader := ""
 local i
@@ -2727,6 +2728,8 @@ local lMatch
 local cChangeTxt
 local uOldValue
 local nUpdates := 0
+local lWarn := .f.
+local cMsgBody := ''
 default lDlg to .t.
 *default aHeaders to { "Datenfeld", ;
 *                      "Alter Wert", ;
@@ -2756,7 +2759,7 @@ for i := 1 to len(aData)
 next i
 RETURN !SetMsg("Nichts zu aktualisieren.") if nUpdates == 0
 if lDlg
-  SendConsole("TagUpdate() : show dialog")
+  // SendConsole("TagUpdate() : show dialog")
   aadd(aActions, { K_SPACE , {|row,i| ;
     aTagged[i] := ! aTagged[i], ;
     K_DOWN ;
@@ -2769,14 +2772,49 @@ if lDlg
     actions aActions
   RETURN .f. if LastChoice() == 0
 endif
-SendConsole("TagUpdate() : assign tagged fields")
+for i := 1 to len(aTagged)
+  if aTagged[i]
+    uOldValue := &(aData[aIndexes[i]][ROW_FIELD]) 
+    if !empty(uOldValue)
+      lWarn := .t.
+      cMsgBody += aChanges[i] + crlf()
+    endif
+  endif
+next i
+if lWarn
+  RETURN .f. if !Confirm("Das sind schwerwiegende Žnderungen!",MsgSure(),MSG_NO)
+  setvar('EmlBody',cMsgBody)
+  RETURN .f. if ! SendMail(cMailTpl,.f.)
+  SendConsole("Schwerwiegende Žnderungen:",cMsgBody)
+endif
+// SendConsole("TagUpdate() : assign tagged fields")
 for i := 1 to len(aTagged)
   if aTagged[i]
     &(aData[aIndexes[i]][ROW_FIELD]) := aData[aIndexes[i]][ROW_VALUE]
   endif
 next i
-SendConsole("TagUpdate() "+alias()+"("+ntrim(recno())+") : done")
+// SendConsole("TagUpdate() "+alias()+"("+ntrim(recno())+") : done")
 RETURN .t.
+
+FUNCTION SendMail(cMailTpl,lConfirm,cAttach)
+default lConfirm to .t.
+//~ SendConsole("SendMail() 1")
+RETURN .t. if empty(getvar("mailhost"))
+//~ SendConsole("SendMail() 2")
+RETURN .f. if ! FileDelete(".\tmp.eml",.f.,.t.)
+//~ SendConsole("SendMail() 3")
+RETURN .f. if ! fparse(cMailTpl,".\tmp.eml",NIL,NIL,.t.)
+//~ SendConsole("SendMail() 4")
+//~ RETURN AppShell(AppPath()+"\timtools sendmail -e cp850 ";
+      //~ +"--host "+trim1(getvar("mailhost")) ;
+      //~ +iif(lConfirm,"","-b ") ;
+      //~ +".\tmp.eml "+iif(cAttach==NIL,"",cAttach))
+MsgDisplay("Schwerwiegende Žnderung wird per E-Mail gemeldet.")
+RETURN runbg(AppPath()+"\timtools.bat", "sendmail -e cp850 ";
+      +"--host "+trim1(getvar("mailhost")) ;
+      +iif(lConfirm,"","-b ") ;
+      +".\tmp.eml "+iif(cAttach==NIL,"",cAttach))
+
 
 #ifdef DEF_INDEX
 

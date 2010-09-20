@@ -217,3 +217,5 @@ TIM behandelt das Reorganisieren nach Sitzungsunterbrechungen jetzt narrensicher
   - :func:`LockData` : Bei der Warnung "Die Datenbank kann momentan nicht gesperrt werden, weil andere Benutzer aktiv sind" fragt TIM jetzt auch, ob man neu probieren will.
 
 (Weiter in :doc:`/blog/2010/0831`)
+
+

@@ -1,0 +1,10 @@
+2010-09-20
+==========
+
+- Die Console-Meldungen "TagUpdate() : show dialog" und "TagUpdate() : assign tagged fields" und "TagUpdate() PAR(1234) : done" habe ich rausgeholt. Die waren eher zum Debuggen gedacht.
+
+- Das Array aData an :func:`TagUpdate` hat jetzt einen neuen Parameter `lWarn` in jeder Zeile, der besagt, ob eine Änderung dieses Feldes "schwerwiegend" ist oder nicht.
+
+- Außerdem einen neuen Parameter cMailTpl. Wenn der nicht leer ist, wird im Fall von schwerwiegenden Änderungen eine Mail verschickt.
+
+- Neue Funktion SendMail() um eine Mail zu verschicken.
