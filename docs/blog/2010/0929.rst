@@ -18,7 +18,8 @@ Ein Fehler, der nur mit FOXDBE auftrat::
   Called from DBLOGIN(397)
   Called from MAIN(163)
 
+Ursache war möglicherweise einfach nur zu wenig Platz auf der Festplatte.
 
-:func:`ddIndex` löscht jetzt eine eventuell bestehende CDX-Datei bevor er mit dem Indexieren anfängt. Ich habe keine Erklärung, weshalb ich den Fehler nicht schon viel früher gehabt habe. 
+:func:`ddIndex` löscht jetzt eine eventuell bestehende CDX-Datei bevor er mit dem Indexieren anfängt. Dadurch wird beim Indexieren weniger Platz benötigt. 
 
-Release luc, spz
+Release luc, dd
