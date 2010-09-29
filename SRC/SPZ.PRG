@@ -1249,7 +1249,7 @@ RETURN DrgPostEdit()
 
 * Wird nur im SPZ benutzt
 * FUNCTION ParDlsCollect(jnl,dDate1,dDate2,lTagged,xlDlsFilter)
-FUNCTION Par2Naf(jnl,dDate1,dDate2,lTagged,xlDlsFilter)
+FUNCTION Par2Naf(jnl,dDate1,dDate2,lTagged,xlDlsFilter,lSammel)
 local aNaf := {}
 local blCollect
 local lVertraulich
@@ -1259,6 +1259,7 @@ xcRemark += "+iif(empty(DLS->QuitNr),'',' ('+alltrim(DLS->QuitNr)+')')"
 xcRemark += "+' am '+dtocf(DLS->Date)"
 xcRemark += "+' mit '+trim(UsrName(DLS->IdUsr))"
 default lTagged to .t.
+default lSammel to .t.
 * default xlDlsFilter to ".t."
 /* 
 */
@@ -1268,7 +1269,7 @@ blCollect := {|a| ;
     ".f.",{||"(VNL->IdDls:='"+DLS->IdDls+"')!=NIL"});
   .and. _ParDlpCollect(a,jnl,dDate1,dDate2,lTagged,xlDlsFilter);
 }
-if PARATTR_S $ PAR->Attrib
+if lSammel .and. PARATTR_S $ PAR->Attrib
   //~ SendConsole("Found PARATTR_Z: "+ParName())
   lVertraulich := PARATTR_V $ PAR->Attrib
   RETURN NIL if ! DbfScan(;
@@ -1278,7 +1279,7 @@ if PARATTR_S $ PAR->Attrib
 else
   // Performance : Akten mit unbekanntem Tarif/ArztHon kriegen sowieso keine Rechnung:
   RETURN aNaf if left(PAR->Tarif,1)!="1".and.!right(PAR->IdPgp,1)$"123"
-  RETURN aNaf if PARATTR_S $ DbfPeek(oPar(),PAR->Zahler,"Attrib","")
+  RETURN aNaf if lSammel .and. PARATTR_S $ DbfPeek(oPar(),PAR->Zahler,"Attrib","")
   //~ SendConsole("No PARATTR_Z: "+ParName())
   RETURN NIL if ! eval(blCollect,aNaf)
   //~ SendConsole(ParName()+" : DbfScan() collected "+utos(aNaf))

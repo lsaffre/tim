@@ -185,7 +185,13 @@ enddo
   if UseDbe() == "FOXCDX"
     cName := cPath + ad[AD_NAME] + ntx_ext()
     lDone := .t.
-    if lAlways .or. ! file( cName )
+    if lAlways
+       if ! FileDelete(cName,.f.,.t.) // only if it exists
+         lDone := .f.
+       endif
+    endif
+    //~ if lAlways .or. ! file( cName )
+    if lDone .and. ! file( cName )
       rpt_write( MSG008 + cName + " ...", RPT_DISPLAY )
       for i := 1 to len(ad[AD_AINDEX])
         if TaskInter()
@@ -196,15 +202,15 @@ enddo
           cFor  := ad[AD_AINDEX][i][AI_FOR]
           if i == 1
             if empty(cFor)
-              INDEX ON &cExpr TAG (str(i)) to (cName)
+              INDEX ON &cExpr TAG (ntrim(i)) to (cName)
             else
-              INDEX ON &cExpr TAG (str(i)) to (cName) for &cFor
+              INDEX ON &cExpr TAG (ntrim(i)) to (cName) for &cFor
             endif
           else
             if empty(cFor)
-              INDEX ON &cExpr TAG (str(i))
+              INDEX ON &cExpr TAG (ntrim(i))
             else
-              INDEX ON &cExpr TAG (str(i)) for &cFor
+              INDEX ON &cExpr TAG (ntrim(i)) for &cFor
             endif
           endif
         endif

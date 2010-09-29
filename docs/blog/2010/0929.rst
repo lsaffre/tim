@@ -1,0 +1,24 @@
+2010-09-29 Error BASE/8999 beim Neuindexieren von CDX-Dateien
+=============================================================
+
+Ein Fehler, der nur mit FOXDBE auftrat::
+
+  Operation : OrdCreate;Thread ID : 1
+  Arguments : {NIL, "         6", "HST->IdJnl+HST->Periode+HST->IdDoc+HST->Line", B, NIL, .f.}
+  Called from DDINDEX(205)
+  Called from APPREORG(1150)
+  Called from XPARSE(795)
+  Called from FILEEXEC(398)
+  Called from ACTEXEC(995)
+  Called from (B)XPARSE(0)
+  Called from XEVAL(823)
+  Called from DOEVENTS(2166)
+  Called from APPPRELOGIN(1685)
+  Called from LOGIN(177)
+  Called from DBLOGIN(397)
+  Called from MAIN(163)
+
+
+:func:`ddIndex` löscht jetzt eine eventuell bestehende CDX-Datei bevor er mit dem Indexieren anfängt. Ich habe keine Erklärung, weshalb ich den Fehler nicht schon viel früher gehabt habe. 
+
+Release luc, spz

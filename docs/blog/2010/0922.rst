@@ -1,0 +1,4 @@
+2010-09-22 Liste "zu fakturieren" zeigt auch Sammelrechnungen
+=============================================================
+
+:func:`Par2Naf` hat einen neuen Parameter `lSammel`, der besagt, ob das PARATTR_S berücksichtigt werden soll oder nicht. Dieser Parameter ist .f. beim Aufruf aus NAFAUTOS.ACT (zu fakturieren) und .t. beim Aufruf aus NAFAUTO.ACT (Automatikfakturierung).

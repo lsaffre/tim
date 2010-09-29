@@ -1,5 +1,5 @@
-2010-09-20
-==========
+2010-09-20 Kontrolle "Schwerwiegende Änderungen" in PXSEID
+==========================================================
 
 - Die Console-Meldungen "TagUpdate() : show dialog" und "TagUpdate() : assign tagged fields" und "TagUpdate() PAR(1234) : done" habe ich rausgeholt. Die waren eher zum Debuggen gedacht.
 
