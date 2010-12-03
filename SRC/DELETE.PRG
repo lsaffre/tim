@@ -674,7 +674,7 @@ local lOkay := .f. // nReturn := DDDEL_FAIL
 local jnl := JnlLocate(FIN->IdJnl)
 if jnl == NIL
   Warning(FIN->IdJnl + MsgJnlExist())
-  RETURN .f. if ! USRATTR_S $ UsrAttrib()
+  RETURN .f. if ! USRATTR_E $ UsrAttrib()
   RETURN ConfirmDelete()
 endif
 RETURN .f. if ! FinPreEdit()

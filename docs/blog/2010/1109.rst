@@ -1,0 +1,72 @@
+20101109 
+========
+
+Optimierte Anzeige in "Buchungen übernehmen"
+--------------------------------------------
+
+Änderung in :func:`MviText`: Zeillennummer hinzugefügt. Das Jahr des Datums wird jetzt nur noch angezeigt, wenn es nicht das aktuelle Jahr ist. Der Gesamtbetrag in Klammern steht jetzt hinter der Bemerkung, und der Benmerkungstext kann bis auf 1 LEerzeichen an den Betrag heran kommen damit er möglichst wenig abgeschnitten wird. 
+
+Außerdem war in :func:`abrowse` ein kleiner Bug: er gab ein Zeichen zu wenig maximal erlaubte Breite.
+
+vorher::
+
+ ╔════════════════════════════ Buchungen übernehmen ═══════════════════════════╗
+ ║   FFO3 961946 05.01.10 rückz.Beihilfe AAW3 963963         50.00     (400.00 ║
+ ║   FFO3 961947 05.01.10 V.auf Vergütung AAW3 963967       246.69     (396.69 ║
+ ║   FFO3 961949 06.01.10 V.auf Vergütung AAW3 963976       380.00     (380.00 ║
+ ║   FFO3 961950 06.01.10 Vorschuss auf Lohn AAW3 96397     231.00     (770.00 ║
+ ║   FFO3 961951 06.01.10 rückz.Mietkaution AAW3 963977    1140.00    (1190.00 ║
+ ║   FFO3 961958 08.01.10 V.auf Kindergeld 098180           100.00     (100.00 ║
+ ║   FFO3 961960 12.01.10 rückz.Beihilfe AAW3 964010         23.02     (338.47 ║
+ ║   FFO3 961965 15.01.10 V.Arbeitslosengeld AAW3 96402     150.00     (450.00 ║
+ ║   FFO3 961967 15.01.10 V.Arbeitslosengeld AAW3 96402      50.00     (300.00 ║
+ ║   FFO3 961968 15.01.10 V.Kinderzulagen AAW3 964027       326.00     (326.00 ║
+ ║   FFO3 961970 15.01.10 V.auf Arbeitslosengeld 098233      35.00      (60.00 ║
+ ║   FFO3 961972 22.01.10 V.auf Arbeitslosengeld 098278      50.00      (50.00 ║
+ ║   FFO3 961977 29.01.10 rückz. Beihilfe AAW3 964052       100.00     (382.32 ║
+ ║   FFO3 961978 29.01.10 V.auf Vergütung AAW3 964061        28.02     (228.02 ║
+ ║   FFO3 961984 22.02.10 rückz. Beihilfe AAW2 965451       168.33     (168.33 ║
+ ║   FFO3 961988 26.02.10 rückz.Beihilfe AAW3 964102        117.89     (217.89 ║
+ ╚═════════════════════════════════════════════════════════════════════════════╝
+
+nachher::
+
+ ╔════════════════════════════ Buchungen übernehmen ════════════════════════════╗
+ ║   FFO3 961946.001 05.01. rückz.Beihilfe AAW3 963963 (400.00)           50.00 ║
+ ║   FFO3 961947.001 05.01. V.auf Vergütung AAW3 963967 (396.69)         246.69 ║
+ ║   FFO3 961949.001 06.01. V.auf Vergütung AAW3 963976 (380.00)         380.00 ║
+ ║   FFO3 961950.001 06.01. Vorschuss auf Lohn AAW3 963976 (770.00)      231.00 ║
+ ║   FFO3 961951.001 06.01. rückz.Mietkaution AAW3 963977 (1190.00)     1140.00 ║
+ ║   FFO3 961958.001 08.01. V.auf Kindergeld 098180 (100.00)             100.00 ║
+ ║   FFO3 961960.001 12.01. rückz.Beihilfe AAW3 964010 (338.47)           23.02 ║
+ ║   FFO3 961965.001 15.01. V.Arbeitslosengeld AAW3 964026 (450.00)      150.00 ║
+ ║   FFO3 961967.001 15.01. V.Arbeitslosengeld AAW3 964026 (300.00)       50.00 ║
+ ║   FFO3 961968.001 15.01. V.Kinderzulagen AAW3 964027 (326.00)         326.00 ║
+ ║   FFO3 961970.001 15.01. V.auf Arbeitslosengeld 098233 (60.00)         35.00 ║
+ ║   FFO3 961972.001 22.01. V.auf Arbeitslosengeld 098278 (50.00)         50.00 ║
+ ║   FFO3 961977.001 29.01. rückz. Beihilfe AAW3 964052 (382.32)         100.00 ║
+ ║   FFO3 961978.001 29.01. V.auf Vergütung AAW3 964061 (228.02)          28.02 ║
+ ║   FFO3 961984.001 22.02. rückz. Beihilfe AAW2 965451 (168.33)         168.33 ║
+ ║   FFO3 961988.001 26.02. rückz.Beihilfe AAW3 964102 (217.89)          117.89 ║
+ ╚══════════════════════════════════════════════════════════════════════════════╝
+
+
+Dokument erstellen nach einem unregistrierten Dokument
+------------------------------------------------------
+
+Wenn man ein neues Dokument (:class:`IMP`) erstellt, schaut TIM zuerst nach, 
+ob das momentan letzte Dokument dieses Journals registriert ist 
+(``IMP->Etat == DocStatClosed()``).
+Andernfalls kam bisher eine Bestätigung im Stil::
+
+ ╔════════════════════════ Bestätigung ════════════════════════╗
+ ║   Das vorige Dokument (CCB 966578) ist nicht registriert.   ║
+ ║              Neues Dokument erstellen (J/N) ? N             ║
+ ╚═════════════════════════════════════════════════════════════╝
+
+Diese Bestätigung kommt jetzt nur noch für Experten (`USRATTR_E $ UsrAttrib()`), 
+alle anderen kriegen einfach nur eine Fehlermeldung und dürfen kein neues 
+Dokument erstellen.
+
+N.B.: Die Prüfung, ob das vorige Dokument registriert ist, könnte fehlschlagen, 
+wenn die Datenbank nach eine Sitzungsunterbrechung nicht neu indexiert wurde.

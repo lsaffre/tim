@@ -1,0 +1,7 @@
+20101001
+========
+
+TagUpdate() und schwerwiegende Änderungen
+-----------------------------------------
+
+TagUpdate() betrachtete alle Änderungen als schwerwiegend und warnte entsprechend. Natürlich nur für die Felder, die `ROW_LOG_CHANGE` auf ``.t.`` haben.

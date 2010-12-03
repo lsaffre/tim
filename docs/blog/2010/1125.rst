@@ -1,0 +1,15 @@
+20101125 :func:`UsrGroups` und :func:`DlsCanEdit`
+=================================================
+
+- (storniert) :func:`UsrGroups` arbeitet jetzt wie :func:`UsrAttrib` 
+  mit einer Speichervariablen, statt jedesmal ein Lookup zu machen.
+
+- (:mod:`DEF_DLS`) :func:`DlsCanEdit` benutzte noch die alte Konvention 
+  (Attribut S statt Gruppe "sek") 
+  zur Entscheidung, ob der Benutzer Sekretär ist oder nicht.
+  Idem für :func:`DlpCanDelete`, 
+  :func:`DlpCanEdit`,
+  :func:`DlpCreate`,
+  :func:`DrgCanEdit`,
+  
+- Um ein :mod:`FIN` mit ungültigem Journal löschen zu können, muss man jetzt Experte sein (USRATTR_E statt bisher USRATTR_S haben).  :meth:`FinPreDelete`.

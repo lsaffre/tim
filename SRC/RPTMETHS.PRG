@@ -72,6 +72,12 @@ endif
 if nMsg == RPT_WARNING
   Warning(cText) // , MSG001)
 endif
+#ifdef DEF_CONSOLE
+  if SetLogDetailed() .and. !empty(cText)
+    //~ LogConsole(cText)
+    eval(sbLogConsole,cText)
+  endif
+#endif
 if fdRpt == - 1
   * if nMsg == RPT_URGENT
   *   ? cText

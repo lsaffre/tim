@@ -1300,6 +1300,9 @@ if updated() .or. snRecStat == RS_UNKNOWN .or. lastkey() != K_ESC
   snRecStat := RS_UNKNOWN
   ddPostEdit()
   #ifdef DEF_CHANGELOG
+    if DBFATTR_S $ ad[AD_ATTRIB]
+      RecConsole(aBuf)
+    endif
     if DoChangeLog(ad[AD_NAME]) // aBuf != NIL
       Log_PUT(aBuf)
     endif

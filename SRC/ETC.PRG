@@ -97,10 +97,10 @@ a[10] := ""
 a[11] := "M"
 a[12] := "be"
 a[13] := "Eupen"
-// a[14] := "19640514"
-// a[14] := "19520000"
-// a[14] := "19520300"
-a[14] := "19520017"
+// a[EID_BIRTHDATE] := "19640514"
+// a[EID_BIRTHDATE] := "19520000"
+// a[EID_BIRTHDATE] := "19520300"
+a[EID_BIRTHDATE] := "19520017"
 a[15] := "F"
 a[16] := ""
 a[17] := 1
@@ -117,7 +117,8 @@ RETURN a
 
 #endif SIMULATE_CARD_READER
 
-FUNCTION GetEid(lTest)
+FUNCTION GetEid()
+local c7
 local nYear
 local aDate_ca
 #ifdef SIMULATE_CARD_READER
@@ -125,6 +126,7 @@ local aDate_ca
 #else
   local a := EID_GET()
 #endif
+LogConsole("EID_GET() returned "+utos(a))
 aadd(a,.f.) // EID_BIRTH_CA 27 // ungenaues Geburtsdatum
 // Confirm("foo "+utos(a[EID_ERROR]))
 RETURN a if a[EID_ERROR] != NIL
@@ -157,20 +159,21 @@ a[EID_BIRTHDATE] := stod(a[EID_BIRTHDATE])
 */
 if nYear < 1800
   // raise("Geboren im 18. Jahrhundert!?")
+  c7 := "?"
   a[EID_BIRTH_CA] := .t.
 elseif nYear < 1900
-  a[EID_NATIONAL_NUMBER] := left(a[EID_NATIONAL_NUMBER],6);
-    + "*" + substr(a[EID_NATIONAL_NUMBER],7)
+  c7 := "*"
 elseif nYear < 2000
-  a[EID_NATIONAL_NUMBER] := left(a[EID_NATIONAL_NUMBER],6);
-    + " " + substr(a[EID_NATIONAL_NUMBER],7)
+  c7 := " "
 elseif nYear < 2100
-  a[EID_NATIONAL_NUMBER] := left(a[EID_NATIONAL_NUMBER],6);
-    + "=" + substr(a[EID_NATIONAL_NUMBER],7)
+  c7 := "="
 else
+  c7 := "?"
   // raise("Geboren im 22. Jahrhundert!?")
   a[EID_BIRTH_CA] := .t.
 endif
+a[EID_NATIONAL_NUMBER] := left(a[EID_NATIONAL_NUMBER],6);
+    + c7 + substr(a[EID_NATIONAL_NUMBER],7)
 a[EID_NATIONAL_NUMBER] := left(a[EID_NATIONAL_NUMBER],10);
     + "-" + substr(a[EID_NATIONAL_NUMBER],11)
 a[EID_NAME] := utf2dos(a[EID_NAME])
@@ -2773,7 +2776,7 @@ if lDlg
   RETURN .f. if LastChoice() == 0
 endif
 for i := 1 to len(aTagged)
-  if aTagged[i]
+  if aTagged[i] .and. aData[aIndexes[i]][ROW_LOG_CHANGE]
     uOldValue := &(aData[aIndexes[i]][ROW_FIELD]) 
     if !empty(uOldValue)
       lWarn := .t.

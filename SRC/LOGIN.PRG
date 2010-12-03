@@ -140,6 +140,7 @@ static scUserFct3  := ""
 static scIdMnu     := ""
 * static scUserFct4  := ""
 static scUsrAttrib := ""
+//~ static scUsrGroups := ""
 static scUsrLevel  := ""
 static scAbtlg  := ""
 static scGroups  := ""
@@ -276,10 +277,12 @@ open area oUsr()
       scIdMnu     := trim(USR->IdMnu)
       * scUserFct4  := trim(USR->Fct4)
       scUsrAttrib := trim(USR->Attrib)
+      //~ scUsrGroups := trim(USR->Groups)
       if USRATTR_D $ scUsrAttrib
         * RptDetailed(.t.)
         SetKeepReport(.t.)
       endif
+      //~ SetGroups(trim(USR->Groups))
       SetReadOnly(USRATTR_R $ scUsrAttrib)
       scUsrLevel  := USR->Level
       SendConsole( ;
@@ -595,6 +598,7 @@ FUNCTION UserFct3  ; RETURN scUserFct3
 FUNCTION UsrIdMnu ; RETURN scIdMnu
 * FUNCTION UserFct4  ; RETURN scUserFct4
 FUNCTION UsrAttrib ; RETURN scUsrAttrib
+//~ FUNCTION UsrGroups ; RETURN scUsrGroups
 FUNCTION UsrLevel  ; RETURN scUsrLevel
 
 FUNCTION SetAbtlg(x)
@@ -739,9 +743,9 @@ fwrite(snLogFile,getvar("USER")+"@"+getvar("PC")+CR_LF)
 if lInterrupt
   IndCreate("INDEX")
   SetKeepReport(.t.)
-  #ifdef DEF_CONSOLE
-  SetLogDetailed(.t.)
-  #endif
+  //~ #ifdef DEF_CONSOLE
+  //~ SetLogDetailed(.t.)
+  //~ #endif
   OnRebuild(cMemo,"OnRebuild() failed !")
   * RETURN .f. if ! AppConvert(lCheck)
 endif

@@ -221,6 +221,9 @@ local lOkay
 local lNothing := .t.
 local lStop
 local nOldLMargin := p_setlmargin()
+local cNdxOn 
+local cNdxTo 
+local cNdxFor
 MsgDisplay(trim1(rpt[RPT_HDR1]);
     +trim1(rpt[RPT_HDR2]);
     +trim1(rpt[RPT_HDR3]))
@@ -332,14 +335,18 @@ if rpt[RPT_FORLOOP] == NIL
       if rpt[RPT_INDEX] == NIL
         ddSetOrder(rpt[RPT_ORDER])
       else
-        if rpt[RPT_INDEX][NDX_FOR] == NIL
-          index on &(rpt[RPT_INDEX][NDX_ON]) ;
-                to (rpt[RPT_INDEX][NDX_NAME]) ;
+        cNdxOn := rpt[RPT_INDEX][NDX_ON]
+        cNdxTo := rpt[RPT_INDEX][NDX_NAME]
+        cNdxFor := rpt[RPT_INDEX][NDX_FOR]
+        LogConsole('INDEX ON '+utos(cNdxOn)+' TO '+utos(cNdxTo)+" FOR "+utos(cNdxFor))
+        if cNdxFor == NIL
+          index on &cNdxOn ;
+                to (cNdxTo) ;
                 eval {||Purzel()}
         else
-          index on &(rpt[RPT_INDEX][NDX_ON]) ;
-                to (rpt[RPT_INDEX][NDX_NAME])  ;
-                for &(rpt[RPT_INDEX][NDX_FOR]) ;
+          index on &cNdxOn ;
+                to (cNdxTo)  ;
+                for &cNdxFor ;
                 eval {||Purzel()}
         endif
       endif

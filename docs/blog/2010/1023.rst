@@ -1,0 +1,27 @@
+20101023 Änderungen in :func:`GetEid`, :func:`RecConsole` 
+=========================================================
+
+Kleine Änderungen in :func:`GetEid`:
+
+- TIM hatte ein Problem, wenn auf der eID-Karte das Geburtsjahr 
+  entweder < 1800 oder >= 2100 war. Im so einem Fall wird TIM jetzt
+  "820001?029-14" als Nrn einlesen ("?" an 7. Position)
+- Ab jetzt loggt TIM bei jedem Einlesen einer eID die rohen
+  eingelesenen Daten in die console.msg. 
+
+
+Antwort auf Anfrage "Wenn er Änderungen der PAR.DBF in der console.msg loggt, soll er nicht nur die recno(), sondern auch die IdPar und vielleicht auch den Namen angeben.": 
+
+  :func:`RecConsole` scheibt jetzt auf `&indexkey(1)` (also bei PAR `IdPar`, bei BUD `DC+IdBud` usw.) in die Konsole. 
+  
+  Vorher::
+  
+    PAR(10214) modified : (...)
+    
+  Nachher::
+  
+    PAR:0000021160 (#10214) modified : (...)
+  
+  Auch den Namen anzuzeigen wäre mehr Aufwand, dazu müsste ich den Anfang der Konsolenmeldung konfigurierbar machen...
+
+Bugfix : Seit mindestens Oktober 2009 werden Änderungen in der PAR.DBF (bzw. allen Tabellen, die DBFATTR_S gesetzt haben) in die Konsole nur noch dann geloggt, wenn sie in der Listenansicht stattfanden. Änderungen in der Vollbildansicht wurden nicht geloggt! Behoben.

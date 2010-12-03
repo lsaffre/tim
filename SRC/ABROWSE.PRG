@@ -101,7 +101,7 @@ if win == NIL
       nWidth := max( nWidth, len( eval( bBlock, saItems[i], i ) ) )
       * endif
     next i
-    nWidth := min(nWidth,maxcol()-4)
+    nWidth := min(nWidth,maxcol()-3)
     * nWidth := min(nWidth,76)
   endif
 else

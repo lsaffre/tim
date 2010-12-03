@@ -1,5 +1,5 @@
-2010-08-31
-----------
+2010-08-31 Buchungen übernehmen
+-------------------------------
 
 - (Wieder storniert, weil die Info im Sitzungsbericht verfügbar ist) :func:`SetLogDetailed` eingeschaltet ist, werden jetzt auch Meldungen, die mit :func:`MsgDisplay` angezeigt werden, in die Konsole geschrieben. Auszug aus einer console.log von heute morgen::
 
@@ -20,7 +20,7 @@
 
 
 
-- DEF_IMP. Buchungen übernehmen. Wenn man hier in Liste eine einzige Buchung übernehmen wollte (der häufigste Fall, nehme ich an), dann musste man bisher Leertaste drücken um sie anzukreuzen, und anschließend ENTER um die Liste zu bestätigen. Jetzt reicht ENTER. 
+- :staticmod:`DEF_IMP`. Buchungen übernehmen. Wenn man hier in Liste eine einzige Buchung übernehmen wollte (der häufigste Fall, nehme ich an), dann musste man bisher Leertaste drücken um sie anzukreuzen, und anschließend ENTER um die Liste zu bestätigen. Jetzt reicht ENTER. 
   Die Warnung "Sie haben keine einzige Buchung ausgewählt !" dürfte somit etwas seltener kommen.
   
  - Neue Funktion :func:`ImlCopy1` ("Einzelbuchung übernehmen"), die vom Dialog her ähnlich wie F5 (:func:`ImlCopy`, "Dokument kopieren"/"Buchungen auswählen") aussieht, die aber keine Zeilen ins Dokument einfügt, sondern die aktuelle Zeile mit den Angaben der ausgewählten Buchung überschreibt. Man darf also nur eine einzige Buchung auswählen.

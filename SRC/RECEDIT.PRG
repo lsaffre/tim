@@ -69,8 +69,13 @@ RETURN .t.
 FUNCTION RecConsole(aBuf)
 local i, cName
 local lFound := .f.
-local cMsg := alias() + "(" + ntrim(recno()) + ") modified :"
+local cMsg := alias() 
 local cData := ""
+local cId := indexkey(1)
+if !empty(cId)
+  cMsg += ":" + &cId
+endif
+cMsg += " (#" + ntrim(recno()) + ") modified :"
 for i = 1 to fcount()
   cName := fieldname(i)
   if FIELD->&cName != aBuf[i]

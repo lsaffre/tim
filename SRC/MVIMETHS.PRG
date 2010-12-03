@@ -577,15 +577,31 @@ RETURN K_ALT_F5
 * RETURN NIL
 
 
+//~ FUNCTION MviText(tag)
+//~ local cLine := if(tag[1],"û"," ")
+//~ goto tag[2]
+//~ cLine += " " + MVI->IdJnl
+//~ cLine += " " + MVI->IdDoc
+//~ cLine += " " + dtoc(MVI->Date2)
+//~ cLine += " " + left(MVI->NB1,29)
+//~ cLine += " " + MVI->MontUs
+//~ cLine += " " + padl("(" + ltrim(MVI->Mont) + ")",12)
+//~ RETURN cLine
+
 FUNCTION MviText(tag)
 local cLine := if(tag[1],"û"," ")
 goto tag[2]
 cLine += " " + MVI->IdJnl
 cLine += " " + MVI->IdDoc
-cLine += " " + dtoc(MVI->Date2)
-cLine += " " + left(MVI->NB1,29)
-cLine += " " + MVI->MontUs
-cLine += " " + padl("(" + ltrim(MVI->Mont) + ")",12)
+cLine += "." + MVI->Line
+if year(MVI->Date2)==year(date())
+  cLine += " " + left(dtoc(MVI->Date2),6)
+else
+  cLine += " " + dtoc(MVI->Date2)
+endif
+cLine += " " + trim1(MVI->NB1)+"(" + ltrim(MVI->Mont) + ")"
+cLine := padr(cLine,76-1-len(ltrim(MVI->MontUs)))
+cLine += " " + ltrim(MVI->MontUs)
 RETURN cLine
 
 

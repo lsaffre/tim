@@ -293,10 +293,15 @@ ddSetOrder(1)
 KeyGoBottom( jnl[JNL_IDJNL], "IMP->IdJnl" )
 ddSetOrder(nOrder)
 if ! eof() .and. IMP->Etat != DocStatClosed()
-  RETURN DDCREATE_FAIL if ! Confirm( ;
-    MsgPrevDoc() + MsgNotClosed(), MsgDocCreate(), ;
-    MSG_NO,"WRN001" ;
-  )
+  if USRATTR_E $ UsrAttrib()
+    RETURN DDCREATE_FAIL if ! Confirm( ;
+      MsgPrevDoc() + MsgNotClosed(), MsgDocCreate(), ;
+      MSG_NO,"WRN001" ;
+    )
+  else
+    SetMsg(MsgPrevDoc() + MsgNotClosed())
+    RETURN DDCREATE_FAIL 
+  endif
 endif
 aSolde := { IMP->IdDev, IMP->Mont2 }
 * cMont2 := IMP->Mont2
@@ -1616,7 +1621,9 @@ open area oMvi()
       MVI->MontUs    := aMvi[i][MVI_MONTUS   ]
       MVI->MontCtb   := aMvi[i][MVI_MONTCTB  ]
       if ! OnMviGenerate()
-        SendConsole(MsgIdJnlDoc()+" : OnMviGenerate() failed !")
+        //~ SendConsole(MsgIdJnlDoc()+" : OnMviGenerate() failed !")
+        SetMsg(MsgIdJnlDoc()+" : OnMviGenerate() failed : " + SetMsg())
+        lOkay := .f.
       endif
       unlock record
     else

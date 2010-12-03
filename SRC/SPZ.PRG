@@ -553,8 +553,8 @@ ddFld Date     ,D,  8,0 when DlsCanEdit()
 ddFld Von      ,Q,  5,0 postedit {|x|GetTime(x)} when DlsCanEdit()
 ddFld Bis      ,Q,  5,0 postedit {|x|GetTime(x)} when DlsCanEdit()
 // IdPar : T : Therapeut
-ddFld IdUsr    ,C, LenIdUsr(),0  picture PIC_ID ;
-      when USRATTR_S $ UsrAttrib().and.DlsCanEdit() ;
+ddFld IdUsr    ,C, LenIdUsr(),0  picture PIC_ID ;  //~ when USRATTR_S $ UsrAttrib().and.DlsCanEdit() ;
+      when DlsCanEdit() ;
       pick PickUsr(DLS->IdUsr)
 ddFld IdDla    ,C, LenIdDla(),0  picture PIC_ID ;
       pick PickDla(DLS->IdDla) ;
@@ -565,8 +565,8 @@ ddFld IdDla    ,C, LenIdDla(),0  picture PIC_ID ;
       *   .and.ph_refresh()
 ddFld Etat     ,C,  1,0 picture PIC_ID ;
       pick {|x| PickDbcCode("DLSETAT.DBC",x,"Status")} ;
-      valid ph_refresh() ;
-      when DLS->IdUsr==UserId().or.USRATTR_S$UsrAttrib()
+      valid ph_refresh() ;   // when DLS->IdUsr==UserId().or.USRATTR_S$UsrAttrib()
+      when DlsCanEdit()
 ddFld NB       ,C, 60,0 when DlsCanEdit()
 ddFld Zahlart  ,C,  1,0 picture PIC_ID ;
       pick {|x| PickDbcCode("DLSZAHL.DBC",x)} ;
@@ -642,7 +642,9 @@ RETURN .t. if empty(DLS->IdUsr)
 // USRATTR_C
 // USRATTR_S
 if DLS->IdUsr!=UserId()
-  RETURN .f. if ! USRATTR_S $ UsrAttrib()
+  RETURN .t. if "sek" $ SetGroups()
+  //~ RETURN .t. if USRATTR_S $ UsrAttrib()
+  RETURN .f. 
 endif
 RETURN .t.
 // RETURN empty(DLS->Etat)
@@ -914,7 +916,8 @@ RETURN .f. if indexord()!=1
 RETURN .f. if DLP->IdDls!=DLS->IdDls
 RETURN .t. if empty(DLS->IdUsr)
 if DLS->IdUsr!=UserId()
-  RETURN .f. if ! USRATTR_S $ UsrAttrib()
+  RETURN .f. if ! "sek" $ SetGroups()
+  //~ RETURN .f. if ! USRATTR_S $ UsrAttrib()
 endif
 RETURN .t. // DlsCanEdit()
 
@@ -924,7 +927,8 @@ RETURN .f. if empty(DLP->IdDls)
 RETURN .f. if DLP->IdDls!=DLS->IdDls
 RETURN .t. if empty(DLS->IdUsr)
 if DLS->IdUsr!=UserId()
-  RETURN .f. if ! USRATTR_S $ UsrAttrib()
+  RETURN .f. if ! "sek" $ SetGroups()
+  //~ RETURN .f. if ! USRATTR_S $ UsrAttrib()
 endif
 RETURN .t. // DlsCanEdit()
 
@@ -935,7 +939,8 @@ local nCreate := DDCREATE_REFRESH
 local nOrder := indexord()
 RETURN DDCREATE_FAIL if indexord()!=1
 if DLS->IdUsr!=UserId()
-  RETURN DDCREATE_FAIL if ! USRATTR_S $ UsrAttrib()
+  RETURN DDCREATE_FAIL if ! 'sek' $ SetGroups()
+  //~ RETURN DDCREATE_FAIL if ! USRATTR_S $ UsrAttrib()
 endif
 ddSetOrder(1)
 if eof() // 20070801 recno() == lastrec() + 1
@@ -1130,8 +1135,8 @@ ddFld Date     ,D, 8,0  when empty(DRG->Etat)
 ddFld Periode , C, LEN_PERIODE,0 picture PIC_ID ;
                    pick PickPer(DRG->Periode,"DRG") ;
                    when empty(DRG->Etat)
-ddFld IdUsr    ,C, LenIdUsr(),0  picture PIC_ID ;
-               when USRATTR_S $ UsrAttrib().and.DrgCanEdit() ;
+ddFld IdUsr    ,C, LenIdUsr(),0  picture PIC_ID ; // when USRATTR_S $ UsrAttrib().and.DrgCanEdit() ;
+               when DrgCanEdit() ;
                pick PickUsr(DRG->IdUsr)
 ddFld IdPar   ,C, LenIdPar(),0  picture PIC_ID ;
                   pick PickPar(NIL,DRG->IdPar) ;
@@ -1151,8 +1156,9 @@ RETURN b
 FUNCTION DrgCanEdit
 RETURN .f. if DRG->Etat == DocStatClosed()
 RETURN .t. if empty(DRG->IdUsr)
-if DLG->IdUsr!=UserId()
-  RETURN .f. if ! USRATTR_S $ UsrAttrib()
+if DRG->IdUsr!=UserId()
+  RETURN .f. if ! "sek" $ SetGroups()
+  //~ RETURN .f. if ! USRATTR_S $ UsrAttrib()
 endif
 RETURN .t.
 

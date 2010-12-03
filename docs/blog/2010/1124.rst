@@ -1,0 +1,30 @@
+20101124
+========
+
+When an OnMviGenerate fails
+---------------------------
+
+- :func:`ImpMviGenerate` gibt jetzt ``.f.`` zurück, wenn ein Event fails. 
+  Bisher schrieb er dann lediglich eine Meldung in die Console.
+  Der Fall ist theoretisch noch nie aufgetreten. 
+  Ist aber interessant beim Testen: um einen Status "?" 
+  hervorzurufen, füge ich einfach ein 
+  ``OnMviGenerate .f.`` in der :xfile:`TIM.DBI` hinzu.
+  
+
+:func:`SetLogDetailed` and :func:`rpt_write`
+--------------------------------------------
+
+:func:`rpt_write` schreibt seine Meldungen jetzt ebenfalls 
+in die :xfile:`CONSOLE.MSG`, wenn :func:`SetLogDetailed` 
+eingeschaltet ist. 
+
+
+:func:`SetLogDetailed` jetzt abschaltbar
+----------------------------------------
+
+:func:`SetLogDetailed` wird jetzt nach einer Sitzungsunterbrechung nicht mehr automatisch eingeschaltet, sondern man muss, falls man das will, in der :xfile:`TIM.DBI` (nicht in der :xfile:`TIM.INI`, weil das dann durch die STD.DLM wieder annulliert wird) eintragen::
+
+  
+  OnRebuild {|cText| SetLogDetailed(.t.)}
+  

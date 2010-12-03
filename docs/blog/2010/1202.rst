@@ -1,0 +1,4 @@
+20101202 RTE nach Delete in Alt-K auf Partner
+---------------------------------------------
+
+(Coda) Der kommt, wenn du Alt-K gedrückt hast auf einem Partner mit Coda-Konten, und wenn du in der Auswahlliste dann Delete drückst und nochmal mit Enter bestätigst. Es war unlogisch, dass TIM dort überhaupt auf DELETE reagiert. Löschen tut er nichts, also der Bug ist nicht weiter schlimm. Ab jetzt reagiert TIM auf DELETE an dieser Stelle überhaupt nicht mehr.

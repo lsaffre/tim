@@ -1,12 +1,12 @@
 //
-// HSTDOC.QRY - generated 01.09.09
+// HSTDOC.QRY - generated 05.11.10
 // for HST.FOX
 //
 window 15 80 0 0 
 column 1 =utr("Accnt","Konto","Compte")
-column 7 Bezeichnung
-column 17 Debit
-column 18 =utr("Credit","Kredit","Cr‚dit")
+column 7 Bezeichnung expr HstDcMont("D",SetDevise()) sumfmt "Saldo D="+ntom(nSum)
+column 17 Debit expr if(HST->DC=="D",HstMont(SetDevise()),0) sumfmt ntom(nSum)
+column 18 =utr("Credit","Kredit","Cr‚dit") expr if(HST->DC=="C",HstMont(SetDevise()),0) sumfmt ntom(nSum)
 column 14 *
 column 12 =utr("Amnt FC","Betrag FW","MontDev")
 column 22 FW pict @K@! skip .t.

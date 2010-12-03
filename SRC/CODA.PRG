@@ -612,6 +612,7 @@ browse array a ;
             space(44);
         )} ;
   title ("CODA-Bankkonten von "+trim(PAR->Firme)) ;
+  delete {||.f.} ;
   enter {|x|CptExtEdit(strtran(x,"-"))}
 RETURN .t.
 
