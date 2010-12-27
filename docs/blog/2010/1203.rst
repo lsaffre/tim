@@ -1,80 +1,80 @@
-20101203
-========
+20101203 FoxPro and temporary index files
+=========================================
 
 Ein seltsamer RTE trat sporadisch beim Erstellen der temporären Indexdatei 
 eines Reports mit INDEX-Klausel auf::
 
- 23:18:20 TIM 4.0 (20101124) on Windows XP
- 23:18:43 [console] Error BASE/8021
- Description : Unknown/Invalid symbol for alias
- Operation : ART;Thread ID : 1
- Called from (B)_REPORT(0)
- Called from _REPORT(343)
- Called from REPPRINT(163)
- Called from (B)XPARSE(0)
- Called from VMENU(432)
- Called from HMENU(171)
- Called from MAIN(175)
- 23:18:43 Sonstige|Partner nach Umsatz, 
- 23:18:43 User directory : tim\HOME\ARMAND
- 23:18:43 Data directory : L:\tim\DATA
- 23:18:43   List of open database files :
- 23:18:43   Area Alias    Index key                    Order #Ntx RecNo
- 23:18:43      1 JNL      JNL->IdJnl                       1    2 24/23
- 23:18:43      2 PER      PER->Periode                     1    1 127/126
- 23:18:43      3 DEV      DEV->IdDev                       1    1 9/8
- 23:18:43      4 CTR      CTR->IdCtr                       1    1 3/2
- 23:18:43      5 NAT      NAT->IdNat                       1    1 19/24
- 23:18:43      6 PLZ      PLZ->Pays+PLZ->CP                1    2 416/962
- 23:18:43  *   7 PAR                                       0    1 5/745
- 23:18:43      8 VEN      VEN->IdJnl+VEN->IdDoc            1    7 33016/33017
- 23:18:43      9 TPL      TPL->IdTpt+TPL->IdTpl            1    1 16/82
- 23:18:43     13 VNL      FIELD->IdJnl+FIELD->IdDoc+FIEL   1    3 304555/304577
- 23:18:43   Total : 10 open database files.
- 23:18:43           20 open index files.
- 23:18:43 
- 23:18:43 area usage:
- 23:18:43 USR   0 .f. L:\kunden\DATA\tim\DATA\
- 23:18:43 DEV   0 .t. L:\kunden\DATA\tim\DATA\
- 23:18:43 PER   0 .t. L:\kunden\DATA\tim\DATA\
- 23:18:43 JNL   0 .t. L:\kunden\DATA\tim\DATA\
- 23:18:43 NAT   0 .t. L:\kunden\DATA\tim\DATA\
- 23:18:43 PLZ   1 .t. L:\kunden\DATA\tim\DATA\
- 23:18:43 PAR   1 .t. L:\kunden\DATA\tim\DATA\
- 23:18:43 VEN   0 .t. L:\kunden\DATA\tim\DATA\
- 23:18:43 REG   0 .f. L:\kunden\DATA\tim\DATA\
- 23:18:43 IPR   0 .f. L:\kunden\DATA\tim\DATA\
- 23:18:43 GEN   0 .f. L:\kunden\DATA\tim\DATA\
- 23:18:43 ART   0 .f. L:\kunden\DATA\tim\DATA\
- 23:18:43 VNL   0 .t. L:\kunden\DATA\tim\DATA\
- 23:18:43 TAX   0 .f. L:\kunden\DATA\tim\DATA\
- 23:18:43 IFC   0 .f. L:\kunden\DATA\tim\DATA\
- 23:18:43 GRA   0 .f. L:\kunden\DATA\tim\DATA\
- 23:18:43 ACF   0 .f. L:\kunden\DATA\tim\DATA\
- 23:18:43 ALA   0 .f. L:\kunden\DATA\tim\DATA\
- 23:18:43 CTR   0 .t. L:\kunden\DATA\tim\DATA\
- 23:18:43 TPL   0 .t. L:\kunden\DATA\tim\DATA\
- 23:18:43 KeepOpen areas :
- 23:18:43 VNL   0 .t. L:\kunden\DATA\tim\DATA\
- 23:18:43 NAT   0 .t. L:\kunden\DATA\tim\DATA\
- 23:18:43 VEN   0 .t. L:\kunden\DATA\tim\DATA\
- 23:18:43 PER   0 .t. L:\kunden\DATA\tim\DATA\
- 23:18:43 DEV   0 .t. L:\kunden\DATA\tim\DATA\
- 23:18:43 CTR   0 .t. L:\kunden\DATA\tim\DATA\
- 23:18:43 JNL   0 .t. L:\kunden\DATA\tim\DATA\
- 23:18:43 TPL   0 .t. L:\kunden\DATA\tim\DATA\
- 23:18:43 active areas:
- 23:18:43   1 {PLZ,PAR}
- 23:18:43 Open windows :
- 23:18:43 [PRINTING] 
- 23:18:43 Window history :
- 23:18:43 [] 
- 23:18:43 [VEN] Journal VKA : Angebote (Vollbild)
- 23:18:43 [VEN] Journal VKA : Angebote
- 23:18:43 [PAR002] Arbeitsvorgang läuft...
- 23:18:43 [PRN2PDF] PRN2PDF
- 23:18:43 [console] DATA : LUC beendet Sitzung vom 02.12.10
- 23:18:43 0:00:23
+  23:18:20 TIM 4.0 (20101124) on Windows XP
+  23:18:43 [console] Error BASE/8021
+  Description : Unknown/Invalid symbol for alias
+  Operation : ART;Thread ID : 1
+  Called from (B)_REPORT(0)
+  Called from _REPORT(343)
+  Called from REPPRINT(163)
+  Called from (B)XPARSE(0)
+  Called from VMENU(432)
+  Called from HMENU(171)
+  Called from MAIN(175)
+  23:18:43 Sonstige|Partner nach Umsatz, 
+  23:18:43 User directory : tim\HOME\ARMAND
+  23:18:43 Data directory : L:\tim\DATA
+  23:18:43   List of open database files :
+  23:18:43   Area Alias    Index key                    Order #Ntx RecNo
+  23:18:43      1 JNL      JNL->IdJnl                       1    2 24/23
+  23:18:43      2 PER      PER->Periode                     1    1 127/126
+  23:18:43      3 DEV      DEV->IdDev                       1    1 9/8
+  23:18:43      4 CTR      CTR->IdCtr                       1    1 3/2
+  23:18:43      5 NAT      NAT->IdNat                       1    1 19/24
+  23:18:43      6 PLZ      PLZ->Pays+PLZ->CP                1    2 416/962
+  23:18:43  *   7 PAR                                       0    1 5/745
+  23:18:43      8 VEN      VEN->IdJnl+VEN->IdDoc            1    7 33016/33017
+  23:18:43      9 TPL      TPL->IdTpt+TPL->IdTpl            1    1 16/82
+  23:18:43     13 VNL      FIELD->IdJnl+FIELD->IdDoc+FIEL   1    3 304555/304577
+  23:18:43   Total : 10 open database files.
+  23:18:43           20 open index files.
+  23:18:43 
+  23:18:43 area usage:
+  23:18:43 USR   0 .f. L:\kunden\DATA\tim\DATA\
+  23:18:43 DEV   0 .t. L:\kunden\DATA\tim\DATA\
+  23:18:43 PER   0 .t. L:\kunden\DATA\tim\DATA\
+  23:18:43 JNL   0 .t. L:\kunden\DATA\tim\DATA\
+  23:18:43 NAT   0 .t. L:\kunden\DATA\tim\DATA\
+  23:18:43 PLZ   1 .t. L:\kunden\DATA\tim\DATA\
+  23:18:43 PAR   1 .t. L:\kunden\DATA\tim\DATA\
+  23:18:43 VEN   0 .t. L:\kunden\DATA\tim\DATA\
+  23:18:43 REG   0 .f. L:\kunden\DATA\tim\DATA\
+  23:18:43 IPR   0 .f. L:\kunden\DATA\tim\DATA\
+  23:18:43 GEN   0 .f. L:\kunden\DATA\tim\DATA\
+  23:18:43 ART   0 .f. L:\kunden\DATA\tim\DATA\
+  23:18:43 VNL   0 .t. L:\kunden\DATA\tim\DATA\
+  23:18:43 TAX   0 .f. L:\kunden\DATA\tim\DATA\
+  23:18:43 IFC   0 .f. L:\kunden\DATA\tim\DATA\
+  23:18:43 GRA   0 .f. L:\kunden\DATA\tim\DATA\
+  23:18:43 ACF   0 .f. L:\kunden\DATA\tim\DATA\
+  23:18:43 ALA   0 .f. L:\kunden\DATA\tim\DATA\
+  23:18:43 CTR   0 .t. L:\kunden\DATA\tim\DATA\
+  23:18:43 TPL   0 .t. L:\kunden\DATA\tim\DATA\
+  23:18:43 KeepOpen areas :
+  23:18:43 VNL   0 .t. L:\kunden\DATA\tim\DATA\
+  23:18:43 NAT   0 .t. L:\kunden\DATA\tim\DATA\
+  23:18:43 VEN   0 .t. L:\kunden\DATA\tim\DATA\
+  23:18:43 PER   0 .t. L:\kunden\DATA\tim\DATA\
+  23:18:43 DEV   0 .t. L:\kunden\DATA\tim\DATA\
+  23:18:43 CTR   0 .t. L:\kunden\DATA\tim\DATA\
+  23:18:43 JNL   0 .t. L:\kunden\DATA\tim\DATA\
+  23:18:43 TPL   0 .t. L:\kunden\DATA\tim\DATA\
+  23:18:43 active areas:
+  23:18:43   1 {PLZ,PAR}
+  23:18:43 Open windows :
+  23:18:43 [PRINTING] 
+  23:18:43 Window history :
+  23:18:43 [] 
+  23:18:43 [VEN] Journal VKA : Angebote (Vollbild)
+  23:18:43 [VEN] Journal VKA : Angebote
+  23:18:43 [PAR002] Arbeitsvorgang läuft...
+  23:18:43 [PRN2PDF] PRN2PDF
+  23:18:43 [console] DATA : LUC beendet Sitzung vom 02.12.10
+  23:18:43 0:00:23
 
 Hier ist der betreffende Code::
 
@@ -89,7 +89,7 @@ Hier ist der betreffende Code::
             eval {||Purzel()}
     endif
     
-Der Fehler trat nicht mehr auf, seitdem ich den Code wie folgt ersetzt habe::
+Zwecks Diagnose habe ich den Code wie folgt geändert::
 
     cNdxOn := rpt[RPT_INDEX][NDX_ON]
     cNdxTo := rpt[RPT_INDEX][NDX_NAME]
@@ -106,7 +106,6 @@ Der Fehler trat nicht mehr auf, seitdem ich den Code wie folgt ersetzt habe::
             eval {||Purzel()}
     endif
 
-Kann es sein, dass mein 2-level array access 
-innerhalb einer macro expression zu viel verlangt war?
-Wohl kaum... aber es ist so ungefähr das Einzige, was mir als 
-Erklärung einfällt...
+Einige Stunden Rumrätseln.
+Erklärung war letzten Endes, dass die FOXDBE von Xbase++ eine eventuell bestehende Datei TMP.CDX (von einem vorigen Report) scheinbar wieder zu öffnen versucht. Obschon ich ja nicht die Klausel ADDITIVE angegeben hatte. Wenn Xbase++ freie Software wäre, würde ich das den Entwicklern melden. Mein Workaround reicht mir: ich setze einfach ein `FileDelete('.\TMP'+ntx_ext(),.f.,.t.)` davor.
+

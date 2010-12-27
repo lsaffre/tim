@@ -335,6 +335,7 @@ if rpt[RPT_FORLOOP] == NIL
       if rpt[RPT_INDEX] == NIL
         ddSetOrder(rpt[RPT_ORDER])
       else
+        FileDelete('.\TMP'+ntx_ext(),.f.,.t.)
         cNdxOn := rpt[RPT_INDEX][NDX_ON]
         cNdxTo := rpt[RPT_INDEX][NDX_NAME]
         cNdxFor := rpt[RPT_INDEX][NDX_FOR]

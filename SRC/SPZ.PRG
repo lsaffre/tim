@@ -1304,11 +1304,11 @@ RETURN .f. if ! eval(blCollect,a)
 RETURN .t. if len(a) == 0
 naf := array(NAF_ALEN)
 naf[NAF_TAGGED] := .t.
-if lVertraulich
-  naf[NAF_NB1] := "-- Akte "+VEN->IdPar2+",  Ihre Ref. "+PAR->Code1
+if lVertraulich .or. PARATTR_V $ PAR->Attrib
+  naf[NAF_NB1] := "-- Akte "+DLS->IdPar+" (Ihre Ref. "+trim(PAR->Code1)+")"
   naf[NAF_MEMO] := ''
 else
-  naf[NAF_NB1] := "-- Akte "+VEN->IdPar2+", "+trim1(PAR->Vorname)+trim(PAR->Firme)
+  naf[NAF_NB1] := "-- Akte "+DLS->IdPar+" ("+trim1(PAR->Vorname)+trim(PAR->Firme)+")"
   naf[NAF_MEMO] := trim(ParStreet())+", "+trim1(ParCity(),", ")+"*"+dtoc(PAR->GebDat)
   if !empty(PAR->Code1)
     naf[NAF_MEMO] += crlf() + "Ihre Ref. "+PAR->Code1

@@ -1,0 +1,24 @@
+20101216
+========
+
+- Nach Importieren von CODA-Auszügen und Registrieren des 
+  Dokuments wurde die MVM noch nicht als importiert markiert 
+  (und folglich beim nächsten Dokument erneut vorgeschlagen).  
+  Da war noch ein Bug (`MVM1.NTX` ist 
+  `MVM->NoCpt+MVM->NoExt+MVM->NoMvm`, 
+  aber in `aMvm` standen nur die `IdMvm`).
+  
+- :func:`CtbUpdate` meldet jetzt `CtbUpdate/MVM : no MVM 
+  found for "+utos(aMvm[i][1])`, 
+  wenn er den MVM->Record nicht finden kann 
+  (um dessen MVM->Match einzutragen. 
+  Diese Warnung sollte theoretisch nie kommen, 
+  ich habe sie zum Finden des obigen Bugs benutzt, da meldete er gleich::
+
+   ╔═══════════════════════ Warnung ══════════════════════╗
+   ║   CtbUpdate/MVM : no MVM found for "2010/0300001"    ║
+   ║       Drücken Sie eine Taste um weiterzumachen       ║
+   ╚══════════════════════════════════════════════════════╝
+
+  
+ 

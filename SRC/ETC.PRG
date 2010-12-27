@@ -1690,6 +1690,8 @@ RETURN DrvCvtString(c)
 *#else
 
 FUNCTION FileDelete(cFilename,lConfirm,lOnlyIfExists)
+// lOnlyIfExists .t. means that it is ok if no file exists
+// default is to return .f. if the file doesn't exist (and thus could not be deleted)
 local cDllPath
 cFilename := trim(cFilename)
 cDllPath := GetDlmPath(cFilename)

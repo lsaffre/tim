@@ -648,7 +648,7 @@ elseif IMP->Etat == DocStatError() .or. IMP->Etat == DocStatClosed()
         lOkay := .f.
       endif
       if ! empty(IML->IdMvm)
-        aadd(aMvm,IML->IdMvm)
+        aadd(aMvm,strtran(jnl[JNL_COMPTE],"-",'') + IML->IdMvm)
       endif
     endif
   close area
@@ -1240,7 +1240,7 @@ open area oIml(), oBud(), oPar(), oPrj()
     endif
     #ifdef DEF_CODA
       if !empty(IML->IdMvm)
-        aadd(aMvm,{IML->IdMvm,IML->IdJnl+IML->IdDoc+IML->Line})
+        aadd(aMvm,{strtran(jnl[JNL_COMPTE],"-",'') + IML->IdMvm,IML->IdJnl+IML->IdDoc+IML->Line})
       endif
     #endif DEF_CODA    
     nCount++
@@ -1717,7 +1717,9 @@ if len(aMvm) > 0
   open area oMvm()
     for i := 1 to len(aMvm)
       seek aMvm[i][1]
-      if !eof()
+      if eof()
+          Warning("CtbUpdate/MVM : no MVM found for "+utos(aMvm[i][1]))
+      else
         if ddRecLock()
           MVM->Match := aMvm[i][2]
           unlock record

@@ -1,0 +1,12 @@
+20101220
+========
+
+- (DEF_CODA) : Wenn eine Einzahlung mit VCS kommt, 
+  die einer bestehenden Forderung zugewiesen werden kann, 
+  aber deren Betrag den offenen Betrag der Forderung 
+  *übersteigt*, dann 
+  macht TIM jetzt eine Warnung 
+  "<Zeilennummer>: Betrag Zahlung größer als <offener Betrag>"
+  und trägt nur den offenen Betrag ein. Den Restbetrag muss 
+  man anschließen manuell einer oder mehreren anderen 
+  Forderungen zuweisen.

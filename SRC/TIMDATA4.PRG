@@ -824,6 +824,7 @@ RETURN b
 **
 FUNCTION ParCtpSum(cIdPar,xnValue,cIdCtr)
 local nSum := 0
+LogConsole('ParCtpSum('+utos(cIdPar)+','+utos(xnValue)+','+utos(cIdCtr)+')')
 open area oCtp()
   softseek cIdPar + MemPer1
   do while ! eof() .and. CTP->IdPar == cIdPar ;

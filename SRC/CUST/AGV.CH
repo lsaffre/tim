@@ -120,7 +120,6 @@
 
 #undef DEF_HELP
 
-* #define DEF_DEBUG
 #define DEF_EUPPER_ALPHA
 #define DEF_DGR // erweitertes Mahnwesen (RAP, RPL und DGR)
 
@@ -146,3 +145,6 @@
 #define DEF_TRIG
 
 #define DEF_FOX
+
+// #define DEF_DEBUG
+

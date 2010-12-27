@@ -1,0 +1,19 @@
+20101222
+========
+
+Sammelrechnungen SPZ
+--------------------
+
+- In Sammelrechnungen wurde die falsche Aktennummer gedruckt.
+
+- Sammelrechnungen berücksichtigten bisher das 
+  Partnerattribut V (Vertraulich) des Rechnungsempfängers. 
+  Jetzt ist es so: wenn Attribut V *entweder* auf dem Zahler *oder* auf dem Klienten gesetzt ist, dann druckt er keine Namen in der Rechnung.
+
+Sonderfälle beim Übernehmen von CODA-Buchungen
+----------------------------------------------
+
+- Bei manueller Zuordnung mit Alt-N muss ebenfalls auf 
+  Überbefriedigung getestet werden 
+  (IML->Mont (Betrag aus der MVM) darf maximal MVI->MontUs sein):
+  :func:`ImlCopy1` ruft jetzt die :xfile:`IMLMVMCP.ACT` auf.

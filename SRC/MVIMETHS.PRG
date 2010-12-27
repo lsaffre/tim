@@ -442,7 +442,7 @@ endif
 RETURN .t.
 
 /*
-
+IML.DEF : Buchung ber~nehmen [Alt-N]
 */
 FUNCTION ImlCopy1()
 local aLn
@@ -472,15 +472,24 @@ if empty(IML->Mont) .or. IML->Mont == aIml[IML_MONT]
   IML->MontDev     := aIml[IML_MONTDEV  ] // 20011221
   ImlMontValidate()
   IML->DC          := aIml[IML_DC       ]
+elseif val(IML->Mont) > val(aIml[IML_MONT])
+  // same test as in IMLMVMCP.ACT 
+  Warning(;
+    IML->Line+": Betrag Zahlung gr”áer als ";
+    +ltrim(aIml[IML_MONT]))
+  IML->Mont := aIml[IML_MONT]
+  IML->MontDev     := aIml[IML_MONTDEV  ] // 20011221
+  ImlMontValidate()
+  IML->DC          := aIml[IML_DC       ]
 endif
 IML->Date        := UserDate() // aIml[i][IML_DATE     ]
 IML->IdBud       := aIml[IML_IDBUD    ]
-IML->BackMatch   := aIml[IML_BACKMATCH]
 if empty(aIml[IML_MATCH])
   IML->Match       := IML->IdJnl + IML->IdDoc + IML->Line
 else
   IML->Match       := aIml[IML_MATCH    ]
 endif
+IML->BackMatch   := aIml[IML_BACKMATCH]
 IML->EaMatch     := aIml[IML_EAMATCH  ]
 IML->IdPrj       := aIml[IML_IDPRJ    ]
 IML->NB2         := aIml[IML_NB2      ]
