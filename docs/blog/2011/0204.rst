@@ -1,7 +1,10 @@
 20110204
 ========
 
-Änderung im Reportgenerator: :func:`PrintTotal` und `GRP_BEFORE`
+Änderung im Reportgenerator 
+---------------------------
+
+:func:`PrintTotal` und `GRP_BEFORE`
 werden jetzt nicht mehr *nicht* ausgeführt, wenn `nDtlCount` 0 ist.
 
 Vorsicht: mögliche Nebenwirkungen. Aber hier der Grund, warum das so sein muss.
@@ -35,3 +38,26 @@ Nachher::
        Solde final 000062 Kunde 2              22,50                                                      
        
 
+Änderung in Aktenkontrollliste
+------------------------------
+
+Die Aktenkontrollliste ist jetzt ein wenig strenger.
+
+Wenn eine Person in einer therapeutischen Gruppe mitmacht, 
+aber im F2-Fenster auch als Mitglied einer Familie erfasst ist, 
+dann wurde sie (bzw. der Therapeut) dadurch bisher komplett vom 
+Notizenschreiben dispensiert. Also TIM schimpfte nicht, dass die 
+Person keine Notizen hatte, weil er davon ausging, dass Notizen immer auf der Familie erfasst
+werden. Da im Fall von Gruppenmitgliedern für die Familie keine DDL
+vorlagen, schimpfte er auch für die Familie nicht.
+
+Neue Regel: Wenn eine Person anwesend war und Mitglied einer Familie
+ist, dann wird die Person jetzt nur noch dann vom Notizenschreiben
+dispensiert, wenn die Familie auch direkte DL im betrachteten Zeitraum hat.
+
+N.B.: wenn ein Gruppenmitglied parallel zur Gruppenarbeit auch mit
+seiner Familie anwesend war, und wenn diese Familie ihre Notizen in
+Ordnung hat, dann gibt sich TIM zufrieden und prüft nicht nach, ob die
+Person auch Gruppennotizen hat. 
+
+Änderungen in :xfile:`PARCTL2.ACT` und :func:`ParMsgHolder()` 

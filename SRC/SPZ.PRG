@@ -119,20 +119,26 @@ Rckgabewert leer bedeutet in PARCTL2.ACT, dass dieser Partner dispensiert ist.
 */
 FUNCTION ParMsgHolder(d1,d2)
 local cIdPar := NIL
-local bEval := {||}
+local n 
+local bEval := {|| n += 1, .t.}
 if PAR->IdPrt == "P"
   open area oPlp()
     softseek PAR->IdPar
     do while !eof() .and. PLP->IdPar1 == PAR->IdPar
       if PLP->Type $ "81-,82-,83-,84-"
+        /*
         PLP->IdPar2 ist die familie. 
-        todo : nur dispensieren, wenn die familie auch DLS hat im Zeitraum
+        nur dispensieren, wenn die familie auch DDL hat im Zeitraum
+        */
+        n := 0
         if DbfScan({oDls(),oDla(),oPar()},4,;
           PLP->IdPar2+dtos(d1),;
           "DLS->IdPar+dtos(DLS->Date)<='"+PLP->IdPar2+dtos(d2)+"'",;
           "DlaExist(DLS->IdDla).and.'D'$DLA->Attrib",bEval,NIL,.f.)
-        
-        cIdPar := "" // PLP->IdPar2
+          if n > 0
+            cIdPar := "" // PLP->IdPar2
+          endif
+        endif
         exit
       else
         skip

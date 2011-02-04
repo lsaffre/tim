@@ -10,5 +10,6 @@ Since I am the only Lino developer, I'll write it mostly in German.
    :maxdepth: 1
    
    2010/index
+   2011/index
    
    

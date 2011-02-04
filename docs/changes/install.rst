@@ -757,37 +757,48 @@ Also in der PAR.DEF hinzufügen :
 - CUST_RZKB : FnlHstFill() Defaultwert für scTagLine wurde verändert.
 
 19991020
-- HSTFIN.REP und HSTVEN.REP anpassen :
-  > header2 PerText()
-  ersetzen durch
-  > header2 PerText(cblock("JNL->IdJnl=='"+DlgValue("IdJnlVen")+"'"))
+- HSTFIN.REP und HSTVEN.REP anpassen::
+
+     header2 PerText()
+     
+  ersetzen durch::
+  
+   header2 PerText(cblock("JNL->IdJnl=='"+DlgValue("IdJnlVen")+"'"))
 
 - DEF_ACF : ArtAcfEdit() ruft xlAfter jetzt immer auf, nicht nur, wenn
   man mit F10 rausgegangen ist. Evtl. in der aufgerufenen ACT-Datei
-  hinzufügen:
-  RETURN .t. if ddLastKey() == 27
+  hinzufügen::
+  
+    RETURN .t. if ddLastKey() == 27
 
 19991021
 - DEF_HST. Evtl. HSTPAR.PKG und PARHST01.REP aufspielen.
 
 19991124
-- CUST_CPASANA. In der BUD.DEF hinzufügen :
-  ddAddField("IdGen","C",LenIdGen(),0,\
-    "@k@!",NIL,\
-    NIL,NIL,\
-    NIL,{|x|PickGen(NIL,x)},NIL, \
-    {|x| GetIdGen(x) } \
-  }
-- Folgende Dateien aus TEST übernehmen :
-  ANA*.QRY+MSK+DB*
-  MVA*.QRY
-  CTA*.QRY
-  GEN*.QRY+MSK+DB*
-  ODA*.QRY+MSK
-  CTR*.QRY
-  BUD.MSK
+
+- CUST_CPASANA. In der BUD.DEF hinzufügen::
+
+   ddAddField("IdGen","C",LenIdGen(),0,\
+     "@k@!",NIL,\
+     NIL,NIL,\
+     NIL,{|x|PickGen(NIL,x)},NIL, \
+     {|x| GetIdGen(x) } \
+   }
+   
+- Folgende Dateien aus TEST übernehmen::
+
+   ANA*.QRY+MSK+DB*
+   MVA*.QRY
+   CTA*.QRY
+   GEN*.QRY+MSK+DB*
+   ODA*.QRY+MSK
+   CTR*.QRY
+   BUD.MSK
+
 - Journal "ANA" (Typ ODA) erstellen
+
 - MNU.DBC anpassen
+
 - JNLATTR_Y setzen für REG und/oder AAW
 
 
@@ -830,13 +841,17 @@ Also in der PAR.DEF hinzufügen :
   bzw. ART.DEF sowie jeweils neue Ansicht "Text suchen".
 
 20000215
+
 - Dateien jnl*.qry und jnl.msk aufspielen.
-- tim /check wegen JNL->SeqType. A00215.IND initialisiert JNL->SeqType.
+
+- :command:`tim /check` wegen JNL->SeqType. A00215.IND initialisiert JNL->SeqType.
   Nummerierungsart nachprüfen.
   NoCheckIdDoc in der tim.dbi kann jetzt im Prinzip raus.
   CheckIdDoc ebenfalls.
-- Der folgende Eintrag in der tim.dbi fehlte bisher :
-  OnRebuild {|cText| IndDelete("TIMTEST")}
+  
+- Der folgende Eintrag in der tim.dbi fehlte bisher::
+
+    OnRebuild {|cText| IndDelete("TIMTEST")}
 
 20000221
 - Evtl. DBCHECK.DLG und DBCHECK.ACT aufspielen. (Auch in der MNU.DBC
@@ -852,17 +867,21 @@ Also in der PAR.DEF hinzufügen :
     [=Memo2Tex(x)]
   ersetzen durch
   [etc do ToStream(Memo2Tex(x))]
-- Nachprüfen, ob in der tim.dbi der folgende Eintrag steht
-  OnRebuild {|cText| IndDelete("TIMTEST",cText)}
-  wenn ja, ersetzen durch
-  OnRebuild {|cText| IndDelete("TIMTEST")}
+- Nachprüfen, ob in der tim.dbi der folgende Eintrag steht::
+
+    OnRebuild {|cText| IndDelete("TIMTEST",cText)}
+    
+  wenn ja, ersetzen durch::
+  
+    OnRebuild {|cText| IndDelete("TIMTEST")}
+  
   (Sonst kommt nach einem Absturz ein "Argument error : .not.")
 
 20000511
 - BUDATTR.DBC aus Standarddatenbank CPAS aufspielen.
 
 20000515
-- Evtl. ddAddSpecial({||ddPaste()},NIL,-1) in der VNL.DEF oder STM.DEF
+- Evtl. ``ddAddSpecial({||ddPaste()},NIL,-1)`` in der VNL.DEF oder STM.DEF
   einfügen.
 
 20000605
@@ -1131,7 +1150,7 @@ Die folgenden Anweisungen sind alle optional :
 20020925
 - Prüfen, ob getenv() benutzt wird. Evtl. auf getvar() umsteigen.
 - DLM\STD aktualisieren.
-- Bei CUST_AGV : Dateien c:\autoexec.act noch mal nachprüfen : sollten
+- Evtl. Dateien c:\autoexec.act noch mal nachprüfen : sollten
   nur die beiden DlgDefine() machen und sonst nichts.
 
 20021028
@@ -1249,8 +1268,10 @@ Die folgenden Anweisungen sind alle optional :
 20051015
 
 - DEF_HSI : bei marmor musste ich nach dem Upgrade in der tim.dbi
-  deklarieren:
+  deklarieren::
+  
     VnlIntdefault ""
+    
   Weil das scheinbar vorher nie ausgefüllt wurde und die das bei marmor
   gar nicht mehr benutzen. Sonst kam beim Registrieren "??????????
   unbekannte Zollnummer"
@@ -1271,20 +1292,24 @@ Die folgenden Anweisungen sind alle optional :
   dbback.btp mit %1 wird nicht mehr von tim.btp aus gestartet.
 
 20060113
+
 - bei AGV : Wenn neue DLM aufgespielt wird, muss in den
   Druckparametersätzen auch HPLJ4 nach HPLJ6 geändert werden. Testen, ob
   Produktionsplanung (LISTEX) richtig rauskommt.
 
 20060126
 
-- VEN.DEF und FIN.DEF : DlgExec("JNLIDDOC") nur wenn {||indexord()==1}
+- VEN.DEF und FIN.DEF : DlgExec("JNLIDDOC") nur wenn ``{||indexord()==1}``
 
 20060511
+
 - OpenMail() : wenn das TIM-Verzeichnis nicht im PATH ist, dann muss man
-  jetzt einen expliziten Eintrag OpenMail in der tim.ini machen.
+  jetzt einen expliziten Eintrag OpenMail in der tim.ini machen::
+  
     OpenMail f:\anwprog\tim\timtools openmail
 
 20060516
+
 - TimTest() und PrintAct() machen jetzt nicht mehr SetDialog(.f.)
 
 20060531
@@ -1293,8 +1318,9 @@ Die folgenden Anweisungen sind alle optional :
   ist.
 
 20060714
+
 - VenAppend() kopiert jetzt nicht mehr VEN->Attrib, sondern setzt die
-  Standardattribute aus JNL->DocAttr ein. Zu beachten bei AGV, MPE,...
+  Standardattribute aus JNL->DocAttr ein. 
 
 20060731
 
@@ -1303,14 +1329,17 @@ Die folgenden Anweisungen sind alle optional :
 
 
 20060810
+
 - Buggefahr in StkReset(). 
 
 20060824
+
 - PreVnaUndo muss jetzt selber SetMsg() aufrufen, falls er nicht
   einverstanden ist.
 
 
 20060825
+
 - DEF_VNA.
   Zunächst in VNA.DEF ein manuelles Feld "Match" definieren, damit die
   Angaben nicht verloren gehen.
@@ -1320,31 +1349,36 @@ Die folgenden Anweisungen sind alle optional :
   20060825.ACT
 
 20060828
-- timtest() changed API.
-  dlm\std\timtest.dlg
-  dlm\std\dbcheck.act
-  dlm\std\boss.mnu
-  dlm\sprl\mnuboss.dbc
 
-- Im CPAS in der tim.dbi :
+- timtest() changed API::
 
-do SetTest("MviTest",{||MviTest("ChkPeriode(MVI->Periode)==0")})
-do SetTest("MviDupTest",{||MviDupTest("ChkPeriode(MVI->Periode)==0")})
-to SetTest("MviCtbTest",{||MviCtbTest("ChkPeriode(MVI->Periode)==0")})
-do SetTest("ImpImlTest",{||ImpImlTest("ChkPeriode(IMP->Periode)==0")})
-do SetTest("ImlTest",{||ImlTest("ChkPeriode(IMP->Periode)==0")})
-do SetTest("CtbBudTest",{||CtbBudTest(\
-    "inrange(left(CTB->Periode,2),left(MemPer1,2),left(MemPer2,2))"\
-  )})
+   dlm\std\timtest.dlg
+   dlm\std\dbcheck.act
+   dlm\std\boss.mnu
+   dlm\sprl\mnuboss.dbc
+
+- Im CPAS in der tim.dbi ::
+
+    do SetTest("MviTest",{||MviTest("ChkPeriode(MVI->Periode)==0")})
+    do SetTest("MviDupTest",{||MviDupTest("ChkPeriode(MVI->Periode)==0")})
+    to SetTest("MviCtbTest",{||MviCtbTest("ChkPeriode(MVI->Periode)==0")})
+    do SetTest("ImpImlTest",{||ImpImlTest("ChkPeriode(IMP->Periode)==0")})
+    do SetTest("ImlTest",{||ImlTest("ChkPeriode(IMP->Periode)==0")})
+    do SetTest("CtbBudTest",{||CtbBudTest(\
+        "inrange(left(CTB->Periode,2),left(MemPer1,2),left(MemPer2,2))"\
+      )})
 
 20060831
+
 - dlm\art\artcts01.rep (Renner/Penner-Liste)
-  dlm\sprl\par002.rep (Partnerliste nach Umsatz)
+- dlm\sprl\par002.rep (Partnerliste nach Umsatz)
 
 
 20061013
-- N.B.: Damit /pc:xxx funktionieren kann, muss in den autoexec.act das
-  setvar("PC"...) durch DlgDefault("PC"...) ersetzt werden.
+
+- N.B.: Damit ``/pc:xxx`` funktionieren kann, 
+  muss in den autoexec.act das
+  ``setvar("PC"...)`` durch ``DlgDefault("PC"...)`` ersetzt werden.
 
 20061020
 
@@ -1361,8 +1395,8 @@ Bei Umstieg Clipper/Xbase:
 
 - dlm aktualisieren
 
-- eupper() durch upper() ersetzen in allen Dateien (vor allem *.def,
-  *.act, *.dlg, *.exp)
+- eupper() durch upper() ersetzen in allen Dateien 
+  (vor allem .def, .act, .dlg, .exp)
   
 
 20071003-20071231
@@ -1427,3 +1461,10 @@ Bei Umstieg Clipper/Xbase:
 --------
 
 - MFC.DBC muss eine neue Kolonne kriegen MFC_NAME4 (auch wenn nicht DEF_4LANG)
+
+
+20110204
+--------
+
+- Änderung im Reportgenerator: :func:`PrintTotal` und `GRP_BEFORE`
+  werden jetzt nicht mehr *nicht* ausgeführt, wenn `nDtlCount` 0 ist.
