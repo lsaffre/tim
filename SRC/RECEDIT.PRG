@@ -66,12 +66,16 @@ RETURN .t.
 
 #ifdef DEF_CONSOLE
 // called from ddedit.prg when DBFATTR_S is set
-FUNCTION RecConsole(aBuf)
+FUNCTION RecConsole(aBuf,cMailChange,cMailTpl)
 local i, cName
 local lFound := .f.
 local cMsg := alias() 
 local cData := ""
 local cId := indexkey(1)
+//~ local cMsgBody := ''
+local lMail := .f.
+//~ default cMailChange to ""
+default cMailTpl to "PXSEID.EML"
 if !empty(cId)
   cMsg += ":" + &cId
 endif
@@ -83,9 +87,20 @@ for i = 1 to fcount()
     cMsg += trim(padr(aBuf[i],30)) + " -> "
     cMsg += trim(padr(FIELD->&cName,30))
     lFound := .t.
+    if cMailChange != NIL .and. cName $ cMailChange
+      lMail := .t.
+      //~ cMsgBody += aChanges[i] + crlf()
+    endif
   endif
 next i
 RETURN .t. if ! lFound
+if lMail
+  // RETURN .f. if !Confirm("Das sind schwerwiegende Žnderungen!",MsgSure(),MSG_NO)
+  setvar('EmlBody',cMsg)
+  SendConsole("Schwerwiegende Žnderungen:",cMsg)
+  SendMail(cMailTpl,.f.)
+  //~ RETURN .f. if ! SendMail(cMailTpl,.f.)
+endif
 RETURN LogConsole(cMsg)
 
 

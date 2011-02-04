@@ -546,15 +546,19 @@ RETURN NIL
 /**
   switches to PXT (if necessary) and execute xlEval
 **/
-FUNCTION ParOnPxt(xlEval,uReturn)
+FUNCTION ParOnPxt(xlEval,uUnused)
+//~ FUNCTION ParOnPxt(xlEval,uReturn)
 local b := ParPxtTable()
-RETURN uReturn if b == NIL
+local uReturn := .f.
+RETURN !SetMsg("Fr diesen Partner ist keine PXT-Tabelle konfiguriert") if b == NIL
 if alias() == b[AD_NAME]
   uReturn := xparse(xlEval)
 else
   open area b, oPar()
     seek PAR->IdPar
-    if ! eof()
+    if eof()
+      SetMsg("Dieser Partner hat keinen PXT-Eintrag.")
+    else
       uReturn := xparse(xlEval)
     endif
   close area
@@ -564,14 +568,18 @@ RETURN uReturn
 /**
   switches to PAR (if necessary) and execute xlEval
 **/
-FUNCTION PxtOnPar(xlEval,uReturn)
+//~ FUNCTION PxtOnPar(xlEval,uReturn)
+FUNCTION PxtOnPar(xlEval,uUnused)
 local cIdPar := FIELD->IdPar
+local uReturn := .f.
 if alias() == "PAR"
   uReturn := xparse(xlEval)
 else
   open area oPar(), GetTable(alias())
     seek cIdPar
-    if ! eof()
+    if eof()
+      SetMsg("Komisch: dieser PXT hat keinen PAR.")
+    else
       uReturn := xparse(xlEval)
     endif
   close area

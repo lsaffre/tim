@@ -1,4 +1,4 @@
-** Copyright (c) 2005-2010 Luc Saffre
+** Copyright (c) 2005-2011 Luc Saffre
 **
 ** This file is part of TIM.
 **
@@ -113,14 +113,25 @@ RETURN a
 
 /* 
 Gibt die Nummer des Partners zur…k, der die Notizen dieses Partners sammelt. Mitglieder einer Familie kriegen keine eigenen Notizen, sondern deren Notizen werden alle in einen Topf geworfen. Bei "therapeutischen Gruppen" dagegen (Psychodrama, Frauen, Jungen,...) wird das nicht gemacht.
+
+R…kgabewert leer bedeutet in PARCTL2.ACT, dass dieser Partner dispensiert ist.
+
 */
-FUNCTION ParMsgHolder()
+FUNCTION ParMsgHolder(d1,d2)
 local cIdPar := NIL
+local bEval := {||}
 if PAR->IdPrt == "P"
   open area oPlp()
     softseek PAR->IdPar
     do while !eof() .and. PLP->IdPar1 == PAR->IdPar
       if PLP->Type $ "81-,82-,83-,84-"
+        PLP->IdPar2 ist die familie. 
+        todo : nur dispensieren, wenn die familie auch DLS hat im Zeitraum
+        if DbfScan({oDls(),oDla(),oPar()},4,;
+          PLP->IdPar2+dtos(d1),;
+          "DLS->IdPar+dtos(DLS->Date)<='"+PLP->IdPar2+dtos(d2)+"'",;
+          "DlaExist(DLS->IdDla).and.'D'$DLA->Attrib",bEval,NIL,.f.)
+        
         cIdPar := "" // PLP->IdPar2
         exit
       else
@@ -179,8 +190,8 @@ RETURN DbfScan({oDlp(),oDls(),oPar()},2,;
     
 FUNCTION ParDDLScan(d1,d2)
 /* 
-  Direkte DL sind DLS, bei denen die Person pers馬lich anwesend war.
-  deren DLA Attibut D hat.
+  Direkte DL sind DLS, bei denen die Person pers馬lich anwesend war
+  und deren DLA Attibut D hat.
 */
 local nAnzDDL := 0
 local dDDL1 := ctod("")

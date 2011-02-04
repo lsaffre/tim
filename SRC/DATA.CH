@@ -88,7 +88,8 @@
 // again used since 20020117
 #define AD_ONTEST        33  //
 #define AD_PREPICK       34
-#define AD_ALEN          34  // Length of array
+#define AD_MAILCHANGE    35
+#define AD_ALEN          35  // Length of array
 
 * #define AD_CURMSK        21  // Currently loaded .MSK
 * #define AD_CURQRY        22  // Currently loaded .QRY

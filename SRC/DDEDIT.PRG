@@ -1301,7 +1301,7 @@ if updated() .or. snRecStat == RS_UNKNOWN .or. lastkey() != K_ESC
   ddPostEdit()
   #ifdef DEF_CHANGELOG
     if DBFATTR_S $ ad[AD_ATTRIB]
-      RecConsole(aBuf)
+      RecConsole(aBuf,ad[AD_MAILCHANGE])
     endif
     if DoChangeLog(ad[AD_NAME]) // aBuf != NIL
       Log_PUT(aBuf)
@@ -1712,7 +1712,7 @@ ddAfter() // 20051019 jetzt erst nach unlock record und Warning()
 unlock record
 #ifdef DEF_CHANGELOG
   if DBFATTR_S $ saData[AD_ATTRIB]
-    RecConsole(aBuf)
+    RecConsole(aBuf,saData[AD_MAILCHANGE])
   endif
   if DoChangeLog(saData[AD_NAME])
     Log_PUT(aBuf)

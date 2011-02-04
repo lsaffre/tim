@@ -1,5 +1,5 @@
 ** Copyright (c) 1992-2001 PAC Systems
-** Copyright (c) 2001-2010 Luc Saffre
+** Copyright (c) 2001-2011 Luc Saffre
 **
 ** This file is part of TIM.
 **
@@ -643,12 +643,12 @@ for i := len(rpt[RPT_GROUPS]) to 1 step -1
         lOkay := Confirm(SetMsg(),MsgContinue())
         exit
       endif
-      if grp[GRP_DTLCOUNT] > 0
+      //~ if grp[GRP_DTLCOUNT] > 0  removed 20110204
         if ! xeval(grp[GRP_BEFORE],grp[GRP_COUNT],grp[GRP_DTLCOUNT]) 
           lOkay := Confirm(SetMsg(),MsgContinue())
           exit
         endif
-      endif
+      //~ endif
       grp[GRP_STARTED] := .t.
     endif
   endif
@@ -980,7 +980,7 @@ local j
 local ttl := rpt[RPT_TOTALS][nTotal]
 local grp := rpt[RPT_GROUPS][nGroup]
 RETURN .t. if grp[GRP_TEXT] == NIL
-RETURN .t. if grp[GRP_COUNT] == 0
+//~ RETURN .t. if grp[GRP_COUNT] == 0  removed 20110204
 snTtlCurrent := nTotal
 snGrpCurrent := nGroup
 RETURN .t. if rpt[RPT_TOTALS][nTotal][TTL_TEXT] == NIL

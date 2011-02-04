@@ -1,0 +1,4 @@
+20110121
+========
+
+- Wenn man :kbd:`Delete` während :func:`TagUpdate` drückte, löschte TIM das Element und kam dann anschließend durcheinander (RTE `Error in array index`). Jetzt reagiert er dort nicht mehr auf :kbd:`Delete`.

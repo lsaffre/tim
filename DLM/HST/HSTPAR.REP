@@ -84,9 +84,11 @@ group key={|| HST->IdPar } \
       after={|nCount,nDtlCount|.t.} \
       align="L" \
       before={|nCount,nDtlCount| \
+        iif(\
+          nDtlCount>0.or.abs(RptValue(1,1,6)-RptValue(1,1,7))>DevTolerance(SetDevise()),\
         PrintLine()\
         .and.PrintLine(Tagged("B")+HST->IdPar + " : " + ParName(HST->IdPar)+Tagged("b"))\
-        .and.PrintTotal(1,1)\
+        .and.PrintTotal(1,1),.t.)\
       }
 group text={|x|"alle"} align="L"
 

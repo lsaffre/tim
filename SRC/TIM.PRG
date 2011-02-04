@@ -1,6 +1,6 @@
 ** -*- coding: cp850 -*-
 ** Copyright (c) 1992-2001 PAC Systems
-** Copyright (c) 2001-2010 Luc Saffre
+** Copyright (c) 2001-2011 Luc Saffre
 **
 ** This file is part of TIM.
 ** TIM is free software: you can redistribute it and/or modify it
@@ -15,6 +15,7 @@
 ** along with TIM. If not, see <http://www.gnu.org/licenses/>.
 
 #include "TIM.CH"
+
 
 request ParEdit
 

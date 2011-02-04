@@ -288,6 +288,7 @@ ad[AD_PREDELETE] := bPreDelete
 ad[AD_FIRST]     := .f.
 ad[AD_ONTEST]    := {} // blOnTest
 ad[AD_PREPICK]   := {||.t.}
+ad[AD_MAILCHANGE] := NIL
 sadCurrent := ad
 if blOnTest != NIL
   ddOnTest(blOnTest)
@@ -360,6 +361,10 @@ if valtype(b)=="C"; b := cblock(b) ; endif
 if valtype(b)=="C"; b := cblock(b) ; endif
 RETURN .f. if b == NIL
 sadCurrent[AD_PREPICK] := b
+RETURN .t.
+
+FUNCTION ddMailChange(s)
+sadCurrent[AD_MAILCHANGE] := s
 RETURN .t.
 
 

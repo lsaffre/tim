@@ -1,0 +1,37 @@
+20110204
+========
+
+Änderung im Reportgenerator: :func:`PrintTotal` und `GRP_BEFORE`
+werden jetzt nicht mehr *nicht* ausgeführt, wenn `nDtlCount` 0 ist.
+
+Vorsicht: mögliche Nebenwirkungen. Aber hier der Grund, warum das so sein muss.
+
+Wenn in :xfile:`Historik Partner <HSTPAR.REP>`
+ein Partner zwar einen Beginnsaldo, aber keine Buchungen hatte, 
+dann vergaß TIM, vor dem Endsaldo die Leerzeile, den Namen und den 
+Beginnsaldo zu drucken. 
+
+Im folgenden Beispiel hatte Kunde 2 keine Buchungen, wohl aber einen Beginnsaldo.
+
+Vorher::
+
+
+       1000046 : Kunde 1
+       Solde initial                        1.305,65                                                      
+       31.12.09 DIV 090028 0912 091231041              1.305,65   OD CLOTURE                              
+       Solde final 000046 Kunde 1
+       Solde initial                           22,50                                                      
+       Solde final 000062 Kunde 2              22,50                                                      
+       
+Nachher::
+
+       1000046 : Jonas Joseph
+       Solde initial                        1.305,65                                                      
+       31.12.09 DIV 090028 0912 091231041              1.305,65   OD CLOTURE                              
+       Solde final 000046 Kunde 1
+       
+       1000062 : Kunde 2
+       Solde initial                           22,50                                                      
+       Solde final 000062 Kunde 2              22,50                                                      
+       
+

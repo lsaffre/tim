@@ -1,0 +1,8 @@
+20110125
+========
+
+:func:`PxtOnPar` macht jetzt selber (falls angebracht) 
+die Warnung "Dieser Partner hat keinen PXT-Eintrag." 
+und ignoriert den zweiten Parameter `uReturn`.
+Es gibt auch die neue Warnung 
+"Für diesen Partner ist keine PXT-Tabelle konfiguriert"

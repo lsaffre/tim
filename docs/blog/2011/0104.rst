@@ -1,0 +1,14 @@
+20110104
+========
+
+- Neue Funktion :func:`ddMailChange` zur Verwendung 
+  in `PAR.DEF` oder `PXS.DEF` wie z.B.::
+
+    ddMailChange("FIRME,RUE")
+    
+  das bewirkt (wenn außerdem `ddSetAttrib('S')` gesetzt ist), 
+  dass Änderungen in den angegebenen Feldern als schwerwiegend 
+  betrachtet werden und per E-Mail gemeldet werden.
+  Ähnlich wie in TagUpdate(), aber diesmal ohne Warnung.
+  Zum verschicken der Mail wird übrigens hardkodiert die Datei 
+  PXSEID.EML benutzt.

@@ -6,4 +6,4 @@ ddPreCreate("DlgExec('NATCREA')")
 ddOnCreate("(NAT->IdNat:=DlgValue('IdNat'))!=NIL")
 ddOnCreate("(NAT->Name:=DlgValue('Name'))!=NIL")
 ddOnCreate("(NAT->IdLng:=DlgValue('IdLng'))!=NIL")
-
+ddPreEdit({||'B'$UsrAttrib()})

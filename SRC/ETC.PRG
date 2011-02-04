@@ -2774,6 +2774,7 @@ if lDlg
       +" "+padr(aChanges[i],maxcol()-6);
     } ;
     title (cTitle) ;
+    delete {|x| .f.} ;
     actions aActions
   RETURN .f. if LastChoice() == 0
 endif
