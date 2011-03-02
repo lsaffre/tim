@@ -1,0 +1,8 @@
+20110210
+========
+
+- `DEF_BUD` 
+  übergreifende Summenartikel (die sowohl A als auch E summieren) 
+  sind jetzt möglich. 
+  Bisher summierte TIM dann die Beträge aus A und E.
+  :func:`CtbFlush` kehrt jetzt das Vorzeichen um, wenn DC sich ändert.

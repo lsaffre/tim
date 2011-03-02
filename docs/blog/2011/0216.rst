@@ -1,0 +1,20 @@
+20110216 Änderungen in ImlMvmCopy()
+===================================
+
+ImlMvmCopy() prüft nun auch das Rechnungsjahr. 
+Die Auswahlliste nach Alt-I ist jetzt kompletter: dort wird nun angezeigt, "was passieren wird, wenn man diese MVM übernimmt". Und MVMs mit falschem RJ können dort nicht ausgewählt werden.
+
+Bei jedem Buchungsvorschlag steht einer der folgenden Hinweise:
+
+1. ! RJ nicht B1
+2. ! VCS-Buchung 123/456/789 nicht gefunden!
+3. ohne VCS
+4. Externe VCS
+5. VCS (Betrag X statt Y)
+6. VCS
+
+Im Fall 1. wird die MVM nicht angekreuzt und kann auch nicht angekreuzt werden. In allen anderen Fällen wohl.
+
+In den beiden letzten Fällen wurde außerdem erfolgreich eine VCS detektiert und die entsprechenden Angaben (Match, Partnernummer, Artikel, Projekt,...) übernommen.
+
+Fall 4 ist das, wo wir uns drüber freuen werden, wenn demnächst auch VCS aus Home+ importiert werden sollen.

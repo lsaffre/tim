@@ -1,0 +1,14 @@
+20110302
+========
+
+Behoben: Kleiner Bug beim Übernehmen von 
+CODA-Buchungen (:func:`ImlMvmCopy`)::
+
+  09:21:16 [console] Error BASE/1025
+  Description : Parameter has a wrong data type
+  Operation : str;Thread ID : 1
+  Arguments : {"          "}
+  Called from NTRIM(1500)
+  Called from IMLMVMCOPY(373)
+  Called from XPARSE(795)
+  Called from DLGEXEC(317)

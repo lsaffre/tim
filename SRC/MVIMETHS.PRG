@@ -296,7 +296,7 @@ RETURN "" if jnlDest == NIL
 RETURN strtran(jnlDest[JNL_COMPTE],"-",'')
 
 
-FUNCTION ImlMvmCopy(xlAfter,xlMvmFilter)
+FUNCTION ImlMvmCopy(xlUnusedAfter,xlMvmFilter)
 local aLn := {}
 local aTagActions := {}
 local aTag := {}
@@ -312,6 +312,8 @@ local cIdPar2 := IMP->IdPar2
 local cIdExt := NIL
 local cNoCpt := strtran(jnlDest[JNL_COMPTE],"-",'')
 local cTitle := " : CODA-Buchungen bernehmen"
+local cIdMvi
+local cMsg
 
 aadd(aTagActions, { K_SPACE, {|tag| TagToggle(tag) } } )
 aadd(aTagActions, { asc("*"), {|| TagInvert(aTag) } } )
@@ -322,12 +324,14 @@ endif
 if ddRecStat() == RS_INVALID
   RETURN !SetMsg("L”schen Sie zuerst den aktuellen Record !")
 endif
-open area oMvm()
+open area oMvm(), oMvi()
   set order to 2 // MVM->NoCpt+MVM->Match
   softseek cNoCpt
   do while !eof() .and. trim(MVM->NoCpt) == cNoCpt .and. empty(MVM->Match)
     if &xlMvmFilter
       a = array(IML_ALEN)
+      cMsg = ''
+      lOkay := .t.
       a[IML_NB1      ] := MVM->Communic
       a[IML_DATE     ] := MVM->DatVal
       a[IML_DC       ] := iif(val(MVM->Montant)>0,jnlDest[JNL_DC],DcInvert(jnlDest[JNL_DC]))
@@ -347,11 +351,42 @@ open area oMvm()
       * seek MVI->IdJnl + MVI->IdDoc + MVI->Line in IML
       * a[IML_MEMO     ] := IML->Memo
       * a[IML_DATE3    ] := MVI->Date3
+      
+      if left(a[IML_NB1],3)$"101,102".and.len(trim(a[IML_NB1]))==15
+        cIdMvi = vcs2hst(trim(substr(a[IML_NB1],4)))
+        if cIdMvi != NIL
+          seek cIdMvi in MVI
+          if eof() in MVI
+            cMsg := "! VCS-Buchung " + cIdMvi + " nicht gefunden!"
+          elseif left(MVI->Periode,2)!=left(IMP->Periode,2)
+            cMsg := "! RJ nicht " + left(IMP->Periode,2)
+            lOkay := .f.
+            //~ Warning(trim(substr(IML->NB1,4)) + " : falsches Rechnungsjahr")\
+          else
+            a[IML_IDPAR    ] := MVI->IdPar
+            a[IML_IDBUD    ] := MVI->IdBud
+            a[IML_IDPRJ    ] := MVI->IdPrj
+            a[IML_MATCH    ] := MVI->Match
+            a[IML_BACKMATCH] := MVI->Match
+            a[IML_EAMATCH  ] := MVI->EaMatch
+            if val(a[IML_MONT]) > val(MVI->MontUs)
+              cMsg := "VCS (Betrag "+ltrim(MVI->MontUs)+" statt "+ltrim(a[IML_MONT])+")"
+              a[IML_MONT] := MVI->MontUs
+            else
+              cMsg := "VCS"
+            endif
+          endif
+        else
+          cMsg := "Externe VCS "+trim(substr(a[IML_NB1],4))
+        endif
+      else
+        cMsg := "Ohne VCS"
+      endif
       if cIdExt == NIL
         cIdExt := MVM->NoExt
       endif
       //~ aadd(aTag, {MVM->NoExt == cIdExt, a})
-      aadd(aTag, {.t., a})
+      aadd(aTag, {lOkay, a, cMsg,lOkay})
     endif
     skip
   enddo
@@ -366,28 +401,30 @@ browse array aTag using {|tag| MvmTagText(tag) } ;
                   delete {||.f. } ;
                   help "MVMTAG" ;
                   legend (LEG_IMLTAG)
-if lastkey() == K_ESC
+if lastkey() == K_ESC .or. lastkey() == K_ALT_F4
   RETURN .f.
 endif
 for i := 1 to len(aTag)
-  if aTag[i][1]
+  if aTag[i][1] .and. aTag[i][4]
     aadd(aLn,aTag[i][2])
+    // ImpMviPreCollect() falsches Rechnungsjahr
   endif
 next i
 RETURN !SetMsg("Abbruch: keine Buchungen ausgew„hlt.") if len(aLn) == 0
-ImlGenerate(aLn,jnlDest[JNL_IDJNL],cIdDoc2,xlAfter)
+ImlGenerate(aLn,jnlDest[JNL_IDJNL],cIdDoc2) // ,xlAfter)
 ddSetUpdated(.t.) // b[AD_UPDATED] := .t.
 ddGoBottom(.t.)
 SetMnuDone()
 RETURN .t.
 
 STATIC FUNCTION MvmTagText(tag)
-local cLine := if(tag[1],"û"," ")
+local cLine := iif(tag[1],iif(tag[4],"û","!")," ")
 cLine += " " + dtoc(tag[2][IML_DATE])
 //~ cLine += " " + tag[2][IML_IDJNL]
 cLine += " " + tag[2][IML_MONT]
 cLine += " " + tag[2][IML_DC]
 cLine += " " + padr(tag[2][IML_NB1],20)
+cLine += " " + padr(tag[3],30)
 RETURN cLine
 
 #endif DEF_CODA

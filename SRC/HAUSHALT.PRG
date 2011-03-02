@@ -93,15 +93,21 @@ RETURN .t.
 FUNCTION CtbFlush(aCtb)
 local aCtbSum := {}
 local i
+local nMont
 open area oBud()
   for i := 1 to len(aCtb)
     if BudExist(aCtb[i][CTB_DC],aCtb[i][CTB_IDBUD])
       if ! empty(BUD->IdBud_s)
+        if BUD->DC_s == aCtb[i][CTB_DC]
+          nMont := aCtb[i][CTB_MONT]
+        else
+          nMont := -aCtb[i][CTB_MONT]
+        endif
         CtbCollect( ;
           aCtbSum,BUD->DC_s,BUD->IdBud_s,;
           aCtb[i][CTB_PERIODE], ;
           aCtb[i][CTB_IDCDC], ;
-          aCtb[i][CTB_MONT] ;
+          nMont ;
         )
       endif
     else

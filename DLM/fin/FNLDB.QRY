@@ -8,8 +8,8 @@ column 5 =utr("P-acc","P-Kto","Cpte.p") pict @K@!
 column 10 =utr("G-acc","G-Kto","Cpte.g") pict @K@! attr P
 column 6 =utr("Ctr","Ztr","Ctr") pict @K@! skip empty(FNL->IdCtr) attr P
 column 15 =utr("Remark","Bemerkung","Remarque") pict @K@S25
-column 12 =utr("Expense","Ausgabe","Sortie") pict @K@!
 column 13 =utr("Income","Einnahme","Entr‚e") pict @K@!
+column 12 =utr("Expense","Ausgabe","Sortie") pict @K@!
 column 14 Match pict @K@! skip .t.
 column 17 =utr("Amnt ccy","Betrag FW","Mont Dev") pict @K@! skip .t.
 column 21 FW pict @K@! skip .t.
