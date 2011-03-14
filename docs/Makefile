@@ -46,7 +46,7 @@ show:
 	$(OPENHTML) $(BUILDDIR)\index.html
   
 upload:
-	cd $(BUILDDIR) && rsync -r --progress --delete --times ./ luc@saffre-rumma.ee:~/public_html/sphinxbuild/$(SITENAME)
+	cd $(BUILDDIR) && rsync -r --progress --delete --times ./ luc@saffre-rumma.net:~/public_html/sphinxbuild/$(SITENAME)
 
 
 pickle:

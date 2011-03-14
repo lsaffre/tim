@@ -1,0 +1,6 @@
+20110314
+========
+
+- Automatikfakturierung: wenn man vnaclean.act hatte laufenlassen, dann meldete TIM anschließend "référence de suite invalide!" für alle gelöschten VNAs 
+  im Integritätstest. Dieser Test findet jetzt nicht mehr statt.
+  vnaclean.act hatte übrigens auch noch einen Bug (löschte VNAs mit leerem IdJnl gar nicht.

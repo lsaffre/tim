@@ -45,8 +45,6 @@ MnuAddItem("~KWI.DBF : Keyword instances ",{||DbfEdit({oKwi(),oArt(),oMsx(),oNew
 MnuAddTitle("~Other")
 #if oDls()!=NIL
 MnuAddItem("~DLS : Dienstleistungen",{||DbfEdit({oDls(),oPar(),oDla()})})
-#endif
-#if oDlp()!=NIL
 MnuAddItem("DL~P : Anwesenheiten",\
   {||DbfEdit({oDlp(),oDls(),oPar(),oDla()})})
 #endif

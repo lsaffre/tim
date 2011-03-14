@@ -1,7 +1,7 @@
-20110210
-========
+20110210 Übergreifende Summenartikel
+====================================
 
-- `DEF_BUD` 
+- `DEF_BUD` :
   übergreifende Summenartikel (die sowohl A als auch E summieren) 
   sind jetzt möglich. 
   Bisher summierte TIM dann die Beträge aus A und E.

@@ -1,5 +1,8 @@
-Confirm("Abgeschlossene Posten definitiv l”schen",MsgSure())
+Confirm(\
+  "Abgeschlossene Posten Automatikfakturierung definitiv l”schen",\
+  MsgSure())
 // DbfDelete("Abgeschlossene Posten definitiv l”schen",NIL,\
   {oVna()},0,NIL,NIL,"VNA->Satis=='*'")
 ddCloseAll()
-ddConvertDbf(oVna(),"DBO->Satis!='*')
+ddConvertDbf(oVna(),"!empty(DBO->IdJnl).and.DBO->Satis!='*'")
+

@@ -1,8 +1,10 @@
-20110302
-========
+20110302 Bug beim Übernehmen von CODA-Buchungen
+===============================================
 
 Behoben: Kleiner Bug beim Übernehmen von 
-CODA-Buchungen (:func:`ImlMvmCopy`)::
+CODA-Buchungen (:func:`ImlMvmCopy`).  
+Wenn die Meldung "VCS (Betrag X statt Y)" kommen wollte, 
+machte TIM stattdessen einen RTE::
 
   09:21:16 [console] Error BASE/1025
   Description : Parameter has a wrong data type

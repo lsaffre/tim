@@ -115,7 +115,7 @@
 * #define DEF_DEBUG
 #define DEF_INTERBNK
 #define DEF_EUPPER_ALPHA
-* #define DEF_DGR // erweitertes Mahnwesen (RAP, RPL und DGR)
+#define DEF_DGR // erweitertes Mahnwesen (RAP, RPL und DGR)
 
 * #define DEF_IMPTIM205
 * #define DEF_210

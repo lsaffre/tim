@@ -4281,51 +4281,56 @@ open area b, oVen(), oPar()
   lOkay := .t.
   do while lOkay .and. ! eof()
     if TestInter() ; lOkay := .f. ; exit ; endif
-    if cOldId != NIL .and. eval(bcKey) == cOldId
+    if ! JnlExist(VNA->IdJnl)
+      it_warning(eval(bcKey) + " : " + SetMsg())  
+    elseif cOldId != NIL .and. eval(bcKey) == cOldId
       it_warning(eval(bcKey) + MSG_DUP_REF)
-    endif
-    cOldId := eval(bcKey)
-    if &xlFilter
-      nQteUs := qton1(VNA->Qte)
-      open area oVnl()
-        ddSetOrder(ORD_VNL_VNA)
-        softseek VNA->IdJnl+VNA->IdDoc+VNA->Line
-        do while !eof() .and. ;
-          VNL->Match == VNA->IdJnl+VNA->IdDoc+VNA->Line
-          seek VNL->IdJnl+VNL->IdDoc in VEN
-          if VEN->Etat == DocStatClosed()
-            if VNL->IdArt != VNA->IdArt
-              it_warning(eval(bcKey) + " : IdArt changes")
-            elseif (jnl := JnlLocate(VNL->IdJnl)) == NIL
-              it_warning(eval(bcKey) + " : " + SetMsg() )
-            elseif (trn := VnaTrnLocate(jnl)) == NIL
-              it_warning(eval(bcKey) + " : VnaTrnLocate() failed" )
-            else
-              nQte := qton1(VNL->Qte)
-              if TRNATTR_I $ trn[TRN_ATTRIB]
-                nQte *= -1
-              endif
-              if VNA->DC != jnl[JNL_DC]
-                nQte *= -1
-              endif
-              if !TRNATTR_P $ trn[TRN_ATTRIB]
-                nQteUs -= nQte
+    else
+      cOldId := eval(bcKey)
+      if &xlFilter
+        nQteUs := qton1(VNA->Qte)
+        open area oVnl()
+          ddSetOrder(ORD_VNL_VNA)
+          softseek VNA->IdJnl+VNA->IdDoc+VNA->Line
+          do while !eof() .and. ;
+            VNL->Match == VNA->IdJnl+VNA->IdDoc+VNA->Line
+            seek VNL->IdJnl+VNL->IdDoc in VEN
+            if eof() in VEN
+              it_warning(eval(bcKey) + " : VNA and VNL exists, but no VEN")
+            elseif VEN->Etat == DocStatClosed()
+              if VNL->IdArt != VNA->IdArt
+                it_warning(eval(bcKey) + " : IdArt changes")
+              elseif (jnl := JnlLocate(VNL->IdJnl)) == NIL
+                it_warning(eval(bcKey) + " : " + SetMsg() )
+              elseif (trn := VnaTrnLocate(jnl)) == NIL
+                it_warning(eval(bcKey) + " : VnaTrnLocate() failed" )
+              else
+                nQte := qton1(VNL->Qte)
+                if TRNATTR_I $ trn[TRN_ATTRIB]
+                  nQte *= -1
+                endif
+                if VNA->DC != jnl[JNL_DC]
+                  nQte *= -1
+                endif
+                if !TRNATTR_P $ trn[TRN_ATTRIB]
+                  nQteUs -= nQte
+                endif
               endif
             endif
-          endif
-          skip
-        enddo
-      close area
-      if ! DoEvents(b[AD_ONTEST])
-        it_warning(eval(bcKey)+ " : " + SetMsg())
-      endif
-      if qton1(VNA->QteUs) != nQteUs
-        if ntoq(nQteUs,VNA->QteForm) != VNA->QteUs
-        it_warning(eval(bcKey)+" "+trim(ParName(VNA->IdPar))+" : QteUs is "+ltrim(VNA->QteUs);
-          +" (expected "+ltrim(ntoq(nQteUs,VNA->QteForm))+")" )
+            skip
+          enddo
+        close area
+        if ! DoEvents(b[AD_ONTEST])
+          it_warning(eval(bcKey)+ " : " + SetMsg())
         endif
-      elseif qton1(VNA->QteUs) == 0 .and. empty(VNA->Satis)
-        it_warning(eval(bcKey)+ " : not marked as satisfied")
+        if qton1(VNA->QteUs) != nQteUs
+          if ntoq(nQteUs,VNA->QteForm) != VNA->QteUs
+          it_warning(eval(bcKey)+" "+trim(ParName(VNA->IdPar))+" : QteUs is "+ltrim(VNA->QteUs);
+            +" (expected "+ltrim(ntoq(nQteUs,VNA->QteForm))+")" )
+          endif
+        elseif qton1(VNA->QteUs) == 0 .and. empty(VNA->Satis)
+          it_warning(eval(bcKey)+ " : not marked as satisfied")
+        endif
       endif
     endif
     skip

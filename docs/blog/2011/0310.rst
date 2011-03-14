@@ -1,0 +1,50 @@
+20110310 
+========
+
+Zwei Millionen Meldungen im Integritätstest
+-------------------------------------------
+
+Ich habe einen Fall einer 100 MB großen `timtest.txt` mit 2.132.889 
+Warnungen vorliegen::
+
+  [33] VNA->         .    : IdArt changes
+  [34] VNA->         .    : IdArt changes
+  [35] VNA->         .    : IdArt changes
+  ...
+  [2132885] VNA->         .    : IdArt changes
+  [2132886] VNA->         .    : VnaTrnLocate() failed
+  [2132887] VNA->         .    : IdArt changes
+  [2132888] VNA->         .    : IdArt changes
+  [2132889] VNA->         .    : VnaTrnLocate() failed
+ 
+
+- Das lag an einem Bug in VnaTest(), 
+  der auftrat, wenn es für einen existierenden VNA zwar eine VNL, 
+  aber keine VEN gab. 
+  Neue Meldung " : VNA and VNL exists, but no VEN"
+  Außerdem neue Meldung "'  ' : Invalid Journal" wenn VNA->IdJnl 
+  leer ist.
+
+- Die :xfile:`VNACLEAN.ACT` löscht jetzt auch Records, 
+  deren VNA->IdJnl leer ist.
+
+- Wenn man das Explorermenü aufrief, konnte folgender RTE kommen::
+
+    05:10:42 [console] Error BASE/2002
+    Description : Function is not declared
+    Operation : ODLP;Thread ID : 1
+    Arguments : {}
+    Called from XPARSE(778)
+    Called from MREADLINE(251)
+    Called from FILEEXEC(363)
+    Called from MNUEXEC(688)
+    Called from MNULOAD(213)
+    Called from APPREFRESH(392)
+    Called from (B)XPARSE(0)
+    Called from VMENU(432)
+    Called from HMENU(171)
+    Called from MAIN(178)
+
+
+  Das lag an einem Bugg in der :xfile:`EXPLORER.MNU`.
+
