@@ -2155,6 +2155,7 @@ RETURN saJnl[JNL_ATTRIB]
 FUNCTION GenSatisfy(cIdGen,dDate) // „hnlich wie ParSatisfy()
 local lOkay := .f.
 local cMatch := NIL
+local cMyMatch := NIL
 local lSatis
 local lNotSatis
 local nDebit
@@ -2164,6 +2165,9 @@ local nGenCredit := 0
 local cIdDev // := DevDefault(PerActive())
 * local cIdDevGen
 MsgDisplay(cIdGen + " : " + MsgSatis() + "...")
+if alias() == "HST"
+  cMyMatch := HST->Match
+endif
 open area oHst(), oVen(), oFin(), oGen(), oPar()
   seek cIdGen in GEN
   * cIdDevGen := GEN->IdDev
@@ -2212,6 +2216,11 @@ open area oHst(), oVen(), oFin(), oGen(), oPar()
           endif
           skip
         enddo
+      endif
+      if cMatch == cMyMatch
+        SetMsg(cMyMatch+": D="+ltrim(ntomf(nDebit));
+          +", C="+ltrim(ntomf(nCredit));
+          +", Saldo = "+ltrim(ntomf(nDebit-nCredit)))
       endif
     else
       if lNotSatis

@@ -1,0 +1,16 @@
+20110505
+========
+
+- Beim Entregistrieren eines FIN konnte 
+  (seit dem :doc:`0318`) folgender Fehler auftreten::
+
+    oError:description  : Unknown/Invalid symbol for alias
+    ------------------------------------------------------------------------------
+    CALLSTACK:
+    ------------------------------------------------------------------------------
+    Called from GENSATISFY(2158)
+    Called from FINUNDO(349)
+    Called from FINDLGCLOSE(169)
+    Called from (B)OFIN(1646)
+
+

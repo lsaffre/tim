@@ -1,0 +1,11 @@
+20110404 TryRecLockM()
+======================
+
+Beim Erstellen eines Partners mit e-Ausweis loggte TIM ein 
+PUT und dann ein POST. 
+
+TryRecLockM() no longer automatically calls Log_PUT. 
+Diese Funktion wird  sowieso nur in der PXSEID.ACT benutzt, 
+von wo ich das Loggen selber kontrolliere (und zwar im Fall 
+von PARCREA (wo GetEid() schon vorher aufgerufen wurde) darf
+kein PUT geloggt werden.

@@ -1,0 +1,40 @@
+20110318
+========
+
+- ImpImlTest() machte folgenden RTE (der jetzt behoben ist)::
+
+    oError:args         :
+              -> VALTYPE: U VALUE: NIL
+              -> VALTYPE: A VALUE: {"0960009752732010/1030001", "CB3 000609001"}
+    oError:canDefault   : N
+    oError:canRetry     : N
+    oError:canSubstitute: Y
+    oError:cargo        : NIL
+    oError:description  : Parameter has a wrong data type
+    oError:filename     : 
+    oError:genCode      :          2
+    oError:operation    : aAdd
+    oError:osCode       :          0
+    oError:severity     :          2
+    oError:subCode      :       1025
+    oError:subSystem    : BASE
+    oError:thread       :          1
+    oError:tries        :          0
+    ------------------------------------------------------------------------------
+    CALLSTACK:
+    ------------------------------------------------------------------------------
+    Called from IMPPRECLOSE(1243)
+    Called from IMPIMLTEST(2252)
+    Called from (B)ITINIT(219)
+    Called from ITEST(349)
+    Called from TIMTEST(395)
+    Called from (B)XPARSE(0)
+    Called from VMENU(432)
+    Called from HMENU(171)
+    Called from MAIN(176)
+
+- :func:`GenSatisfy` (d.h. Ctrl-F5 in HST) macht jetzt eine Meldung im Stil::
+
+    VKR100123 : C = 123.23, D=123.21, Saldo=0.02
+    
+   
