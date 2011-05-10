@@ -220,6 +220,7 @@ static sbOnParSatisfy := {||.t.}
   static sbPreVnlDelete := {||.t.}
   static sbVnlTotBegin := {||.f.}
   static sbVnlAqtFill := {|nQte,nQteStat| .t. }
+  static sbAqtFilter := {|cIdArt| .t. }
   static sbVnlIsAqt := {|| .f. }
 
   #ifdef DEF_HST
@@ -3872,6 +3873,7 @@ RETURN .f.
   FUNCTION VnlTotBegin()  ; RETURN eval(sbVnlTotBegin)
   FUNCTION VnlAqtFill(nQte,nQteStat)
   RETURN eval(sbVnlAqtFill,nQte,nQteStat)
+  FUNCTION AqtFilter(cIdArt) ; RETURN eval(sbAqtFilter,cIdArt)
   FUNCTION VnlIsAqt() ;  RETURN eval(sbVnlIsAqt)
   FUNCTION VenMatch         ; RETURN eval(sbVenHstMatch)
   FUNCTION VnlQteBase()     ; RETURN xeval(sbVnlQteBase)
@@ -5696,6 +5698,9 @@ AddIniCmd( { "TimTestAllow" , {|x| AddIfNotNil(saTimTestAllow,xparse(x)) } } )
   } } )
   AddIniCmd( { "VnlAqtFill" , {|x| ;
     (sbVnlAqtFill := xparse(x)) != NIL ;
+  } } )
+  AddIniCmd( { "VnlAqtFilter" , {|x| ;
+    (sbAqtFilter := xparse(x)) != NIL ;
   } } )
   AddIniCmd( { "TagVnaAttrib" , {|x| ;
     (sbcNafAttr := xparse(x)) != NIL ;

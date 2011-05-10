@@ -453,7 +453,8 @@ FUNCTION FntCtrl(cIdFnt)
 local fnt
 if cIdFnt != NIL
   fnt := FntLocate(cIdFnt)
-  RETURN .f. if fnt == NIL
+  RETURN !SetMsg(cIdFnt + " : no such font in "+DrvFilename()) if fnt == NIL
+  //~ RETURN .f. if fnt == NIL
   RETURN xparse(fnt[FNT_CTRL])
 endif
 RETURN "" if saFntCurrent == NIL

@@ -1,0 +1,5 @@
+20110409 : Neuer Eintrag VnlAqtFilter
+=====================================
+
+- Neuer Eintrag VnlAqtFilter, sowie Anpassung in VnlAqtValidate()
+  

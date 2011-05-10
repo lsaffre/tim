@@ -1029,15 +1029,17 @@ do while ! bof() .and. FIELD->IdDoc == cIdDoc ;
   elseif FIELD->Code == LNCODE_VARIANTE .or. VnlTotBegin()
     exit
   elseif ! VnlIsModDetail()
-    nQte  += VnlQteR() // qton(FIELD->Qte)
-    #ifdef DEF_INT
-      nQteStat  += qton(FIELD->QteStat)
-    #endif
-    #ifdef DEF_PRIXR
-      nPrixR += val(FIELD->PrixR) * qton1(FIELD->Qte)
-    #endif DEF_PRIXR
-    nMont += val(FIELD->cMont)
-    nTaxe += val(FIELD->MontT)
+    if AqtFilter(cIdArt)
+      nQte  += VnlQteR() // qton(FIELD->Qte)
+      #ifdef DEF_INT
+        nQteStat  += qton(FIELD->QteStat)
+      #endif
+      #ifdef DEF_PRIXR
+        nPrixR += val(FIELD->PrixR) * qton1(FIELD->Qte)
+      #endif DEF_PRIXR
+      nMont += val(FIELD->cMont)
+      nTaxe += val(FIELD->MontT)
+    endif
   endif
   skip -1
 enddo

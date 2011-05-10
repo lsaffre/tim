@@ -1,0 +1,13 @@
+20110510 : FntCtrl() und VnlAqtFilter
+=====================================
+
+- Wenn man in einer Vorlage ``[=FntCtrl('5cpi')]`` angibt, 
+  und der Druckertreiber gar keinen solchen Font hat, 
+  dann kriegt man jetzt eine Warnung '5cpi : no such font'.
+  Statt dass wie bisher das Parsen ohne Fehlermeldung 
+  abgebrochen wurde.
+  
+- Noch Tests und Änderungen in VnlAqtFilter.
+  Jetzt funktioniert es.
+
+  
