@@ -1,6 +1,6 @@
 [PROJECT]
-    // DEBUG         = no
-    DEBUG         = yes
+    DEBUG         = no
+    // DEBUG         = yes
     VERSION       = 2.0
     GUI           = yes
     // INCLUDE       = T:\DATA\LUC\PRG\TIM4
