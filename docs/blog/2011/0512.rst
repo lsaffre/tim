@@ -1,0 +1,7 @@
+20110512
+========
+
+In der HSTGEN.REP war ein kleiner Bug beim Export nach CSV: Beträge 
+waren `type="M"` dediniert, aber gemeint war `type="T"`. Behoben. 
+Beim Export nach Excel ist der Beginn- und Endsaldo trotzdem nicht 
+richtig, er exportiert stattdessen die Summen beider Kolonnen.

@@ -75,7 +75,7 @@ column header=tr("Doc.#","Dok.Nr","Nødoc") width=6 text={||HST->IdDoc}
 column header="Partner" width=30 \
        text={||padr(DocParName(HST->IdJnl,HST->IdDoc,HST->Line),30)}
 column header=tr("Debit","Debit","D‚bit") \
-       type="M" \
+       type="T" \
        value=cblock("HstMont('"+SetDevise()+"')") \
        when={|grp|HST->DC == "D"} \
        xsum={|x,nTtl| if(nTtl==2,ntomf(x),SoldeD(x,ClnSum(1))) }
@@ -83,7 +83,7 @@ column header=tr("Debit","Debit","D‚bit") \
        // text={|x|ntomf(x)} \
 
 column header=tr("Credit","Kredit","Cr‚dit") \
-       type="M" \
+       type="T" \
        value=cblock("HstMont('"+SetDevise()+"')") \
        when={|grp|HST->DC == "C"} \
        xsum={|x,nTtl| if(nTtl==2,ntomf(x),SoldeC(ClnSum(-1),x)) }
