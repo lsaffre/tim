@@ -966,6 +966,10 @@ for i := 1 to len(a)
 next i
 RETURN K_ALT_F5
 
+FUNCTION IsKtgZentrum(cZentrum)
+RETURN .t. if cZentrum == "P" .or. cZentrum == "O"
+
+
 
 ** -1 : Abbruch oder Fehler
 ** 0 : nichts zu fakturieren
@@ -1034,7 +1038,8 @@ open area oKrg(), oSes(), oPrj()
                 padr("SK",LenIdArt()),;
                 {||ArtKrlPrix(KRL->Date)})
             endif
-            if PRJ->Zentrum == "D"
+            if ! IsKtgZentrum(PRJ->Zentrum)
+            //~ if PRJ->Zentrum == "D"
               KRL->IdKtg := KTG_DG
               * KRL->Mont := ArtKrlPrix(KRL->Date)
               KRL->Mont := ArtField(;

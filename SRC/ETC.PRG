@@ -1,5 +1,5 @@
 ** Copyright (c) 1992-2001 PAC Systems
-** Copyright (c) 2001-2010 Luc Saffre
+** Copyright (c) 2001-2011 Luc Saffre
 **
 ** This file is part of TIM.
 **
@@ -628,7 +628,7 @@ fclose(fd)
 RETURN .T.
 
 FUNCTION CopyRight()
-RETURN "(c) 1993-2001 PAC Systems, (c) 2001-2010 Rumma & Ko"
+RETURN "(c) 1993-2001 PAC Systems, (c) 2001-2011 Rumma & Ko"
 
 
 ** #ifdef DEF_FFCOPYRIGHT
