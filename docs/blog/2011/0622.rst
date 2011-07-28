@@ -1,0 +1,9 @@
+20110622
+========
+
+Neue Funktion `IsKtgZentrum`. 
+Also wenn bisher in `PRJ->Zentrum` lediglich der Wert ``D`` 
+zum "kontingentlosen Regime" führte, tun das nun alle Werte 
+außer ``O`` und ``P``.
+
+(Checkin 20110701)

@@ -175,6 +175,7 @@ DlgDefine("84",\
     .and.IdTax$"IM ,IM6,IM0,IS ,IS6,IS0"\
     ')\
   ))
+// montants de base sur les NCA relatives aux autres cases
 DlgDefine("85",\
   -CttBase('\
     IdCtr$"EA".and.IdCtf!="**".and.DC=="D"\

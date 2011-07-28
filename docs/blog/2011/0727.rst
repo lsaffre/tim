@@ -1,0 +1,14 @@
+20110727
+========
+
+Aktenkontrollliste : Anwesenheiten von indirekten DL
+
+Wenn man auf einer indirekten DL (z.B. Telefongespräch) 
+eine Person als anwesend einträgt, dann zählte das bisher 
+als "physische" Anwesenheit und führte in der 
+Aktenkontrollliste dazu, dass für diese Person auch 
+Notizen vorliegen müssen.
+Jetzt nicht mehr.
+(:func:`ParDDLScan` macht seine Zählung der DLP im Fall einer Person 
+jetzt mit Filter
+``DlsExist(DLP->IdDls).and.DlaExist(DLS->IdDla).and.'D'$DLA->Attrib``)

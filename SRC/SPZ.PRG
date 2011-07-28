@@ -197,7 +197,7 @@ RETURN DbfScan({oDlp(),oDls(),oPar()},2,;
 FUNCTION ParDDLScan(d1,d2)
 /* 
   Direkte DL sind DLS, bei denen die Person pers”nlich anwesend war
-  und deren DLA Attibut D hat.
+  und deren DLA Attribut D hat.
 */
 local nAnzDDL := 0
 local dDDL1 := ctod("")
@@ -210,10 +210,10 @@ local bEval := {||;
 // xlDlsFilter += ".and.DlaExist(DLS->IdDla).and.'D'$DLA->Attrib"
 // xlDlsFilter += ".and.DLS->IdUsr==" + utos(PAR->IdUsr2)
 if PAR->IdPrt == "P"
-  RETURN .f. if ! DbfScan({oDlp(),oDls(),oPar()},2,;
+  RETURN .f. if ! DbfScan({oDlp(),oDls(),oPar(),oDla()},2,;
     PAR->IdPar+dtos(d1),;
     "DLP->IdPar+dtos(DLP->Date)<='"+PAR->IdPar+dtos(d2)+"'",;
-    NIL,bEval,NIL,.f.)
+    "DlsExist(DLP->IdDls).and.DlaExist(DLS->IdDla).and.'D'$DLA->Attrib",bEval,NIL,.f.)
   open area oDlp()
     set order to 2
     // softseek PAR->IdPar
