@@ -1,0 +1,54 @@
+20110805
+========
+
+Neues Modul `DEF_GHH` "Gesundheitshilfe-Historik"
+-------------------------------------------------
+
+Neue Tabellen:
+
+- GHH.DBF (IdPar,IdGhk,Date) : Gesundheitshilfe-Historik 
+- GHK.DBF (IdGhk,Name) : Gesundheitshilfe-Kategorien
+
+Entgegen unseren mündlichen Plänen habe ich die Liste der 
+Kategorien ebenfalls als DBF-Tabelle implementiert. 
+
+Änderungen User Interface:
+
+- auf PAR und PXS kann man jetzt mit :kbd`F4,G` die 
+  "Historik Gesundheitshilfe" dieser Person einsehen 
+  bzw. bearbeiten.
+- in der PXS.MSK gibt es ein neues (virtuelles) Feld 
+  :guilabel:`Kategorie GH`. Dort wird immer der letzte 
+  GH-Eintrag dieser Person angezeigt. 
+- Mit :menuselection:`Verwaltermenü --> Konfigurierung --> GH-Kategorien" 
+  kann man die Liste der Kategorien bearbeiten.
+
+Neue Funktion `GetParGhk(cIdPar)` 
+zeigt die Bezeichnung der aktuellen GHK an.
+
+Neue Konfigurationsdateien:
+
+- GHH.DEF
+- GHHPAR.QRY : GH-Historik pro Partner
+- GHK.QRY
+- GHKPICK.QRY
+
+Änderungen in :
+- PAR.DEF (ddAddSpecial GHH)
+- PXS.DEF (ddAddSpecial GHH)
+- MNUBOSS.DBC (Befehl GH-Kategorien)
+- TIM.DBI (CustData GHH)
+- PXS.MSK (virtuelles Feld GetParGhk())
+
+
+Neue Bildschirmliste "Offene Posten Journalgruppe"
+--------------------------------------------------
+
+Funktioniert ähnlich wie die bisherige Liste "Offene Posten", 
+aber TIM fragt nicht mehr nach einem Journal, sondern zeigt 
+alle Journale der ausgewählten Gruppe an.
+
+Funktion `GrjMviEdit()`.
+
+Die Liste ist allerdings sehr langsam, weil es dafür bisher keinen Filter gibt. 
+Ich habe `MviEvalFilter` ein wenig optimiert, aber das war nicht das Bottleneck.

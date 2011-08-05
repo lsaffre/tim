@@ -264,8 +264,13 @@ if empty(scIdBud) .or. MVI->IdBud == scIdBud
           if empty(scIdDoc2) .or. MVI->IdDoc <= scIdDoc2
             if ! empty(MVI->MontUs) .or. scSatis == BUTTON_OFF
               * if JnlIsInList(MVI->IdJnl,saJnl) .and. JnlMatch(JnlLocate(MVI->IdJnl),scIdJnl)
-              if JnlMatch(JnlLocate(MVI->IdJnl),scIdJnl,scIdGrj,saJnlList)
-                RETURN .t.
+              if empty(scIdJnl) .or. MVI->IdJnl = trim(scIdJnl)
+                if empty(scIdGrj) .or. JnlIdGrj(MVI->IdJnl) == trim(scIdGrj)
+                  if saJnlList == NIL .or. JnlIsInList(MVI->IdJnl,saJnlList)
+                    //~ if JnlMatch(JnlLocate(MVI->IdJnl),scIdJnl,scIdGrj,saJnlList)
+                      RETURN .t.
+                  endif
+                endif
               endif
             endif
           endif

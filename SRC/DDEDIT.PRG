@@ -1,5 +1,5 @@
 ** Copyright (c) 1992-2001 PAC Systems
-** Copyright (c) 2001-2010 Luc Saffre
+** Copyright (c) 2001-2011 Luc Saffre
 **
 ** This file is part of TIM.
 **
@@ -2095,6 +2095,7 @@ if snRequest == DDEDIT_BROWSE
 endif
 #endif __XPP__
 RETURN .f. if ! DoEvents(saData[AD_PRECREATE])
+//~ confirm('20110805')
 if saData[AD_CREATE] == NIL
   if CurQry(QRY_IDMSK) != NIL
     nCreate := DDCREATE_FULL

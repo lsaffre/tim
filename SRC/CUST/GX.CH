@@ -147,3 +147,5 @@
 // #define DEF_FOX
 
 #define DEF_CHANGELOG
+
+#define DEF_GHH // Gesundheitshilfe-Historik

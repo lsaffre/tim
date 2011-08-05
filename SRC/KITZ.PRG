@@ -1,4 +1,4 @@
-** Copyright (c) 2003-2010 Luc Saffre
+** Copyright (c) 2003-2011 Luc Saffre
 **
 ** This file is part of TIM.
 ** TIM is free software: you can redistribute it and/or modify it
@@ -1747,6 +1747,68 @@ RETURN lOkay
 
 FUNCTION VenIsOpen()
 RETURN VEN->Etat != DocStatClosed()
+
+#endif
+
+#ifdef DEF_GHH
+
+FUNCTION LenIdGhk() ; RETURN 4
+
+FUNCTION oGhk // Gesundheitshilfe-Kategorien
+static b := NIL
+if b != NIL ; RETURN b ; endif
+define data b              ;
+       name GHK
+ddIndex b on  GHK->IdGhk
+ddFld IdGhk    ,C,  LenIdGhk(),0
+ddFld Name     ,C, 40,0
+ddEndDef()
+RETURN b
+
+FUNCTION PickGhk(cStart)
+//~ RETURN NIL if !Confirm("foo")
+RETURN DbfPick( ;
+  {oGhk()},;
+  "Auswahl Gesundheitshilfe-Kategorie", ;
+  "GHKPICK",;
+  cStart,;
+  NIL,NIL,NIL,;
+  "GHK->IdGhk";
+)
+
+
+FUNCTION GhkName(cId)
+RETURN DbfPeek(oGhk(),cId,"GHK->Name","")
+
+FUNCTION oGhh // Gesundheitshilfe-Historik 
+static b := NIL
+if b != NIL ; RETURN b ; endif
+define data b              ;
+       name GHH 
+       //~ create GhhCreate()
+ddIndex b on  GHH->IdPar+dtos(GHH->Date)
+// ddIndex b on  GHH->IdGhk+dtos(GHH->Date)
+ddFld IdGhk    ,C,  LenIdGhk(),0 picture PIC_ID ;
+  pick PickGhk(GHH->IdGhk)
+ddFld Date     ,D,  8,0 
+ddFld IdPar    ,C, LenIdPar(),0  picture PIC_ID ;
+  pick PickPar(NIL, GHH->IdPar) ;
+  postedit {|x| GetIdPar( x ) } 
+ddEndDef()
+RETURN b
+
+FUNCTION ParGetGhk(cIdPar)
+RETURN DbfOnBottom(oGhh(),1,"GhkName(GHH->IdGhk)","",cIdPar,"GHH->IdPar")
+//~ RETURN DbfOnBottom({oGhh()},1,"GhkName(GHH->IdGhk)","",PAR->IdPar)
+
+//~ FUNCTION GhhCreate()
+//~ Confirm("GhhCreate()")
+//~ RETURN DDCREATE_FAIL if ! dbAddRec()
+//~ GHH->Date := UserDate()
+//~ RETURN DDCREATE_EDIT
+//~ RETURN DDCREATE_DONE
+
+
 
 #endif
 

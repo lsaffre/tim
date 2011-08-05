@@ -1710,6 +1710,10 @@ aadd( a, oNat() )
 #ifdef DEF_GST
   aadd( a, oGst() )
 #endif DEF_GST
+#ifdef DEF_GHH
+  aadd( a, oGhk() )
+  aadd( a, oGhh() )
+#endif DEF_GHH
 #ifdef DEF_MTG
   aadd( a, oMtg() )
 #endif DEF_MTG

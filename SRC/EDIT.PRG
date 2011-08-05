@@ -1974,7 +1974,6 @@ MviRestFilter(a)
 RETURN .f.
 
 **
-** JnlMviEdit() -
 **
 FUNCTION JnlMviEdit
 local jnl
@@ -2020,6 +2019,34 @@ do while (cIdGrj := PickGrj(scIdGrj,"Offene Posten")) != NIL
         title ("Offene Posten : " + jnl[JNL_IDJNL])
     close area
   enddo
+enddo
+MviRestFilter(aMviFilter)
+RETURN .f.
+
+**
+**
+FUNCTION GrjMviEdit(cTitle)
+local jnl
+local nChoice := 1
+local a
+local b := oMvi()
+local cIdGrj
+local xlFilter := "MviEvalFilter()"
+local aMviFilter := MviSaveFilter()
+static scIdGrj := NIL
+default cTitle to MnuItemName()
+do while (cIdGrj := PickGrj(scIdGrj,cTitle)) != NIL
+  scIdGrj := cIdGrj
+  a := JnlList({|jnl| jnl[JNL_IDGRJ] == cIdGrj })
+  MviSetFilter(BUTTON_ON,a)
+  open area b, oPar(), oBud(), oImp(), oIml()
+    ddSetOrder(ORD_MVI_ID)
+    edit data b ;
+      mode     find  ;
+      filter   (xlFilter) ;
+      query ("MVIGRJ") ;
+      title (cTitle + " : " + cIdGrj)
+  close area
 enddo
 MviRestFilter(aMviFilter)
 RETURN .f.
