@@ -1752,7 +1752,7 @@ RETURN VEN->Etat != DocStatClosed()
 
 #ifdef DEF_GHH
 
-FUNCTION LenIdGhk() ; RETURN 4
+FUNCTION LenIdGhk() ; RETURN 3
 
 FUNCTION oGhk // Gesundheitshilfe-Kategorien
 static b := NIL

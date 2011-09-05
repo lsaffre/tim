@@ -843,14 +843,16 @@ if lSimulate
   aadd(aNafSim, { cIdPar1, cIdPar2, nSum, aVna }) // NSIM_ALEN
   RETURN 1
 endif
-if nSum >= 0 .or. IFCATTR_N $ ifc[IFC_ATTRIB]
-  cDC := jnl[JNL_DC]
-else
-  cDC  := DcInvert(jnl[JNL_DC])
-  nSum := - nSum
-endif
+cDC := jnl[JNL_DC]
+//~ if nSum >= 0 .or. IFCATTR_N $ ifc[IFC_ATTRIB]
+  //~ cDC := jnl[JNL_DC]
+//~ else
+  //~ cDC  := DcInvert(jnl[JNL_DC])
+  //~ nSum := - nSum
+//~ endif
 RETURN -1 if ! VenMake(cIdPar1,cIdPar2,jnl[JNL_IDJNL],lDlg,;
-                       dDate,cNB1,cIdMfc,jnl,ifc,aVna,cDC,cPeriode,cMatch,NIL,cPreview)
+                       dDate,cNB1,cIdMfc,jnl,ifc,aVna,cDC,;
+                       cPeriode,cMatch,NIL,cPreview)
 RETURN 1
 
 

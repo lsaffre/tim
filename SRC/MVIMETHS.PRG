@@ -80,7 +80,7 @@ FUNCTION MviSetFilter( ;
   cPeriode, ;
   cIdPar, cBlock ;
   )
-  saJnlList  := aJnl
+saJnlList  := aJnl
 scIdJnl    := cIdJnl
 scIdGrj    := cIdGrj
 scIdDoc1   := cIdDoc1
@@ -262,10 +262,10 @@ if empty(scIdBud) .or. MVI->IdBud == scIdBud
       if empty(scIdPar) .or. MVI->IdPar == scIdPar
         if empty(scIdDoc1) .or. MVI->IdDoc >= scIdDoc1
           if empty(scIdDoc2) .or. MVI->IdDoc <= scIdDoc2
-            if ! empty(MVI->MontUs) .or. scSatis == BUTTON_OFF
+            if scSatis == BUTTON_OFF .or. ! empty(MVI->MontUs) 
               * if JnlIsInList(MVI->IdJnl,saJnl) .and. JnlMatch(JnlLocate(MVI->IdJnl),scIdJnl)
               if empty(scIdJnl) .or. MVI->IdJnl = trim(scIdJnl)
-                if empty(scIdGrj) .or. JnlIdGrj(MVI->IdJnl) == trim(scIdGrj)
+                if empty(scIdGrj) .or. JnlIdGrj(MVI->IdJnl) == scIdGrj
                   if saJnlList == NIL .or. JnlIsInList(MVI->IdJnl,saJnlList)
                     //~ if JnlMatch(JnlLocate(MVI->IdJnl),scIdJnl,scIdGrj,saJnlList)
                       RETURN .t.

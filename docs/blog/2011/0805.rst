@@ -14,13 +14,13 @@ Kategorien ebenfalls als DBF-Tabelle implementiert.
 
 Änderungen User Interface:
 
-- auf PAR und PXS kann man jetzt mit :kbd`F4,G` die 
+- auf PAR und PXS kann man jetzt mit :kbd:`F4,G` die 
   "Historik Gesundheitshilfe" dieser Person einsehen 
   bzw. bearbeiten.
-- in der PXS.MSK gibt es ein neues (virtuelles) Feld 
+- in der `PXS.MSK` gibt es ein neues (virtuelles) Feld 
   :guilabel:`Kategorie GH`. Dort wird immer der letzte 
   GH-Eintrag dieser Person angezeigt. 
-- Mit :menuselection:`Verwaltermenü --> Konfigurierung --> GH-Kategorien" 
+- Mit :menuselection:`Verwaltermenü --> Konfigurierung --> GH-Kategorien` 
   kann man die Liste der Kategorien bearbeiten.
 
 Neue Funktion `GetParGhk(cIdPar)` 

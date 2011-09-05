@@ -1,0 +1,11 @@
+20110905
+========
+
+- Doppelbug Automatikfakturierung.
+
+  `NfSuggest()` testete if `VenIsNC()`, statt *nur*  auf VEN-DC zu schauen. das Vorzeichen der Gesamtsumme darf dort nicht berücksichtigt werden.
+  
+  Und ParVenAppend testete auf den Gesamtbetrag und `IFCATTR_N` um 
+  evtl. DC nochmal umzudrehen. Aber die Logik dahinter habe ich 
+  nicht verstanden, die könnte aus altem Code versehentlich da reingerutscht sein. 
+  Raus damit.

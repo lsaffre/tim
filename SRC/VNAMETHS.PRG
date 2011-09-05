@@ -1593,7 +1593,8 @@ open area oVen(), oVnl(), oArt()
           nHTVA := val(VNL->cMont)
           nMTVA := val(VNL->MontT)
           nQte := qton1(VNL->Qte)
-          if VenIsNC()
+          if (VEN->DC != CtrDC(JnlIdCtr(VEN->IdJnl)))
+          //~ if VenIsNC()
             nHTVA := - nHTVA
             nMTVA := - nMTVA
             nQte := - nQte
