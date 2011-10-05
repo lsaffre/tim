@@ -1,0 +1,52 @@
+@echo off
+echo ÚÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+echo ³ SMIRROR : Daten kopieren
+echo ³ von  : %1%2
+echo ³ nach : %3%4
+echo ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+if x%1 == x goto syntax
+if x%2 == x goto syntax
+if x%3 == x goto syntax
+if x%4 == x goto syntax
+if not exist %3%4\*.* goto neu
+if exist %3%4\mirror.ind goto noprep
+
+echo Die Version in %3%4 wird hiermit unwiderruflich šberschrieben!
+echo Sind Sie sicher? (Ctrl-C) um abzubrechen
+pause
+goto noprep
+
+:neu
+echo Ordner %3%4 wird hiermit neu angelegt.
+echo Sind Sie sicher? (Ctrl-C) um abzubrechen
+pause
+%3
+md %4
+
+:noprep
+%1%2\timtools\sync.exe -r -i *.bat -i backup -i console.msg -i *.old -i *.olt %1%2 %3%4
+if not errorlevel 0 goto fehler2
+
+rem echo mirrored to %3%4 by smirror.btp > %1%2\mirror.ind
+rem echo mirrored from %1%2 by smirror.btp > %3%4\mirror.ind
+
+%3
+cd %4
+rem if exist setup.bat call setup
+echo.
+echo ÚÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+echo ³ SMIRROR : Vorgang beendet
+echo ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+goto ende
+
+:syntax
+echo syntax error
+pause
+goto ende
+
+:fehler2
+echo ÚÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+echo ³ SMIRROR : Fehler : Kopiervorgang wurde abgebrochen
+echo ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+:ende
+pause

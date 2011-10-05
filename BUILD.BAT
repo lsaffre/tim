@@ -27,14 +27,15 @@ if not exist %OUTPUT%\tim4.ind goto error3
 set use_xbase=n
 if exist %OUTPUT%\xbase.ind set use_xbase=y
 
-rem SET ADSVER=6.2
-SET ADSVER=7.0
-
 
 if x%use_xbase% == xy goto i_xbase
 goto i_clipper
 
 :i_clipper
+
+rem SET ADSVER=6.2
+SET ADSVER=7.0
+REM ~ SET ADSVER=8.0
 
 SET INCLUDE=%TIMHOME%\SRC
 SET INCLUDE=%INCLUDE%;s:\CLIP52E\INCLUDE

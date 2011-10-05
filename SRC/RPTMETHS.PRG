@@ -182,9 +182,9 @@ local nMinutes := int( (nSeconds - nHours * 3600) / 60 )
 rpt_write( ;
   ntrim(nHours) + ":" + ;
   strtran(str(nMinutes,2,0)," ","0") + ":" + ;
-  strtran(str(nSeconds % 60,2,0)," ","0") , ;
-  RPT_DISPLAY ;
-)
+  strtran(str(nSeconds % 60,2,0)," ","0")  ;
+)  //~ RPT_DISPLAY ;
+
 #ifdef __XPP__
   #ifdef DEF_ADS
     AdsDisconnect()
