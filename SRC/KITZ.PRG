@@ -1760,7 +1760,7 @@ if b != NIL ; RETURN b ; endif
 define data b              ;
        name GHK
 ddIndex b on  GHK->IdGhk
-ddFld IdGhk    ,C,  LenIdGhk(),0
+ddFld IdGhk    ,C,  LenIdGhk(),0 picture PIC_ID 
 ddFld Name     ,C, 40,0
 ddEndDef()
 RETURN b
@@ -1784,16 +1784,20 @@ FUNCTION oGhh // Gesundheitshilfe-Historik
 static b := NIL
 if b != NIL ; RETURN b ; endif
 define data b              ;
-       name GHH 
-       //~ create GhhCreate()
+       name GHH ;
+       create GhhCreate()
 ddIndex b on  GHH->IdPar+dtos(GHH->Date)
 // ddIndex b on  GHH->IdGhk+dtos(GHH->Date)
 ddFld IdGhk    ,C,  LenIdGhk(),0 picture PIC_ID ;
   pick PickGhk(GHH->IdGhk)
 ddFld Date     ,D,  8,0 
+ddFld Date2    ,D,  8,0 
+ddFld Date3    ,D,  8,0 
 ddFld IdPar    ,C, LenIdPar(),0  picture PIC_ID ;
   pick PickPar(NIL, GHH->IdPar) ;
   postedit {|x| GetIdPar( x ) } 
+ddFld Remark   ,C, 100,0 picture "@k@s40"
+ddFld IdUsr   ,C, LenIdUsr(),0 picture PIC_ID pick PickUsr(GHH->IdUsr)
 ddEndDef()
 RETURN b
 
@@ -1801,12 +1805,13 @@ FUNCTION ParGetGhk(cIdPar)
 RETURN DbfOnBottom(oGhh(),1,"GhkName(GHH->IdGhk)","",cIdPar,"GHH->IdPar")
 //~ RETURN DbfOnBottom({oGhh()},1,"GhkName(GHH->IdGhk)","",PAR->IdPar)
 
-//~ FUNCTION GhhCreate()
+FUNCTION GhhCreate()
 //~ Confirm("GhhCreate()")
-//~ RETURN DDCREATE_FAIL if ! dbAddRec()
-//~ GHH->Date := UserDate()
-//~ RETURN DDCREATE_EDIT
-//~ RETURN DDCREATE_DONE
+RETURN DDCREATE_FAIL if ! dbAddRec()
+GHH->Date := UserDate()
+GHH->IdUsr := UserId()
+RETURN DDCREATE_EDIT
+RETURN DDCREATE_DONE
 
 
 

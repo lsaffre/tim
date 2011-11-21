@@ -1,0 +1,15 @@
+20111121
+========
+
+Änderungen im Modul `DEF_GHH` "Gesundheitshilfe-Historik"
+---------------------------------------------------------
+
+Neue Felder in Tabelle GHH:
+
+- Statt eines Datumfeldes "seit" gibt es deren jetzt drei: "von", "bis" und "Beschluss"
+- Ein einzeiliges Textfeld mit max. 100 Zeichen
+- Ein Feld "Bentuzer", in dem (bei neuen Einträgen) 
+  der Benutzer eingetragen wird.
+
+Außerdem ein kleiner Bugfix: 
+GHK->IdGhk akzeptierte fälschlicherweise Kleinbuchstaben (aber GHH->IdGhk nicht)

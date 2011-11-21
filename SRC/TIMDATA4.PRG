@@ -2072,7 +2072,7 @@ ddEndDef()
 RETURN b
 
 **
-** RAL - rallies
+** RAL - rallies (races - courses)
 **
 FUNCTION oRal()
 static b := NIL
