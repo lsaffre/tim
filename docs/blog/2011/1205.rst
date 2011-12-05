@@ -1,0 +1,6 @@
+20111205
+========
+
+Neue Funktion `ParAttrToggle` 
+toggelt ein Attribut und führt dabei 
+optionalen Code aus.

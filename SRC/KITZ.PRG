@@ -1790,9 +1790,9 @@ ddIndex b on  GHH->IdPar+dtos(GHH->Date)
 // ddIndex b on  GHH->IdGhk+dtos(GHH->Date)
 ddFld IdGhk    ,C,  LenIdGhk(),0 picture PIC_ID ;
   pick PickGhk(GHH->IdGhk)
-ddFld Date     ,D,  8,0 
-ddFld Date2    ,D,  8,0 
-ddFld Date3    ,D,  8,0 
+ddFld Date     ,D,  8,0 // von
+ddFld Date2    ,D,  8,0 // bis
+ddFld Date3    ,D,  8,0 // Beschluss
 ddFld IdPar    ,C, LenIdPar(),0  picture PIC_ID ;
   pick PickPar(NIL, GHH->IdPar) ;
   postedit {|x| GetIdPar( x ) } 
@@ -1802,7 +1802,8 @@ ddEndDef()
 RETURN b
 
 FUNCTION ParGetGhk(cIdPar)
-RETURN DbfOnBottom(oGhh(),1,"GhkName(GHH->IdGhk)","",cIdPar,"GHH->IdPar")
+RETURN DbfOnBottom(oGhh(),1,"GhkName(GHH->IdGhk)","",;
+    cIdPar,"GHH->IdPar","GHH->Date<=UserDate()")
 //~ RETURN DbfOnBottom({oGhh()},1,"GhkName(GHH->IdGhk)","",PAR->IdPar)
 
 FUNCTION GhhCreate()

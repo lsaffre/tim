@@ -1206,6 +1206,23 @@ FUNCTION ParStreet(cIdPar)
 // 20070921 sleep(5)
 RETURN ParField(cIdPar,{||trim1(PAR->Rue) + ltrim(PAR->RueNum) + " " + trim(PAR->RueBte)})
 
+FUNCTION ParAttrToggle(cAttr,xlPreOn,xlPreOff)
+default xlPreOn to {||.t.}
+default xlPreOff to {||.t.}
+if ddRecLock()
+  if cAttr $ PAR->Attrib
+    if xeval(xlPreOff)
+      PAR->Attrib := strtran(alltrim(PAR->Attrib),cAttr,"")
+    endif
+  else
+    if xeval(xlPreOn)
+      PAR->Attrib := alltrim(PAR->Attrib) + cAttr
+    endif
+  endif
+  unlock record
+endif
+RETURN .t.
+
 #ifdef DEF_PRESTO
 
 **

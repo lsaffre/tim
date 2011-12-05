@@ -1,0 +1,12 @@
+20111124
+========
+
+Noch Änderungen im Modul `DEF_GHH` "Gesundheitshilfe-Historik"
+--------------------------------------------------------------
+
+- Hotkey [Alt-G] in PAR.DEF und PXS.DEF
+- ParGetGhk() gab immer die Kategorie des letzten Eintrags 
+  der Liste zurück. Sie soll aber die *momentan aktuelle* 
+  Kategorie anzeigen. Es kann sein, dass GHH 
+  Einträge in die Zukunft gemacht werden.
+  Behoben.
