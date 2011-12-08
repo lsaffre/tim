@@ -1,0 +1,17 @@
+20111208
+========
+
+Ein Bug in der MWSt-Erklärung
+-----------------------------
+
+Laut der aktuellen offiziellen Beschreibung zur MWSt-Erklärung
+(`Déclaration périodique à la TVA 
+<http://minfin.fgov.be/portail2/fr/e-services/intervat/publications.htm>`_)
+gehört
+
+- in Feld 48 der Betrag der Gutschriften der Operationen 
+  in 44 (IS) und 46 (IM)
+
+- in Feld 49 der Betrag aller restlichen Gutschriften
+
+Und TIMs Formel stimmt damit nicht über ein.
