@@ -1740,7 +1740,7 @@ if (doc := DocInfo(HST->IdJnl,HST->IdDoc,HST->Line)) != NIL
   if empty(HST->Match)
     HST->Match := cMatch
   elseif HST->Match != cMatch
-    DocSetMatch(HST->IdJnl,HST->IdDoc,HST->Line,HST->IdPar,HST->Match)
+    DocSetMatch(HST->IdJnl,HST->IdDoc,HST->Line,HST->IdPar,HST->IdGen,HST->Match)
   endif
 endif
 if scAutoSatisfy == BUTTON_ON
@@ -1761,7 +1761,7 @@ RETURN .t.
 Lettrierungen nicht verloren gehen.
    */
    
-FUNCTION DocSetMatch(cIdJnl,cIdDoc,cLine,cIdPar,cMatch)
+FUNCTION DocSetMatch(cIdJnl,cIdDoc,cLine,cIdPar,cIdGen,cMatch)
 local jnl := JnlLocate(cIdJnl)
 * local cAlias := JnlAlias(cIdJnl)
 local lOkay := .f.
@@ -1793,7 +1793,9 @@ RETURN .t. if JNLATTR_U $ jnl[JNL_ATTRIB]
     open area oFnl()
       seek cIdJnl + cIdDoc + cLine
       if ! eof()
-        if left(FNL->IdCpt,LenIdPar()) == cIdPar
+        if (!empty(FNL->IdCtr).or.left(FNL->IdCpt,LenIdGen())==cIdGen)
+        if (empty(FNL->IdCtr).or.left(FNL->IdCpt,LenIdPar())==cIdPar)
+        * if left(FNL->IdCpt,LenIdPar()) == cIdPar
           if ddRecLock()
             if cMatch == cIdJnl + cIdDoc
               FNL->Match := ""
@@ -1803,6 +1805,7 @@ RETURN .t. if JNLATTR_U $ jnl[JNL_ATTRIB]
             lOkay := .t.
             unlock record
           endif
+        endif
         endif
       endif
     close area

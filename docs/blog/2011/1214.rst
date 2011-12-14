@@ -1,0 +1,12 @@
+20111214
+========
+
+DocSetMatch() tat seinen Dienst nicht, wenn man im F9-Fenster 
+eines *Generalkontos* benutzte.
+
+DocSetMatch() ist die Funktion, die eine manuelle Veränderung 
+in HST->Match in das Ursprungsdokument (die Rechnung oder den Kassenauszug) 
+zurück einträgt. 
+Das ist wichtig, damit manuelle Lettrierungen 
+nicht verloren gehen, wenn man das Ursprungsdokument entregistriert.
+

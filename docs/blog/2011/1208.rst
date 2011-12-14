@@ -4,7 +4,7 @@
 Ein Bug in der MWSt-Erklärung
 -----------------------------
 
-Laut der aktuellen offiziellen Beschreibung zur MWSt-Erklärung
+Laut der aktuellen Version der offiziellen Beschreibung zur MWSt-Erklärung
 (`Déclaration périodique à la TVA 
 <http://minfin.fgov.be/portail2/fr/e-services/intervat/publications.htm>`_)
 gehört
@@ -14,4 +14,7 @@ gehört
 
 - in Feld 49 der Betrag aller restlichen Gutschriften
 
-Und TIMs Formel stimmt damit nicht über ein.
+Und Tims Formel stimmte damit nicht überein.
+Geändert und 
+`check-in 
+<http://code.google.com/p/tim/source/detail?r=0f00dde0a6d1845cb13af350d103625d63785a5e>`_.
