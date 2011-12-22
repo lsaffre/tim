@@ -1,0 +1,14 @@
+20111221
+========
+
+Neue Variable "fontNamePdf". Die bisherige Variable "fontName" 
+wurde sowohl für prn2pdf als auch für prnprint benutzt. 
+Das geht aber nicht immer, weil in pdf-Dateien andere 
+Schriftarten definiert sein können als im Betriebssystem.
+Z.B. kamen Dokument via prnprint bei einem Kunden unter Windows 
+7 mit propoertionaler Schriftart raus. 
+Ein ``do setvar("fontName","Courier New")`` in der tim.dbi 
+löste das Problem.
+Aber dann machte prn2pdf Probleme, weil der eine Schriftart 
+namens "Courier New" nicht kennt.
+Anpassungen in :file:`winstd.act`.

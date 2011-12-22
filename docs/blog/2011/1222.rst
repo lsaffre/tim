@@ -1,0 +1,5 @@
+20111222
+========
+
+- DEF_SPZ : Neue Funktion ParIsFE().
+

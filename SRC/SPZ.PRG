@@ -39,6 +39,9 @@ DLP : Klienten pro Sitzung
 #define PRBATTR_T "T" // "Titel" (nicht benutzen, aber wohl anzeigen)
 #define DLAATTR_D "D" // Direkte Dienstleistung
 
+FUNCTION ParIsFE()
+RETURN "R"$PAR->Attrib.or."I"$PAR->Attrib.or."2"$PAR->Attrib
+
 FUNCTION PickDls(cStart)
 RETURN DbfPick( ;
   {oDls(),oPar(),oDla(),oArt()},;

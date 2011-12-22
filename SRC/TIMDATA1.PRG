@@ -1574,7 +1574,7 @@ RETURN b
 FUNCTION GsbHstDocName(x)
 local b
 if x == NIL
-  RETURN HstDocName(HST->IdJnl,HST->IdDoc,HST->Line) if left(indexkey(),10)=="HST->IdPar"
+  RETURN padr(HstDocName(HST->IdJnl,HST->IdDoc,HST->Line),30) if left(indexkey(),10)=="HST->IdPar"
   RETURN DocPartner(HST->IdJnl,HST->IdDoc,HST->Line)
 endif
 #ifdef DEF_FIN
