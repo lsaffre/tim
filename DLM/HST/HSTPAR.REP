@@ -31,8 +31,9 @@ filter {|| !empty(HST->IdCtr)}
   filter {||empty(HST->Satis)}
 #endif
 filter {|| ChkPeriode(HST->Periode) <= 0 }
+filter {|| ParExist(HST->IdPar) }
 
-detail {|| ChkPeriode(HST->Periode)==0}
+detail {|| !"F"$PAR->Attrib.and.ChkPeriode(HST->Periode)==0}
 
 #if !empty(DlgValue("IdPar1"))
   start DlgValue("IdPar1")
@@ -79,13 +80,13 @@ column header="Bemerkung" width=40 \
 group key={|| HST->IdPar } \
       text={|| ""} \
       when={|nCount,nDtlCount|\
-        nDtlCount>0.or.abs(RptValue(1,1,6)-RptValue(1,1,7))>DevTolerance(SetDevise())\
+        nDtlCount>0.or.("F"$PAR->Attrib.and.nCount>0).or.abs(RptValue(1,1,6)-RptValue(1,1,7))>DevTolerance(SetDevise())\
       } \
       after={|nCount,nDtlCount|.t.} \
       align="L" \
       before={|nCount,nDtlCount| \
         iif(\
-          nDtlCount>0.or.abs(RptValue(1,1,6)-RptValue(1,1,7))>DevTolerance(SetDevise()),\
+          nDtlCount>0.or.("F"$PAR->Attrib.and.nCount>0).or.abs(RptValue(1,1,6)-RptValue(1,1,7))>DevTolerance(SetDevise()),\
         PrintLine()\
         .and.PrintLine(Tagged("B")+HST->IdPar + " : " + ParName(HST->IdPar)+Tagged("b"))\
         .and.PrintTotal(1,1),.t.)\

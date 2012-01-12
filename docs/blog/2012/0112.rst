@@ -1,0 +1,11 @@
+20120112
+========
+
+Neues Partnerattribut F 
+("Fiktiv (Partnerhistorik nicht drucken)")
+bewirkt, dass für diesen Kunden in der
+:report:`Historik Kunden <HSTPAR>` nur Beginn- und Endsaldo, 
+aber kein Detail aller Buchungen gedruckt wird.
+
+|DLM\HST\HSTPAR.DBC
+|DLM\SPRL\PRA.DBC

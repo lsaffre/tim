@@ -1220,6 +1220,9 @@ if ddRecLock()
     endif
   endif
   unlock record
+  #ifdef DEF_CHANGELOG
+    if DoChangeLog('PAR') ; Log_POST() ; endif
+  #endif DEF_CHANGELOG
 endif
 RETURN .t.
 
