@@ -8,7 +8,7 @@ right(getvar("GL2PDF.path"),1)=="\".or.\
   DlgPlus("GL2PDF.path","\"+ntrim(getvar("year"))+"\")
 PathExist(getvar("GL2PDF.path"))\
   .or.CreateDir(getvar("GL2PDF.path"))\
-  .or.!SetMsg("mkdir "+getvar("GL2PDF.path")+MsgDosError())
+  .or.(empty(SetMsg()).and.!SetMsg("mkdir "+getvar("GL2PDF.path")+MsgDosError()))
 SetPreview(" ")
 SetAsPdf(.t.)
 SetBatch(.t.)
@@ -22,7 +22,7 @@ setvar("b",{||\
   setvar("OnlyD"," "),\
   setvar("PRN2PDF.out",trim(getvar("GL2PDF.path"))+"JNL-"+trim(JNL->IdJnl)+".pdf"),\
   RepPrint("HST"+JNL->Alias,NIL,"foo",\
-           CtrTplIni(JNL->IdCtr)," ",.f.)\
+           iif(empty(JNL->IdCtr),"LISTE",CtrTplIni(JNL->IdCtr))," ",.f.)\
 })
 empty(getvar("GL2PDF.Journale")).or.DbfScan({oJnl()},2,NIL,NIL,\
         "JNL->Alias$'VEN,FIN'.and.'G'$JNL->Attrib",\
@@ -74,6 +74,10 @@ setvar("b",{||\
   RepPrint("HSTPAR",NIL,"foo")})
 empty(getvar("GL2PDF.Historiken")).or.\
   DbfScan({oCtr()},1,NIL,NIL,".t.",getvar("b"))
+
+setvar("PRN2PDF.out",\
+  trim(getvar("GL2PDF.path"))+"JNLCTRL.pdf")
+empty(getvar("GL2PDF.JnlCentral")).or.JnlCentral()
 
 // DCLPRINT
 setvar("range1",GetPeriode(ntrim(getvar("year"))))

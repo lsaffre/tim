@@ -1,5 +1,5 @@
 ** Copyright (c) 1992-2001 PAC Systems
-** Copyright (c) 2001-2008 Luc Saffre
+** Copyright (c) 2001-2012 Luc Saffre
 **
 ** This file is part of TIM.
 **
@@ -937,4 +937,15 @@ RETURN .t.
 
 #endif DEF_NZS
 
+
+#ifndef __XPP__
+FUNCTION CreateDir(c)
+local n
+if right(c,1) == "\"
+  c := left(c,len(c)-1)
+endif
+n := ft_mkdir(c) 
+RETURN .t. if n == 0
+RETURN !SetMsg("ft_mkdir("+utos(c)+") returned "+utos(n))
+#endif
 

@@ -9,3 +9,19 @@ aber kein Detail aller Buchungen gedruckt wird.
 
 |DLM\HST\HSTPAR.DBC
 |DLM\SPRL\PRA.DBC
+
+
+
+DLM\HST\GL2PDF.ACT:
+
+- funktioniert jetzt auch wenn nicht __XPP__, 
+  dann wird die Funktion CreateDir emuliert mit nt_mkdir().
+  
+- Außerdem hatte sie einen Bug: nahm für die Ausdruck der 
+  Kassen- und Bankjournale nicht den Druckparametersatz LISTE.
+  
+- Und sie kann jetzt auch das Hauptbuch ausdrucken. 
+  Eigentlich druckt sie es nur aus, und erstellt keine pdf-Datei.
+  
+
+
