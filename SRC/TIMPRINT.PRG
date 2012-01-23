@@ -3343,7 +3343,9 @@ FUNCTION PosPrint()
 static cIdTpl := NIL
 cIdTpl := PickTpl(TPLTYPE_POS,cIdTpl,NIL,NIL,"Imprimer position...")
 RETURN .f. if cIdTpl == NIL
+open area oPos(), oPar(), oPlz(), oNat()
 PrintTemplate(TPLTYPE_POS,cIdTpl)
+close area
 RETURN .t.
 
 FUNCTION PosPlace(cParam)

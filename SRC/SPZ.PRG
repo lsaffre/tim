@@ -1,4 +1,4 @@
-** Copyright (c) 2005-2011 Luc Saffre
+** Copyright (c) 2005-2012 Luc Saffre
 **
 ** This file is part of TIM.
 **
@@ -1324,11 +1324,12 @@ RETURN .f. if ! eval(blCollect,a)
 RETURN .t. if len(a) == 0
 naf := array(NAF_ALEN)
 naf[NAF_TAGGED] := .t.
+// 20120123 : TIM used DLS->IdPar instead of PAR->IdPar, but DLS might be wrong here
 if lVertraulich .or. PARATTR_V $ PAR->Attrib
-  naf[NAF_NB1] := "-- Akte "+DLS->IdPar+" (Ihre Ref. "+trim(PAR->Code1)+")"
+  naf[NAF_NB1] := "-- Akte "+PAR->IdPar+" (Ihre Ref. "+trim(PAR->Code1)+")"
   naf[NAF_MEMO] := ''
 else
-  naf[NAF_NB1] := "-- Akte "+DLS->IdPar+" ("+trim1(PAR->Vorname)+trim(PAR->Firme)+")"
+  naf[NAF_NB1] := "-- Akte "+PAR->IdPar+" ("+trim1(PAR->Vorname)+trim(PAR->Firme)+")"
   naf[NAF_MEMO] := trim(ParStreet())+", "+trim1(ParCity(),", ")+"*"+dtoc(PAR->GebDat)
   if !empty(PAR->Code1)
     naf[NAF_MEMO] += crlf() + "Ihre Ref. "+PAR->Code1

@@ -1,0 +1,6 @@
+20120123
+========
+
+DEF_SPZ : Beim Erstellen von Sammelrechnungen schrieb TIM 
+manchmal die falsche Aktennummer in den Titel vor einer Gruppe 
+von Dienstleistungen. Behoben.
