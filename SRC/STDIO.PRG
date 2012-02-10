@@ -67,7 +67,7 @@ static slMustLoginAgain     := .f.
 
 * #ifdef DEF_IE10
 static slTrapErrors  := .t. // .f. if danger of having Internal Error 10
-* static slXmlInput  := .f.
+static slXmlInput  := .f.
 * static slRtfInput  := .f.
 * #endif
 
@@ -113,10 +113,12 @@ RETURN slTrapErrors if x == NIL
 slTrapErrors := x
 RETURN .t.
 
-* FUNCTION SetXmlInput(x)
-* RETURN slXmlInput if x == NIL
-* slXmlInput := x
-* RETURN .t.
+/** used by Resultats LBFA 
+**/
+//~ FUNCTION SetXmlInput(x)
+//~ RETURN slXmlInput if x == NIL
+//~ slXmlInput := x
+//~ RETURN .t.
 
 
 * #endif
