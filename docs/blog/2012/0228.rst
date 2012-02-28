@@ -32,3 +32,5 @@ Um jetzt diesen komplexen Algoritmus nicht auszulagern oder in DocSetMatch() zu 
 Nachteil ist, dass man eine manuelle Lettrierung nicht so einfach 
 wieder "ungeschehen" werden lassen kann, bisher drückte man dann einfach 
 auf [Leertaste].
+
+Aber damit noch nicht genug. Es gibt noch HstMatchValidate(). Die rief DocSetMatch() immer nur dann auf, wenn HST->Match != HST->IdJnl+HST->IdDoc war. Was ebenfalls zu simpel gedacht war, wenn JNLATTR_M ausgeschaltet ist.

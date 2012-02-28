@@ -1742,7 +1742,8 @@ if (doc := DocInfo(HST->IdJnl,HST->IdDoc,HST->Line)) != NIL
   endif
   if empty(HST->Match)
     HST->Match := cMatch
-  elseif HST->Match != cMatch
+  //~ elseif HST->Match != cMatch
+  else
     DocSetMatch(HST->IdJnl,HST->IdDoc,HST->Line,HST->IdPar,HST->IdGen,HST->Match)
   endif
 endif
