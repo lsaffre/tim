@@ -1,0 +1,34 @@
+20120228
+========
+
+Lydia hat noch einen Bug in der DocSetMatch() entdeckt.
+
+DocSetMatch() ist die Funktion, die eine manuelle Veränderung 
+in HST->Match in das Ursprungsdokument (die Rechnung oder den Kassenauszug) 
+zurück einträgt. 
+Das ist wichtig, damit manuelle Lettrierungen 
+nicht verloren gehen, wenn man das Ursprungsdokument entregistriert.
+
+DocSetMatch() setzte den Match in der FNL einfach auf leer, 
+wenn er IdJnl+IdDoc war. Weil ein leeres FNL->Match in der HST 
+eben dieses IdJnl+IdDoc einträgt. Dachte ich. Aber ich hatte vergessen, 
+dass FinHstGenerate() in Wirklichkeit komplexer ist::
+
+      if empty(aHst[i][HST_MATCH])
+        if empty(aHst[i][HST_DATE])
+          if JNLATTR_M $ jnl[JNL_ATTRIB]
+            HST->Match   := FIN->IdJnl + FIN->IdDoc
+          else
+            HST->Match   := right(dtos(FIN->Date),6) + HST->Line
+          endif
+        else
+          HST->Match   := right(dtos(aHst[i][HST_DATE]),6)+HST->Line
+        endif
+      else
+        HST->Match   := aHst[i][HST_MATCH]
+      endif
+
+Um jetzt diesen komplexen Algoritmus nicht auszulagern oder in DocSetMatch() zu replizieren, (beides bedeutet erhöhte Bug-Gefahr) mache ich es einfacher: DocSetMatch() füllt den Wert aus HST->Match *immer* nach FNL->Match rein. 
+Nachteil ist, dass man eine manuelle Lettrierung nicht so einfach 
+wieder "ungeschehen" werden lassen kann, bisher drückte man dann einfach 
+auf [Leertaste].

@@ -1800,11 +1800,11 @@ RETURN .t. if JNLATTR_U $ jnl[JNL_ATTRIB]
         if (empty(FNL->IdCtr).or.left(FNL->IdCpt,LenIdPar())==cIdPar)
         * if left(FNL->IdCpt,LenIdPar()) == cIdPar
           if ddRecLock()
-            if cMatch == cIdJnl + cIdDoc
-              FNL->Match := ""
-            else
+            //~ if cMatch == cIdJnl + cIdDoc
+              //~ FNL->Match := ""
+            //~ else
               FNL->Match := cMatch
-            endif
+            //~ endif
             lOkay := .t.
             unlock record
           endif
