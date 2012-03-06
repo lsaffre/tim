@@ -248,6 +248,9 @@ local a := {}
 #ifdef DEF_SER
   aadd(a, {  "SerTest", "Seriennummern", {|x| SerTest(x)    } } )
 #endif DEF_SER
+#ifdef DEF_PXT
+  aadd(a, {  "PxtTest", "Partner Extensions (PXS,...)", {|x| PxtTest(x)    } } )
+#endif DEF_PXT
 ***
 *if lDlg .and. len(a) == 0
 *  browse array a using {|x| ;
@@ -1245,6 +1248,36 @@ open area b, oPlz(), oNat()
   if lOkay ; MsgShouldRebuild() ; endif
 close area
 RETURN lOkay
+
+#ifdef DEF_PXT
+
+FUNCTION PxtTest()
+local lOkay := .f.
+local cOldId := NIL
+local b := oPxs()
+local a
+open area b, oPar()
+  TestTried()
+  lOkay := .t.
+  go top
+  do while ! eof() 
+    if TestInter() ; lOkay := .f. ; exit ; endif
+    if cOldId != NIL .and. FIELD->IdPar == cOldId
+      it_warning("PXS->" + FIELD->IdPar + MSG_DUP_REF)
+    endif
+    cOldId := FIELD->IdPar
+    a := DbfPeek(oPar(),FIELD->IdPar,"ParPxtTable()",NIL)
+    if a == NIL .or. a[AD_NAME] != alias()
+      it_warning(alias()+":"+alltrim(FIELD->IdPar)+ " : Partner should not have a "+alias()+" record.")
+    endif
+    skip
+  enddo
+  if lOkay ; MsgShouldRebuild() ; endif
+close area
+RETURN lOkay
+
+
+#endif DEF_PXT
 
 #ifdef DEF_ALA
 

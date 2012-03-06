@@ -1,0 +1,5 @@
+20120306
+========
+
+Neuer Integritätstest PxtTest() meldet eventuelle PXS, 
+die eigentlich nicht existieren dürften.

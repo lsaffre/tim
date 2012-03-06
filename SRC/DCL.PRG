@@ -477,6 +477,12 @@ local lOkay := .f.
 // local b
 local b := ParPxtTable()
 RETURN .t. if b == NIL // ! PAR->IdPrt $ scPrtList
+//~ if b == NIL 
+  //~ for i := 1 to len(PxtTables())
+  //~ next i
+  //~ local a := PxtTables()
+  //~ RETURN .t. 
+//~ endif
 // b := GetTableDef(cPxtTable) // "PX"+PAR->IdPrt)
 lOkay := .f.
 open area b
