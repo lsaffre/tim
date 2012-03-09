@@ -1,0 +1,9 @@
+20120309
+========
+
+Anpassungen Liste der MWSt-pflichtigen Kunden 
+(:xfile:`VATLIST.DLG` und :xfile:`VATLIST.XML`)
+nach den
+`modifications engendrant l'harmonisation des schémas XSD
+<http://minfin.fgov.be/portail2/fr/e-services/intervat/calendrier.html>`_.
+
