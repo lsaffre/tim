@@ -27,7 +27,7 @@
       <EmailAddress>[=trim(getvar("email"))]</EmailAddress>
       <Phone>[=trim(getvar("phone"))]</Phone>
 		</ns2:Representative>
-		<ns2:ClientListing VATAmountSum="[=ltrim(ntom(getvar("LSTTVA.Amount")))]" TurnOverSum="[=ltrim(ntom(getvar("LSTTVA.TurnOver")))]" ClientsNbr="[=ntrim0(getvar("LSTTVA.ClientNbr"))]" SequenceNumber="1">
+		<ns2:ClientListing VATAmountSum="[=ltrim(ntom0(getvar("LSTTVA.Amount")))]" TurnOverSum="[=ltrim(ntom0(getvar("LSTTVA.TurnOver")))]" ClientsNbr="[=ntrim0(getvar("LSTTVA.ClientNbr"))]" SequenceNumber="1">
 			<ns2:Declarant>
 				<VATNumber>[=trim(substr(tvatrim(MemNoTva),3))]</VATNumber>
 				<Name>[=trim(MemName1)]</Name>
@@ -47,8 +47,8 @@
       [=DlgPlus("i",1)]
 			<ns2:Client SequenceNumber="[=ntrim0(getvar("i"))]">
 				<ns2:CompanyVATNumber issuedBy="[=left(PAR->NoTva,2)]">[=tvatrim(substr(PAR->NoTva,3))]</ns2:CompanyVATNumber>
-				<ns2:TurnOver>[=ltrim(ntom(getvar("MontB")))]</ns2:TurnOver>
-				<ns2:VATAmount>[=ltrim(ntom(getvar("MontT")))]</ns2:VATAmount>
+				<ns2:TurnOver>[=ltrim(ntom0(getvar("MontB")))]</ns2:TurnOver>
+				<ns2:VATAmount>[=ltrim(ntom0(getvar("MontT")))]</ns2:VATAmount>
 			</ns2:Client>
       [etc endloop clients]
   </ns2:ClientListing>
