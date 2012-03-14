@@ -8,8 +8,10 @@ field caption="Ihre MWSt-Nummer " \
     valid={||ValNoTva(MemNoTva)}\
     block={|x|if(x==NIL,MemNoTva,MemNoTva:=x)}
 
+#include "MAILPH.DLG"
+
 after setvar("Filename",\
-  AppRoot()+"\TEMP\VATINTRA-"+ActExec("VATPERI")+".XML")
+  AppRoot()+"\TEMP\VATINTRA-"+MemPer1+"-"+MemPer2+".XML")
 
 after fparse("VATINTRA.XML",getvar("Filename"),"[]",NIL,NIL,NIL,NIL,"XML")
 after OpenUrl(getvar("Filename"))

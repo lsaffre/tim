@@ -1,0 +1,6 @@
+20120314 - Vat2012
+==================
+
+Last changes for new XML schemas intervat.
+Released general patch on googlecode.
+

@@ -1,0 +1,100 @@
+[=MsgDisplay("Calcul prÇliminaire ...")]
+[=setvar("LSTTVA.Version",iif(pnYear(MemPer2)>2009,"1.3","1.2"))]
+[=setvar("LSTTVA.Amount",0)]
+[=setvar("LSTTVA.ClientNbr",0)]
+[=setvar("b",{||\
+  DlgPlus("LSTTVA.Amount",getvar("MontB")),\
+  DlgPlus("LSTTVA.ClientNbr",1),\
+  (!empty(PAR->NoTva).and.ValNoTva(PAR->NoTva))\
+    .or.Confirm(PAR->IdPar+" "+trim(ParName())+utr(" : invalid VAT id",": ungÅltige MWSt-Nummmer","n¯ TVA invalide"),\
+    MsgContinue())\
+})]
+[=DbfScan({oPar()},1,NIL,NIL,\
+  "ParVatList('V','I').and.!is0(getvar('MontB'))",getvar("b"))]
+[etc if getvar("LSTTVA.Version")=="1.3"]
+[* ab 2010 kommen auch Regime S rein *]
+[=DbfScan({oPar()},1,NIL,NIL,\
+  "ParVatList('V','S').and.!is0(getvar('MontB'))",getvar("b"))]
+[etc endif]
+[=MsgDisplay("Generating "+trim(getvar("Filename"))+" ...")]
+<?xml version="1.0" encoding="UTF-8" ?>
+<VatIntra 
+xmlns="http://www.minfin.fgov.be/VatIntra" 
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xsi:schemaLocation="http://www.minfin.fgov.be/VatIntra http://www.minfin.fgov.be/VatIntra/VatIntra.xsd" 
+RecipientId="VAT-ADMIN"  
+SenderId="[=trim(substr(tvatrim(MemNoTva),3))]"
+ControlRef="[=trim(substr(tvatrim(MemNoTva),3))]0001"
+MandataireId="xxxx"  
+SenderDate="[=dtocf(UserDate(),"yyyy-mm-dd")]"  
+[etc if .f.]
+Test="1"
+[etc endif]
+VersionTech="[=getvar("LSTTVA.Version")]">
+
+<AgentRepr DecNumber="1">
+<CompanyInfo>
+<VATNum>[=substr(TvaTrim(MemNoTva),3)]</VATNum>
+<Name>[=trim(MemName1)]</Name>
+<Street>[=trim(MemName2)]</Street>
+<CityAndZipCode>[=trim(MemName3)]</CityAndZipCode>
+<Country>[=left(MemNoTva,2)]</Country>
+</CompanyInfo>
+</AgentRepr>
+
+<DeclarantList
+  SequenceNum="1"
+  DeclarantNum="[=trim(substr(tvatrim(MemNoTva),3))]000100001"
+  ClientNbr="[=ntrim0(getvar("LSTTVA.ClientNbr"))]"
+  AmountSum="[=ntrim0(getvar("LSTTVA.Amount")*100)]">
+<CompanyInfo>
+<VATNum>[=substr(TvaTrim(MemNoTva),3)]</VATNum>
+<Name>[=trim(MemName1)]</Name>
+<Street>[=trim(MemName2)]</Street>
+<CityAndZipCode>[=trim(MemName3)]</CityAndZipCode>
+<Country>[=left(MemNoTva,2)]</Country>
+</CompanyInfo>
+
+<Period>[=ActExec("VATPERI")]</Period>
+[etc if .f.]
+<Amount>[=ntrim0(getvar("LSTTVA.Amount")*100)]</Amount>
+[etc endif]
+
+[=setvar("i",0)]
+
+[etc loop clients DbfScan({oPar()},1,NIL,NIL,\
+  "ParVatList('V','I').and.!is0(getvar('MontB'))",xlEval)]
+[=DlgPlus("i",1)]
+<ClientList SequenceNum="[=ntrim0(getvar("i"))]">
+<CompanyInfo>
+<VATNum>[=substr(tvatrim(PAR->NoTva),3)]</VATNum>
+<Country>[=left(PAR->NoTva,2)]</Country>
+</CompanyInfo>
+<Amount>[=ntrim0(getvar("MontB")*100)]</Amount>
+[etc if getvar("LSTTVA.Version")=="1.3"]
+<Code>L</Code>
+[etc endif]
+</ClientList>
+[etc endloop clients]
+
+[* ab 2010 kommen auch Regime S rein, aber mit Code S statt L*]
+[etc if getvar("LSTTVA.Version")=="1.3"]
+[etc loop clients DbfScan({oPar()},1,NIL,NIL,\
+  "ParVatList('V','S').and.!is0(getvar('MontB'))",xlEval)]
+[=DlgPlus("i",1)]
+<ClientList SequenceNum="[=ntrim0(getvar("i"))]">
+<CompanyInfo>
+<VATNum>[=substr(tvatrim(PAR->NoTva),3)]</VATNum>
+<Country>[=left(PAR->NoTva,2)]</Country>
+</CompanyInfo>
+<Amount>[=ntrim0(getvar("MontB")*100)]</Amount>
+[etc if getvar("LSTTVA.Version")=="1.3"]
+<Code>S</Code>
+[etc endif]
+</ClientList>
+[etc endloop clients]
+[etc endif]
+
+</DeclarantList>
+
+</VatIntra>

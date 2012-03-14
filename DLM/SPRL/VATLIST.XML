@@ -25,7 +25,7 @@
 			<City>[=substr(MemName3,5)]</City>
 			<CountryCode>[=left(MemNoTva,2)]</CountryCode>
       <EmailAddress>[=trim(getvar("email"))]</EmailAddress>
-      <Phone>[=trim(getvar("phone"))]</Phone>
+      <Phone>[=strtran(strtran(trim(getvar("phone")),".",""),"/","")]</Phone>
 		</ns2:Representative>
 		<ns2:ClientListing VATAmountSum="[=ltrim(ntom0(getvar("LSTTVA.Amount")))]" TurnOverSum="[=ltrim(ntom0(getvar("LSTTVA.TurnOver")))]" ClientsNbr="[=ntrim0(getvar("LSTTVA.ClientNbr"))]" SequenceNumber="1">
 			<ns2:Declarant>

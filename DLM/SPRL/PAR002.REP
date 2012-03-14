@@ -15,6 +15,6 @@ column header="Nr." width=LenIdPar() text={||PAR->IdPar}
 column header="Name" width=30 text={||padr(ParName(),30)}
 column header="Straáe" width=50 \
        text={||padr(trim1(ParStreet())+ParCity(),50)}
-column header="Umsatz" width=LenMntF() \
+column header="Umsatz" type="M" \
        value={||ParCtpSum(PAR->IdPar,'val(Umsatz)',DlgValue('IdCtr')) }
 total when={||.t.} // text={||"Gesamt"}

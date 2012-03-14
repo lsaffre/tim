@@ -24,3 +24,7 @@ do DlgDefault("mailto","luc.saffre@gmx.net")
 do DlgDefault("mailtpl","MAIL.EML")
 do DlgDefault("fontName","")
 do DlgDefault("fontNamePdf","")
+
+do setvar("email",padr("",100),.t.) // lPersistent is .t.
+do setvar("phone",padr("",100),.t.) // lPersistent is .t.
+

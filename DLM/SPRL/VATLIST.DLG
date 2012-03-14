@@ -32,17 +32,8 @@ field caption="Ihre MWSt-Nummer " \
     postedit={|x|GetNoTva(x,MemPays)}\
     valid={||ValNoTva(MemNoTva)}\
     block={|x|if(x==NIL,MemNoTva,MemNoTva:=x)}
-field caption="E-Mail " \
-    picture="@k@s40"\
-    name="email"\
-    default=space(100)
-field caption="Telefon" \
-    picture="@k@s40"\
-    name="phone"\
-    default=space(100)
 
-validate !empty(getvar("email")).or.!SetMsg("E-Mail darf nicht leer sein")
-validate !empty(getvar("phone")).or.!SetMsg("Telefonnummer darf nicht leer sein")
+#include "MAILPH.DLG"
 
 after setvar("Filename",AppRoot()+"\TEMP\A"+getvar("year")+".XML")
 

@@ -1,0 +1,13 @@
+// MAILPH.DLG used by VATLIST and VATINTRA
+field caption="E-Mail " \
+    picture="@k@s40"\
+    name="email"\
+    default=space(100)
+field caption="Telefon" \
+    picture="@k@s40"\
+    name="phone"\
+    default=space(100)
+
+validate !empty(getvar("email")).or.!SetMsg("E-Mail darf nicht leer sein")
+validate !empty(getvar("phone")).or.!SetMsg("Telefonnummer darf nicht leer sein")
+
