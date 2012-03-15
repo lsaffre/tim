@@ -36,7 +36,7 @@
 				<City>[=substr(MemName3,5)]</City>
 				<CountryCode>[=left(MemNoTva,2)]</CountryCode>
         <EmailAddress>[=trim(getvar("email"))]</EmailAddress>
-        <Phone>[=trim(getvar("phone"))]</Phone>
+        <Phone>[=strtran(strtran(trim(getvar("phone")),".",""),"/","")]</Phone>
 			</ns2:Declarant>
 			<ns2:Period>[=getvar("year")]</ns2:Period>
       [=setvar("i",0)]
