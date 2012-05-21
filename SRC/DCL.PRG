@@ -1,5 +1,5 @@
 ** Copyright (c) 1992-2001 PAC Systems
-** Copyright (c) 2001-2008 Luc Saffre
+** Copyright (c) 2001-2012 Luc Saffre
 **
 ** This file is part of TIM.
 **
@@ -313,7 +313,9 @@ open area oGen()
           endif
           for i := 1 to len(aPer1)
             if HST->Periode < aPer1[i]
-              aSaldo1[i] += nMont
+              if HST->Periode >= PerStart(aPer1[i])
+                  aSaldo1[i] += nMont
+              endif
             elseif HST->Periode <= aPer2[i]
               if HST->DC == DC_DEBIT
                 aDebit[i] += nMont

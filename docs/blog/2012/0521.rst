@@ -1,0 +1,6 @@
+20120521 Bilanz nach Grundwährungswechsel
+-----------------------------------------
+
+DcfValues() funktionierte nicht, wenn es einen Grundwährungswechsel gegeben hatte. 
+Muss natürlich ebenfalls PerStart() respektieren.
+Behoben.
