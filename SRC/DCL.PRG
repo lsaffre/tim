@@ -254,6 +254,7 @@ local aSaldo1 := {}
 local aDebit := {}
 local aCredit := {}
 local nMont
+local cDevise := SetDevise()
 RETURN {0,0,0} if empty(DCF->Type)
 xlGenFilter := DcfGenFilter()
 xlHstFilter := DcfJnlFilter()+".and."+DcfHstFilter()
@@ -287,6 +288,7 @@ if !empty(r3)
   if MemPer1 < cStart ; cStart:=MemPer1 ; endif
 endif
 cStart := PerStart(cStart)
+SetDevise(cDevise) // 20120529 DCL 2011 & 2010
 open area oGen()
   #ifdef DEF_BIL
     if empty(DCF->IdGen)

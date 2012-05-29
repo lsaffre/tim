@@ -1,0 +1,6 @@
+20120529
+========
+
+DcfValues() kam noch immer durcheinander, 
+wenn die beiden verglichenen Jahre verschiedene 
+Grundwährungen hatten. Behoben.                                           
