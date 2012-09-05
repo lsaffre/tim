@@ -17,7 +17,7 @@ group text={|nCount|"Total"}
 column header="Date" \
        width=15 \
        text={||padl(left(jour(ForValue()),2)+" "+dtoc(ForValue()),15)}
-#exec setvar("bText",{|x|ntoq1(x,":",8)})
+#exec setvar("bText",iif(empty(getvar("ToCSV")),{|x|ntoq1(x,":",8)},{|x|ntoq1(x,"2",8)}))
 #exec DbfScan({oPrj()},1,NIL,NIL,"empty(PRJ->Parent)",{||\
   RptAddColumn(\
     {left(PRJ->Name1,8)},8,NIL,\

@@ -118,7 +118,7 @@
 * #define DEF_QTESUB
 
 #define DEF_EAN
-// #define DEF_BIL
+#define DEF_BIL
 #define DEF_DCL
 
 #define DEF_PRJ

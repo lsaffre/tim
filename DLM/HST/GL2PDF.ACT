@@ -2,7 +2,8 @@
 DlgExec("GL2PDF")
 SetPeriode(ntrim(getvar("year")))
 SetUserDate(ntod(getvar("year"),12,31))
-SetDevise(DevDefault(MemPer1))
+setvar("Devise",DevDefault(MemPer1))
+SetDevise(getvar("Devise"))
 setvar("GL2PDF.path",trim(getvar("GL2PDF.path")))
 right(getvar("GL2PDF.path"),1)=="\".or.\
   DlgPlus("GL2PDF.path","\"+ntrim(getvar("year"))+"\")
@@ -85,6 +86,7 @@ setvar("range2",GetPeriode(ntrim(getvar("year")-1)))
 setvar("range3","")
 setvar("TechInfo"," ")
 setvar("b",{||\
+  SetDevise(getvar("Devise")),\
   setvar("PRN2PDF.out",trim(getvar("GL2PDF.path"))+"DCL"+DCL->IdDcl+".pdf"),\
   RepPrint("DCLDCF",NIL,"foo")\
   })

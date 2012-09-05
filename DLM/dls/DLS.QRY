@@ -1,8 +1,8 @@
 //
-// DLS.QRY - generated 19.05.07
-// for DLS.DBF
+// DLS.QRY - generated 31.07.12
+// for DLS.FOX
 //
-column 2 Datum say ""
+column 2 Datum sumfmt ""
 column 8 Bemerkung pict @k@s30
 column 5 Ther. pict @K@!
 column 10 IdPar pict @K
@@ -19,4 +19,4 @@ column 21 Tel pict @!
 column 22 Ext pict @!
 column 1 DL-Nr.
 mask DLS
-order 2
+order 4

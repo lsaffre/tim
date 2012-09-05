@@ -1,5 +1,5 @@
 //
-// generated 06.10.08
+// generated 24.08.12
 // for VEN.FOX
 //
 
@@ -17,7 +17,7 @@ string 9 53 =utr("Total","Gesamtbetrag","Total")
 string 2 2 =utr("Document","Dokument","Document")
 string 5 31 D/C
 string 7 33 =utr("VAT regime","MWSt-Regime","r‚gime TVA")
-string 5 16 =utr("pmt term","Z-Ziel","‚ch‚ance")
+string 5 16 =utr("due date","Z-Ziel","‚ch‚ance")
 string 5 53 Brutto htva
 string 6 53 Rabatt
 string 7 53 MWSt

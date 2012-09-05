@@ -645,12 +645,22 @@ RETURN NIL
 STATIC FUNCTION NafSimReport(aNafSim,cTitle1,cTitle2,cTitle3)
 local i, j, a, c
 local lFirstPar := .t.
-open printer SetTplIni() width 82 ;
-     preview SetPreview() ;
-     range   SetRange() ;
-     titblock {|| ;
+
+// 20120623
+
+//~ open printer SetTplIni() width 82 ;
+     //~ preview SetPreview() ;
+     //~ range   SetRange() ;
+     //~ titblock {|| ;
+       //~ PrintHeader(cTitle1,cTitle2,cTitle3) ;
+     //~ }
+local nCopies := 1
+local bPageHeader := {|| ;
        PrintHeader(cTitle1,cTitle2,cTitle3) ;
      }
+RETURN .f. if ! OpenPrinter(SetTplIni(),SetPreview(),;
+  82,bPageHeader,NIL,NIL,NIL,NIL,SetAsPdf(),SetAsMail(),nCopies)
+     
 open area oPar()
   for i := 1 to len(aNafSim)
     if lFirstPar ; lFirstPar := .f. ; else ; PrintLine() ; endif

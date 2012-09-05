@@ -636,6 +636,7 @@ FUNCTION Purzel
   endif
   ft_vidstr(0,79,cPurzel)
 #endif DEF_VIDSTR
+//~ snIdleSecs := 0 // 20120618
 RETURN .t.
 
 #ifdef DEF_PURZEL
