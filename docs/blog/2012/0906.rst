@@ -1,0 +1,6 @@
+20120906 Neue Funktion LenIdMsg()
+=================================
+
+Die Länge der Felder MSG->IdMsg (sowie MSG->Parent und MSG->Top) 
+ist jetzt parametrierbar.
+

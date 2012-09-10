@@ -339,6 +339,7 @@ static sbOnParSatisfy := {||.t.}
   }
 #endif DEF_GEN
 static snLenIdPrj   := 6
+static snLenIdMsg   := 5
 static snLenIdUnt   := 8
 
   static scDocNew    := DOCSTAT_NEW
@@ -3979,6 +3980,7 @@ FUNCTION NextIdPar(cIdPrt) ; RETURN eval(sbNextIdPar,cIdPrt)
 FUNCTION LenIdJnl ; RETURN snLenIdJnl
 * FUNCTION LenIdTac ; RETURN snLenIdGen
 FUNCTION LenIdPrj ; RETURN snLenIdPrj
+FUNCTION LenIdMsg ; RETURN snLenIdMsg
 FUNCTION LenIdUnt ; RETURN snLenIdUnt
 FUNCTION LenIdMfc ; RETURN snLenIdMfc
 #ifdef DEF_ANA
@@ -5815,6 +5817,7 @@ AddIniCmd( { "LenTel"   , {|x| snLenTel := val(x),.t. } } )
   AddIniCmd( { "OnGenJnlExist" , {|x| (sxlOnGenJnlExist := xparse(x))!=NIL } } )
 #endif DEF_GEN
 AddIniCmd( { "LenIdPrj" , {|x| snLenIdPrj := val(x),.t. } } )
+AddIniCmd( { "LenIdMsg" , {|x| snLenIdMsg := val(x),.t. } } )
 AddIniCmd( { "LenIdUnt" , {|x| snLenIdUnt := val(x),.t. } } )
   AddIniCmd( { "DocStatNew" , {|x| (scDocNew := xparse(x)) != NIL } } )
   AddIniCmd( { "DocStatOpen" , {|x| (scDocOpen := xparse(x)) != NIL } } )

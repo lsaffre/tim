@@ -116,11 +116,11 @@ ddFld IdUsr   ,C, LenIdUsr(),0 picture PIC_ID pick PickUsr(MSG->IdUsr)
 #endif
 ddFld Date    ,D, 8,0
 ddFld Titre   ,C,40,0
-ddAddField("IdMsg","C",5,0,"","",NIL,NIL,NIL,{|x|PickNum(x)},;
+ddAddField("IdMsg","C",LenIdMsg(),0,"","",NIL,NIL,NIL,{|x|PickNum(x)},;
   NIL,{|x|GetNum(x)},{||"E"$UsrAttrib()})
 ddFld Texte   ,M,10,0
 ddFld Etat    ,C, 1,0 // seit 20060531 wieder da attrib H
-ddAddField("Parent","C",5,0,"","",NIL,NIL,NIL,;
+ddAddField("Parent","C",LenIdMsg(),0,"","",NIL,NIL,NIL,;
   {|x|DbfPick(;
    {oMsg(),oPar()},;
    "MSG auswahlen","MSGPICK",x,NIL,;
@@ -128,7 +128,7 @@ ddAddField("Parent","C",5,0,"","",NIL,NIL,NIL,;
    "MSG->IdMsg")},;
   NIL,{|x|GetNum(x)},{||"E"$UsrAttrib()};
 )
-ddFld Top     ,C, 5,0
+ddFld Top     ,C, LenIdMsg(),0
 ddFld IdPar   ,C, LenIdPar(),0 GET_PAD ;
                pick PickPar(NIL,MSG->IdPar)
 ddFld IdTxt   ,C, LenIdTpl(),0 picture PIC_ID ;
