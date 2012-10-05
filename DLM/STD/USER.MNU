@@ -106,7 +106,7 @@ MnuAddItem("Alle ~Dienstleistungen",\
     {oDls(),oPar(),oDla(),oPrj()}, MnuItemName(),"DLS",\
     NIL,NIL,NIL,NIL,NIL,NIL,NIL,2)})
 
-MnuAddItem("~Aufteilung /Projekt",\
+MnuAddItem("Aufteilung /~Projekt",\
   {||RepPrint("DLSPRJ1","DLSPRJ1",MnuItemName())})
 
 MnuAddSep()
@@ -115,12 +115,27 @@ MnuAddItem("My ~open tickets",{||DbfEdit(\
   "PINUSR",NIL,".t.",\
   UserId()+" ","PIN->IdUsr+PIN->IdPns"\
 )})
-MnuAddItem("My ~scheduled tickets",{||DbfEdit(\
+MnuAddItem("My ~closed tickets",{||DbfEdit(\
+  {oPin(),oPar(),oPrj()},MnuItemName(),\
+  "PINUSR",NIL,".t.",\
+  UserId()+"C","PIN->IdUsr+PIN->IdPns"\
+)})
+MnuAddItem("My ~sleeping tickets",{||DbfEdit(\
   {oPin(),oPar(),oPrj()},MnuItemName(),\
   "PINUSRS",NIL,".t.",\
   UserId()+"S","PIN->IdUsr+PIN->IdPns"\
 )})
-MnuAddItem("My w~aiting tickets",{||DbfEdit(\
+MnuAddItem("My ~testing tickets",{||DbfEdit(\
+  {oPin(),oPar(),oPrj()},MnuItemName(),\
+  "PINUSR",NIL,".t.",\
+  UserId()+"T","PIN->IdUsr+PIN->IdPns"\
+)})
+MnuAddItem("My ~waiting tickets",{||DbfEdit(\
+  {oPin(),oPar(),oPrj()},MnuItemName(),\
+  "PINUSR",NIL,".t.",\
+  UserId()+"W","PIN->IdUsr+PIN->IdPns"\
+)})
+MnuAddItem("My ~archived tickets",{||DbfEdit(\
   {oPin(),oPar(),oPrj()},MnuItemName(),\
   "PINUSR",NIL,".t.",\
   UserId()+"A","PIN->IdUsr+PIN->IdPns"\

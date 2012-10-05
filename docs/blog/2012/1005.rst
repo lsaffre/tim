@@ -1,0 +1,5 @@
+20121005
+========
+
+ddPaste() called `soBrowse:colCount()`, which was wrong because 
+`soBrowse:colCount` is an instance variable.

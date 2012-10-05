@@ -1,0 +1,8 @@
+20120922
+========
+
+MWSt-Erklärung. 
+Gutschriften an Vertragspartner (IdTax == "C  ")
+kamen fälschlicherweise in den Raster 49.
+Jetzt kommen sie in den Raster 48.
+`DCLTVA.ACT`  

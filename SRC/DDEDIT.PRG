@@ -1772,7 +1772,7 @@ if eof().or.bof()
   RETURN SetMnuDone() if ! ddCreate()
   if ddRecLock()
     ddBefore()
-    for i := 1 to soBrowse:colCount()
+    for i := 1 to soBrowse:colCount
       col := soBrowse:getColumn(i)
       ColPaste(col:cargo)
     next i

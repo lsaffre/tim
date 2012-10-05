@@ -1,9 +1,9 @@
 @echo off
 [* --------------------------------------------------------------
   mkdist7.btp : create distribution files from this installation
-  using 7za.exe (get it from http://www.7-zip.org/download.html)
+  using 7z.exe (get it from http://www.7-zip.org/download.html)
   This file is part of the TIM installation routines
-  Copyright(c) 2002-2009 Luc Saffre
+  Copyright(c) 2002-2012 Luc Saffre
   distributed under the terms of the GNU General Public License
   -------------------------------------------------------------- *]
 rem **********
@@ -29,7 +29,7 @@ if x%1 == x goto weiter
 [=left(DataRoot(),2)]
 cd [=DataRoot()]
 if not exist %1\tim.dbi goto error1
-7za a -tzip -r -p [=AppRoot()]\dist\%1 %1 -x!*.NTX -x!*.OL* -x!*.CDX
+7z a -tzip -r -p [=AppRoot()]\dist\%1 %1 -x!*.NTX -x!*.OL* -x!*.CDX
 if errorlevel 1 goto err_zip
 
 [etc if !empty(getvar("mailhost")).and.!empty(getvar("mailsupport"))]
@@ -48,22 +48,22 @@ goto restart
 
 [=left(AppRoot(),2)]
 cd [=AppRoot()]
-if exist dlm\*.* 7za a -tzip -r dist\dlm.zip dlm
+if exist dlm\*.* 7z a -tzip -r dist\dlm.zip dlm
 if errorlevel 1 goto err_zip
-if exist localdlm\*.* 7za a -tzip -r dist\localdlm.zip localdlm
+if exist localdlm\*.* 7z a -tzip -r dist\localdlm.zip localdlm
 if errorlevel 1 goto err_zip
 if exist readme.txt xcopy readme.txt dist /v
 if errorlevel 1 goto err_copy
 
 [=left(AppPath(),2)]
 cd [=AppPath()]
-7za a -tzip [=AppRoot()]\dist\bin.zip tim4.exe tim4.ico tim.ini \
+7z a -tzip [=AppRoot()]\dist\bin.zip tim4.exe tim4.ico tim.ini \
   choice.com prn2file.com \
   setup.bat
 if errorlevel 1 goto err_zip
 if exist unzip.exe xcopy unzip.exe [=AppRoot()]\dist /v
 if errorlevel 1 goto err_copy
-if exist 7za.exe xcopy 7za.exe [=AppRoot()]\dist /v
+if exist 7z.exe xcopy 7z.exe [=AppRoot()]\dist /v
 if errorlevel 1 goto err_copy
 
 goto ende

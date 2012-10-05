@@ -331,8 +331,9 @@ open window (MSG040 + VEN->IdJnl + " " + VEN->IdDoc) size 20, 80
 close window
 if lLock
   unlock record
-else
-  ddRefreshCurrent()
+//~ removed 20120928 
+//~ else
+  //~ ddRefreshCurrent()  
 endif
 RETURN .f.
 
