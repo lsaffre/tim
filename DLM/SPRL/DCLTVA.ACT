@@ -75,15 +75,15 @@ DlgDefine("49",iif(getvar("Version")==1,\
 DlgDefine("54",CttTaxe('\
   DC=="D".and.IdCtr=="V".and.IdTax$"0  ,6  ,06 ,12 ,20 ,21 "\
 '))
-// 55 : taxe due sur les achats intracom de marchandises (grille 86)
-//      ! mais sans prendre les notes de cr‚dit 
+// 55 : taxe due sur les achats en grille 86 et 88
+//      ! mais (version 1) sans prendre les notes de cr‚dit 
 DlgDefine("55",\
   iif(getvar("Version")==1,\
     CttTaxe('\
       DC=="C".and.IdCtr$"EA".and.IdCtf!="**".and.IdTax$"IM ,IM6,NIM"\
     '),\
     CttTaxe('\
-      DC=="C".and.IdCtr$"EA".and.IdCtf!="**".and.IdTax$"IM ,IM6,NIM,IS ,IS6,NIS"\
+      IdCtr$"EA".and.IdCtf!="**".and.IdTax$"IM ,IM6,NIM,IS ,IS6,NIS"\
     ')\
   ))
 
@@ -133,13 +133,21 @@ DlgDefine("59",CttTaxe('\
 //      - les NC achat co-contractant (pas logique)
 // 20040311 :
 // in 63 wird die MWSt der 16% deutsche Kunden mit einbezogen: falsch
-DlgDefine("63",-CttTaxe('\
-  IdCtr$"EA".and.IdCtf!="**".and.DC=="D"\
-  .and.left(IdTax,1)!="N"\
-  .and.left(IdTax,1)!="I"\
-  .and.left(IdTax,1)!="C"\
-  .and.!IdTax$"15 ,16 ,19 ,19M,L  ,07 "\
-'))
+DlgDefine("63",\
+  iif(getvar("Version")==1,\
+    -CttTaxe('\
+    IdCtr$"EA".and.IdCtf!="**".and.DC=="D"\
+    .and.left(IdTax,1)!="N"\
+    .and.left(IdTax,1)!="I"\
+    .and.left(IdTax,1)!="C"\
+    .and.!IdTax$"15 ,16 ,19 ,19M,L  ,07 "\
+  '),\
+    -CttTaxe('\
+    IdCtr$"EA".and.IdCtf!="**".and.DC=="D"\
+    .and.left(IdTax,1)!="N"\
+    .and.!IdTax$"15 ,16 ,19 ,19M,L  ,07 "\
+  ')\
+  ))
 //      - les NC achat d‚clar‚es … l'‚tranger
 //  .and.!IdTax$"15 ,16 ,07 "\
 

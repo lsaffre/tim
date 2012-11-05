@@ -1,0 +1,20 @@
+20121105
+========
+
+Änderung in der MWSt-Erklärung (`SPRL/DCLTVA.ACT`): 
+Gutschriften der Operationen aus Feld 86 (Acquisitions 
+intracommunautaires effectuées en Belgique et ventes ABC) 
+und 88 (Services intracommunautaires avec report de perception) 
+wurden bisher in den Feldern 55 und 63 ignoriert; jetzt werden 
+sie in 55 hinzugefügt und in 63 abgezogen.
+Oder anders gesgt:
+
+- Feld 55 (TVA relative aux opérations déclarées en grilles 86 et 88)
+  ignoriert jetzt nicht mehr alle Gutschriften. Das war
+  unlogischerweise früher mal so, ist es aber scheinbar schon seit
+  Längerem nicht mehr.
+
+- Feld 63 (TVA à reverser mentionnée sur les notes de crédit reçues)
+  ignoriert jetzt nicht mehr die 
+
+Beide Änderungen gelten übrigens *nicht* für Erklärungen von vor 2010.

@@ -659,6 +659,13 @@ elseif PAR->IdPrt == "T"
 endif
 RETURN !SetMsg(trim(ParName())+" ist weder Kind noch Therapeut!")
 
+FUNCTION KrgSesScan(xlFilter,xlEval)
+RETURN DbfScan(;
+  {oSes()},5,;
+  KRG->IdKrg,;
+  "SES->IdKrg=='"+KRG->IdKrg+"'",;
+  xlFilter,xlEval)
+  
 ** wird benutzt in Druckmaske KRG:KRG
 FUNCTION KrgKrlScan(xlFilter,xlEval)
 RETURN DbfScan(;
@@ -787,6 +794,8 @@ local nMont1T:=0
 local nMont2T:=0
 local lOkay := .f.
 local a
+local nQteKrl := 0 
+local nQteSes := 0 
 RETURN !SetMsg("Rechnung nicht fertig") if KRG->Etat != ETAT_CLOSED
 open area oKrl() // ,oArt()
   lOkay := .t.
@@ -801,9 +810,20 @@ open area oKrl() // ,oArt()
       nMont2 += val(KRL->Mont2)
       nCount += 1
     endif
+    nQteKrl += KrlTime()
     skip
   enddo
 close area
+
+// ... 20121030 jetzt noch nQte vergleichen mit Summe aller SES mit dieser IdKrg
+KrgSesScan(NIL,{|| ;
+  nQteSes+=t2hours(TimeDiff(SES->Von,SES->Bis))/iif(SES->GCount==0,1,SES->GCount), ;
+  .t.;
+})
+if nQteKrl > nQteSes
+  RETURN !SetMsg("Fakturierte Zeit ("+ntrim(nQteKrl);
+    +") gr”áer als Summe der Sitzungen " + ntrim(nQteSes)) 
+endif  
 a := DbfPeek(oPrj(),KRG->IdPrj1,"{PRJ->IdPar,PRJ->IdPar3,PRJ->Vipo}",NIL)
 RETURN !SetMsg(KRG->IdPrj1+" : unbekanntes Protokoll!") if a == NIL
 RETURN !SetMsg("KRG->Mont1 ist "+ltrim(KRG->Mont1);
@@ -968,6 +988,7 @@ RETURN K_ALT_F5
 
 FUNCTION IsKtgZentrum(cZentrum)
 RETURN .t. if cZentrum == "P" .or. cZentrum == "O"
+RETURN .f.
 
 
 
