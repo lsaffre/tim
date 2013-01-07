@@ -167,7 +167,7 @@ FUNCTION CodaImport(cWildCard)
 local cFileName
 local aDir := directory(cWildCard)
 local i
-local nError
+//~ local nError
 local fd
 local lOkay := .f.
 if len(aDir) == 0
@@ -187,9 +187,9 @@ else
       enddo
       if lOkay
         MsgDisplay("Importing " + cFileName + "...")
-        nError := Coda_f_import(fd)
-        if nError != CODA_OKAY
-          SetMsg("CODA error " + ntrim(nError))
+        if ! Coda_f_import(fd)
+        //~ if nError != CODA_OKAY
+          //~ SetMsg("CODA error " + ntrim(nError))
           lOkay := .f.
         endif
         fclose(fd)
@@ -214,7 +214,7 @@ RETURN lOkay
 
 **
 **
-** Siehe g:\doc\coda\coda.pdf : Lay-out 128 (?)
+** Based on m:\collect\doc\coda\Standard-CODA-2.3-FR.pdf
 **
 STATIC FUNCTION Coda_f_Import(fd)
 local lOkay := .t.
@@ -227,9 +227,11 @@ local lSkip := .f.
 local nMont
 local dev
 local cLine
+local nLine := 0
 * local cIdPar
 * local nNew := 0
 do while (cLine:=freadline(fd)) != NIL
+  nLine += 1
   if left(cLine,1) == "0" // header
     dDateCrea := cdtod(substr(cLine,6,6))
     cYear := str(year(dDateCrea),4)
@@ -253,7 +255,7 @@ do while (cLine:=freadline(fd)) != NIL
          CPT->NoCpt := cNoCpt
          unlock record
        else
-         RETURN CODA_RECLOCK
+         RETURN .f. // CODA_RECLOCK
        endif
       *else
       * lSkip := .t.
@@ -271,7 +273,8 @@ do while (cLine:=freadline(fd)) != NIL
         EXT->NoExt  := cNoExt
         EXT->NoSeq  := substr(cLine,126,3)
         EXT->IdDev  := substr(cLine,19,3)
-        RETURN CODA_IDDEV if (dev := DevLocate(EXT->IdDev)) == NIL
+        //~ RETURN CODA_IDDEV if (dev := DevLocate(EXT->IdDev)) == NIL
+        RETURN !SetMsg(ntrim(nLine)+':'+MsgDevExist(EXT->IdDev)) if (dev := DevLocate(EXT->IdDev)) == NIL
         nMont := val(substr(cLine,44,12))
         nMont += val(substr(cLine,56,3)) / 1000
         if substr(cLine,43,1) == "1"
@@ -283,7 +286,7 @@ do while (cLine:=freadline(fd)) != NIL
         EXT->DateCrea  := dDateCrea
         unlock record
       else
-        RETURN CODA_RECLOCK
+        RETURN .f. // CODA_RECLOCK
       endif
     else
       SendConsole(cNoCpt+cNoExt + " : Daten doppelt eingelesen")
@@ -298,7 +301,7 @@ do while (cLine:=freadline(fd)) != NIL
     endif
 
   elseif left(cLine,1) == "2" // mouvement
-    RETURN CODA_STRUCT if dev == NIL
+    RETURN !SetMsg("Unexpected MVM (dev == NIL)") if dev == NIL // CODA_STRUCT 
     if substr(cLine,2,1) == "1" // partie 1 du mouvement
       * 20060214
       cNoMvm    := substr(cLine,3,4)
@@ -326,31 +329,33 @@ do while (cLine:=freadline(fd)) != NIL
           MVM->NoSeqExt := substr(cLine,122,3)
           unlock record
         else
-          RETURN CODA_RECLOCK
+          RETURN .f. // CODA_RECLOCK
         endif
       endif
     elseif substr(cLine,2,1) == "2" // partie 2 du mouvement
-      RETURN CODA_STRUCT if alias() != "MVM"
+      RETURN !SetMsg("Unexpected MVM part 2") if alias() != "MVM" // CODA_STRUCT 
       if ddRecLock()
         MVM->Communic := left(MVM->Communic,53) + substr(cLine,11,53)
         MVM->NoRefCli := substr(cLine,64,26)
         unlock record
       else
-        RETURN CODA_RECLOCK
+        RETURN .f. // CODA_RECLOCK
       endif
     elseif substr(cLine,2,1) == "3" // partie 3 du mouvement
-      RETURN CODA_STRUCT if alias() != "MVM"
+      //~ RETURN CODA_STRUCT if alias() != "MVM"
+      RETURN !SetMsg("Unexpected MVM part 3") if alias() != "MVM"
       if ddRecLock()
         MVM->CptContre := substr(cLine,11,12)
         MVM->IdContre  := substr(cLine,48,78)
         unlock record
       else
-        RETURN CODA_RECLOCK
+        RETURN .f. //  CODA_RECLOCK
       endif
     endif
 
   elseif left(cLine,1) == "3" // info
-    RETURN CODA_STRUCT if substr(cLine,3,4) != cNoMvm
+    //~ RETURN CODA_STRUCT if substr(cLine,3,4) != cNoMvm
+    RETURN !SetMsg("Unexpected INFO record") if substr(cLine,3,4) != cNoMvm
     if substr(cLine,2,1) == "1" // partie 1 de l'info
       select INF
       if dbAddRec()
@@ -362,23 +367,25 @@ do while (cLine:=freadline(fd)) != NIL
         INF->Communic := substr(cLine,41,73)
         unlock record
       else
-        RETURN CODA_RECLOCK
+        RETURN .f. // CODA_RECLOCK
       endif
     elseif substr(cLine,2,1) == "2" // partie 2 de l'info
-      RETURN CODA_STRUCT if alias() != "INF"
+      //~ RETURN CODA_STRUCT if alias() != "INF"
+      RETURN !SetMsg("Unexpected INFO part 2") if alias() != "INF"
       if ddRecLock()
         INF->Communic := left(INF->Communic,73) + substr(cLine,11,105)
         unlock record
       else
-        RETURN CODA_RECLOCK
+        RETURN .f. // CODA_RECLOCK
       endif
     elseif substr(cLine,2,1) == "3" // partie 3 de l'info
-      RETURN CODA_STRUCT if alias() != "INF"
+      //~ RETURN CODA_STRUCT if alias() != "INF"
+      RETURN !SetMsg("Unexpected INFO part 3") if alias() != "INF"
       if ddRecLock()
         INF->Communic := left(INF->Communic,178) + substr(cLine,11,90)
         unlock record
       else
-        RETURN CODA_RECLOCK
+        RETURN .f. // CODA_RECLOCK
       endif
     endif
 
@@ -389,7 +396,8 @@ do while (cLine:=freadline(fd)) != NIL
 
   elseif left(cLine,1) == "8" // nouveau solde
     select EXT
-    RETURN CODA_STRUCT if EXT->NoCpt != substr(cLine,5,12)
+    //~ RETURN CODA_STRUCT if EXT->NoCpt != substr(cLine,5,12)
+    RETURN !SetMsg("Unexpected nouveau solde") if EXT->NoCpt != substr(cLine,5,12)
     if ddRecLock()
       EXT->NoSeqExt := substr(cLine,2,3)
       nMont := val(substr(cLine,43,12))
@@ -409,14 +417,229 @@ do while (cLine:=freadline(fd)) != NIL
         unlock record
       endif
     else
-      RETURN CODA_RECLOCK
+      RETURN .f. // CODA_RECLOCK
     endif
 
   elseif left(cLine,1) == "9" // trailer record
 
   endif
 enddo
-RETURN CODA_OKAY
+RETURN .t.
+
+
+**
+**
+** Siehe g:\doc\coda\coda.pdf : Lay-out 128 (?) June 1997
+**
+STATIC FUNCTION Coda_f_Import_1997(fd)
+local lOkay := .t.
+local dDateCrea
+local cNoCpt
+local cNoExt
+local cNoMvm
+local cYear // NoExt wird in TIM mit dem Jahr pr„fixiert
+local lSkip := .f.
+local nMont
+local dev
+local cLine
+local nLine := 0
+* local cIdPar
+* local nNew := 0
+do while (cLine:=freadline(fd)) != NIL
+  nLine += 1
+  if left(cLine,1) == "0" // header
+    dDateCrea := cdtod(substr(cLine,6,6))
+    cYear := str(year(dDateCrea),4)
+    lSkip := .f.
+    loop
+  endif
+  if lSkip
+    loop
+  endif
+
+  if left(cLine,1) == "1" // ancien solde
+    cNoCpt := substr(cLine,6,12)
+    cNoExt := cYear + "/" + substr(cLine,3,3)
+    * cNoSeq := substr(cLine,126,3)
+    select CPT
+    seek cNoCpt
+    if eof()
+      *if Confirm(cNoCpt + " : Kontonummer anlegen (J/N)")
+       if dbAddRec()
+         * nNew += 1
+         CPT->NoCpt := cNoCpt
+         unlock record
+       else
+         RETURN .f. // CODA_RECLOCK
+       endif
+      *else
+      * lSkip := .t.
+      *endif
+      * 20031124 jetzt nicht mehr : loop
+    endif
+    * if lSkip
+    *   loop
+    * endif
+    select EXT
+    seek cNoCpt+cNoExt in EXT
+    if eof()
+      if dbAddRec()
+        EXT->NoCpt  := cNoCpt
+        EXT->NoExt  := cNoExt
+        EXT->NoSeq  := substr(cLine,126,3)
+        EXT->IdDev  := substr(cLine,19,3)
+        //~ RETURN CODA_IDDEV if (dev := DevLocate(EXT->IdDev)) == NIL
+        RETURN !SetMsg(ntrim(nLine)+':'+MsgDevExist(EXT->IdDev)) if (dev := DevLocate(EXT->IdDev)) == NIL
+        nMont := val(substr(cLine,44,12))
+        nMont += val(substr(cLine,56,3)) / 1000
+        if substr(cLine,43,1) == "1"
+          nMont := - nMont
+        endif
+        nMont := round(nMont,dev[DEV_DECPOS])
+        EXT->Solde1 := str(nMont,17,dev[DEV_DECPOS])
+        EXT->Date1  := cdtod(substr(cLine,59,6))
+        EXT->DateCrea  := dDateCrea
+        unlock record
+      else
+        RETURN .f. // CODA_RECLOCK
+      endif
+    else
+      SendConsole(cNoCpt+cNoExt + " : Daten doppelt eingelesen")
+      if EXT->DateCrea != dDateCrea
+        SendConsole( ;
+          "  "+cNoCpt+cNoExt + " : " + ;
+          dtoc(EXT->DateCrea) + " <> " + dtoc(dDateCrea) ;
+        )
+      endif
+      lSkip := .t.
+      // also alle Zeilen bis zum n„chsten Header ignorieren
+    endif
+
+  elseif left(cLine,1) == "2" // mouvement
+    RETURN !SetMsg("Unexpected MVM (dev == NIL)") if dev == NIL // CODA_STRUCT 
+    if substr(cLine,2,1) == "1" // partie 1 du mouvement
+      * 20060214
+      cNoMvm    := substr(cLine,3,4)
+      select MVM
+      if MVM->NoMvm!=cNoMvm.or.MVM->NoCpt!=cNoCpt.or.MVM->NoExt!=cNoExt
+        if dbAddRec()
+          MVM->NoCpt := cNoCpt
+          MVM->NoExt := cNoExt
+          MVM->NoMvm    := cNoMvm
+          MVM->NoDetail := substr(cLine,7,4)
+          MVM->NoRef    := substr(cLine,11,13)
+          MVM->ExtNoRef := substr(cLine,24,8)
+          nMont := val(substr(cLine,33,12))
+          nMont += val(substr(cLine,45,3)) / 1000
+          if substr(cLine,32,1) == "1"
+            nMont := - nMont
+          endif
+          nMont := round(nMont,dev[DEV_DECPOS])
+          MVM->Montant := str(nMont,17,dev[DEV_DECPOS])
+          MVM->DatVal   := cdtod(substr(cLine,48,6))
+          MVM->CodeOp   := substr(cLine,54,8)
+          MVM->TypCom   := substr(cLine,62,1)
+          MVM->Communic := substr(cLine,63,53)
+          MVM->DatCompt := cdtod(substr(cLine,116,6))
+          MVM->NoSeqExt := substr(cLine,122,3)
+          unlock record
+        else
+          RETURN .f. // CODA_RECLOCK
+        endif
+      endif
+    elseif substr(cLine,2,1) == "2" // partie 2 du mouvement
+      RETURN !SetMsg("Unexpected MVM part 2") if alias() != "MVM" // CODA_STRUCT 
+      if ddRecLock()
+        MVM->Communic := left(MVM->Communic,53) + substr(cLine,11,53)
+        MVM->NoRefCli := substr(cLine,64,26)
+        unlock record
+      else
+        RETURN .f. // CODA_RECLOCK
+      endif
+    elseif substr(cLine,2,1) == "3" // partie 3 du mouvement
+      //~ RETURN CODA_STRUCT if alias() != "MVM"
+      RETURN !SetMsg("Unexpected MVM part 3") if alias() != "MVM"
+      if ddRecLock()
+        MVM->CptContre := substr(cLine,11,12)
+        MVM->IdContre  := substr(cLine,48,78)
+        unlock record
+      else
+        RETURN .f. //  CODA_RECLOCK
+      endif
+    endif
+
+  elseif left(cLine,1) == "3" // info
+    //~ RETURN CODA_STRUCT if substr(cLine,3,4) != cNoMvm
+    RETURN !SetMsg("Unexpected INFO record") if substr(cLine,3,4) != cNoMvm
+    if substr(cLine,2,1) == "1" // partie 1 de l'info
+      select INF
+      if dbAddRec()
+        INF->NoCpt  := cNoCpt
+        INF->NoExt  := cNoExt
+        INF->NoMvm  := cNoMvm
+        INF->NoInf  := substr(cLine,7,4)
+        INF->TypCom := substr(cLine,40,1)
+        INF->Communic := substr(cLine,41,73)
+        unlock record
+      else
+        RETURN .f. // CODA_RECLOCK
+      endif
+    elseif substr(cLine,2,1) == "2" // partie 2 de l'info
+      //~ RETURN CODA_STRUCT if alias() != "INF"
+      RETURN !SetMsg("Unexpected INFO part 2") if alias() != "INF"
+      if ddRecLock()
+        INF->Communic := left(INF->Communic,73) + substr(cLine,11,105)
+        unlock record
+      else
+        RETURN .f. // CODA_RECLOCK
+      endif
+    elseif substr(cLine,2,1) == "3" // partie 3 de l'info
+      //~ RETURN CODA_STRUCT if alias() != "INF"
+      RETURN !SetMsg("Unexpected INFO part 3") if alias() != "INF"
+      if ddRecLock()
+        INF->Communic := left(INF->Communic,178) + substr(cLine,11,90)
+        unlock record
+      else
+        RETURN .f. // CODA_RECLOCK
+      endif
+    endif
+
+  elseif left(cLine,1) == "4" // message libre (non utilis‚)
+  elseif left(cLine,1) == "5" // (non utilis‚)
+  elseif left(cLine,1) == "6" // (non utilis‚)
+  elseif left(cLine,1) == "7" // (non utilis‚)
+
+  elseif left(cLine,1) == "8" // nouveau solde
+    select EXT
+    //~ RETURN CODA_STRUCT if EXT->NoCpt != substr(cLine,5,12)
+    RETURN !SetMsg("Unexpected nouveau solde") if EXT->NoCpt != substr(cLine,5,12)
+    if ddRecLock()
+      EXT->NoSeqExt := substr(cLine,2,3)
+      nMont := val(substr(cLine,43,12))
+      nMont += val(substr(cLine,55,3)) / 1000
+      if substr(cLine,42,1) == "1"
+        nMont := - nMont
+      endif
+      nMont := round(nMont,dev[DEV_DECPOS])
+      EXT->Solde2 := str(nMont,17,dev[DEV_DECPOS])
+      EXT->Date2  := cdtod(substr(cLine,58,6))
+      unlock record
+      select CPT
+      if ddRecLock()
+        CPT->Solde2 := str(nMont,17,dev[DEV_DECPOS])
+        CPT->Date2  := cdtod(substr(cLine,58,6))
+        CPT->IdDev  := dev[DEV_IDDEV]
+        unlock record
+      endif
+    else
+      RETURN .f. // CODA_RECLOCK
+    endif
+
+  elseif left(cLine,1) == "9" // trailer record
+
+  endif
+enddo
+RETURN .t.
 
 
 FUNCTION cdtod(c)

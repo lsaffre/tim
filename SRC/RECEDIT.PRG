@@ -110,35 +110,40 @@ FUNCTION Log_PUT(aBuf)
 local i, cName
 local lFound := .f.
 local cData := ""
+local cLine := ""
 RETURN .t. if aBuf == NIL
 for i = 1 to fcount()
   cName := fieldname(i)
   if FIELD->&cName != aBuf[i]
     lFound := .t.
+    if len(cLine) > 0; cLine += "," ; endif
+    cLine += cName + '=' + utos(FIELD->&cName)
   endif
   if i > 1 ; cData += "," ; endif
   cData += '"'+cName + '":' + val2json(FIELD->&cName)
 next i
 RETURN .t. if ! lFound
-RETURN Log_changelog('PUT',cData)
+RETURN json_changelog('PUT',cData,cLine)
 
 
 FUNCTION Log_POST
 local cData := ""
 local i, cName
+local cLine := ""
 for i = 1 to fcount()
   cName := fieldname(i)
-  if i > 1 ; cData += "," ; endif
+  if i > 1 ; cData += "," ; cLine += "," ; endif
   cData += '"'+cName + '":' + val2json(FIELD->&cName)
+    cLine += cName + '=' + utos(FIELD->&cName)
 next i
-Log_changelog('POST',cData)
+json_changelog('POST',cData,cLine)
 RETURN .t.
 
 FUNCTION Log_DELETE
-Log_changelog('DELETE')
+json_changelog('DELETE')
 RETURN .t.
 
-FUNCTION Log_changelog(cMethod,cData)
+FUNCTION json_changelog(cMethod,cData,cLine)
 local cCmd := '{"method":'+val2json(cMethod)+',"alias":' + val2json(alias()) 
 if alias() == 'PAR'
   cCmd += ',"id":'+val2json(PAR->IdPar) 
@@ -165,7 +170,26 @@ if cData != NIL
   cCmd += ',"data":{' + cData + "}"
 endif
 cCmd += "}"
-RETURN LogRawMsg(DbPath()+'\changelog\changelog.json',cCmd+CR_LF)
+RETURN .f. if !LogRawMsg(DbPath()+'\changelog\changelog.json',cCmd+CR_LF)
+RETURN txt_changelog(cMethod,cLine)
+
+FUNCTION txt_changelog(cMethod,cData)
+local cLine := trim(UserId())+" "+dtos(date())+" "+time()+": "
+local cId := NIL
+if alias() == 'PAR'
+  cId := alltrim(PAR->IdPar) 
+elseif alias() == 'PXS'
+  cId := alltrim(PXS->IdPar) 
+else
+  RETURN .t.
+endif
+if cData != NIL
+  cLine += cData
+endif
+RETURN LogRawMsg(DbPath()+'\changelog\PAR\'+cId+'.txt',cLine+CR_LF)
+
+FUNCTION ShowChanges()
+RETURN FileEdit(DbPath()+'\changelog\PAR\'+alltrim(FIELD->IdPar)+'.txt',NIL,.f.)
 
 #endif DEF_CHANGELOG
 

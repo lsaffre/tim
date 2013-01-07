@@ -18,3 +18,9 @@ Oder anders gesgt:
   ignoriert jetzt nicht mehr die 
 
 Beide Änderungen gelten übrigens *nicht* für Erklärungen von vor 2010.
+
+Nachtrag 12.11.: diese Änderung fällt normalerweise nicht auf, weil
+innergemeinschaftliche Gutschriften normalerweise mit MWSt-Code `IM0`
+gebucht werden müssen, also überhaupt keine MWSt haben. Es geht darum, 
+die TIM mit eventuellen (durch Konfigurationsfehler bedingten) 
+trotzdem-Fällen Fehleingaben umgehen soll.

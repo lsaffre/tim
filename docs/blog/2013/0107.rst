@@ -1,0 +1,13 @@
+20130107
+========
+
+- Erstmal ein Checkin meiner ersten Änderungen vom 12.12.12:
+
+  Die alte Coda_f_Import umbenannt nach Coda_f_Import_1997.
+  Die neue Coda_f_Import wird jetzt auf 
+  Standard-CODA-2.3-FR.pdf basieren.  
+  Die aufrufende CodaImport() erwartet jetzt nicht mehr 
+  `.t.` oder `.f.`,
+  sondern `NIL` oder eine Fehlermeldung.
+  
+  
