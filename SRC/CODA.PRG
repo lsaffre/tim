@@ -1,5 +1,5 @@
 ** Copyright (c) 1992-2001 PAC Systems
-** Copyright (c) 2001-2008 Luc Saffre
+** Copyright (c) 2001-2008,2013 Luc Saffre
 **
 ** This file is part of TIM.
 **
@@ -160,6 +160,9 @@ ddEndDef()
 RETURN b
 
 
+
+
+
 **
 **
 **
@@ -188,6 +191,7 @@ else
       if lOkay
         MsgDisplay("Importing " + cFileName + "...")
         if ! Coda_f_import(fd)
+          SetMsg("CODA import " + cFileName + " failed : "+SetMsg())
         //~ if nError != CODA_OKAY
           //~ SetMsg("CODA error " + ntrim(nError))
           lOkay := .f.
@@ -198,7 +202,7 @@ else
         SendConsole("CODA import " + cFileName + " : okay")
         delete file (cFileName)
       else
-        SendConsole("CODA import " + cFileName + " failed : "+SetMsg())
+        //~ SendConsole("CODA import " + cFileName + " failed : "+SetMsg())
         exit
       endif
     next i
@@ -211,10 +215,31 @@ RETURN lOkay
 
 
 
+//~ pos 2 : Structure du compte 
+//~ 0 = num‚ro de compte belge 1 = num‚ro de compte ‚tranger 
+//~ 2 = IBAN du num‚ro de compte belge 3 = IBAN du num‚ro de compte ‚tranger
+FUNCTION extract_compte(cNoCpt,cIdDev,cLine,nLine,cStructCompte,cCompte)
+if cStructCompte == '0'
+  cNoCpt := left(cCompte,12)
+  cIdDev := substr(cCompte,14,3)
+elseif cStructCompte == '2'
+  if left(cCompte,2) != "BE"
+    SetMsg(ntrim(nLine)+':'+"Invalid Belgian IBAN: Expected 'BE' but found '" + left(cCompte,2) + "'!")
+    return .f.
+  endif
+  cNoCpt := substr(cCompte,5,12)
+  cIdDev := substr(cCompte,35,3)
+else
+  SetMsg(ntrim(nLine)+':'+"Cannot yet handle structure du compte'" + cStructCompte +"'!")
+  RETURN .f.
+endif
+RETURN .t.
+
+
 
 **
 **
-** Based on m:\collect\doc\coda\Standard-CODA-2.3-FR.pdf
+** Based on previous version and Standard-CODA-2.3-FR.pdf
 **
 STATIC FUNCTION Coda_f_Import(fd)
 local lOkay := .t.
@@ -222,12 +247,15 @@ local dDateCrea
 local cNoCpt
 local cNoExt
 local cNoMvm
+local cIdDev
 local cYear // NoExt wird in TIM mit dem Jahr pr„fixiert
 local lSkip := .f.
 local nMont
 local dev
 local cLine
 local nLine := 0
+local nVersion 
+local cStructCompte
 * local cIdPar
 * local nNew := 0
 do while (cLine:=freadline(fd)) != NIL
@@ -235,6 +263,15 @@ do while (cLine:=freadline(fd)) != NIL
   if left(cLine,1) == "0" // header
     dDateCrea := cdtod(substr(cLine,6,6))
     cYear := str(year(dDateCrea),4)
+    if substr(cLine,15,2) != '05'
+      SetMsg("Invalid application code '" + substr(cLine,15,2)+"'!")
+      return .f.
+    endif
+    nVersion := val(substr(cLine,128,1))
+    if nVersion < 1 .or. nVersion > 2
+      SetMsg("Unknown version code '" + substr(cLine,128,1)+"'!")
+      return .f.
+    endif
     lSkip := .f.
     loop
   endif
@@ -243,7 +280,21 @@ do while (cLine:=freadline(fd)) != NIL
   endif
 
   if left(cLine,1) == "1" // ancien solde
-    cNoCpt := substr(cLine,6,12)
+    if nVersion == 1
+      cNoCpt := substr(cLine,6,12)
+      cIdDev := substr(cLine,19,3)
+    else
+      cStructCompte := substr(cLine,2,1)
+      RETURN .f. if !extract_compte(@cNoCpt,@cIdDev,cLine,nLine,cStructCompte,substr(cLine,6,37))
+      //~ if cIdDev != "EUR"
+        //~ SetMsg(ntrim(nLine)+':'+"Invalid currency code '" + cIdDev + "'!")
+        //~ return .f.
+      //~ endif
+    endif
+    if !BanBeValidate(cNoCpt)
+      SetMsg(ntrim(nLine)+':'+SetMsg())
+      RETURN .f.
+    endif
     cNoExt := cYear + "/" + substr(cLine,3,3)
     * cNoSeq := substr(cLine,126,3)
     select CPT
@@ -272,9 +323,9 @@ do while (cLine:=freadline(fd)) != NIL
         EXT->NoCpt  := cNoCpt
         EXT->NoExt  := cNoExt
         EXT->NoSeq  := substr(cLine,126,3)
-        EXT->IdDev  := substr(cLine,19,3)
+        EXT->IdDev  := cIdDev
         //~ RETURN CODA_IDDEV if (dev := DevLocate(EXT->IdDev)) == NIL
-        RETURN !SetMsg(ntrim(nLine)+':'+MsgDevExist(EXT->IdDev)) if (dev := DevLocate(EXT->IdDev)) == NIL
+        RETURN !SetMsg('['+ntrim(nLine)+'] '+MsgDevExist(EXT->IdDev)) if (dev := DevLocate(EXT->IdDev)) == NIL
         nMont := val(substr(cLine,44,12))
         nMont += val(substr(cLine,56,3)) / 1000
         if substr(cLine,43,1) == "1"
@@ -395,9 +446,16 @@ do while (cLine:=freadline(fd)) != NIL
   elseif left(cLine,1) == "7" // (non utilis‚)
 
   elseif left(cLine,1) == "8" // nouveau solde
+  
+    if nVersion == 1
+      //~ RETURN CODA_STRUCT if EXT->NoCpt != substr(cLine,5,12)
+      RETURN !SetMsg("Unexpected nouveau solde") if EXT->NoCpt != substr(cLine,5,12)
+    else
+      RETURN .f. if !extract_compte(@cNoCpt,@cIdDev,cLine,nLine,cStructCompte,substr(cLine,5,37))
+      RETURN !SetMsg("Unexpected nouveau solde") if EXT->NoCpt != cNoCpt
+    endif
+  
     select EXT
-    //~ RETURN CODA_STRUCT if EXT->NoCpt != substr(cLine,5,12)
-    RETURN !SetMsg("Unexpected nouveau solde") if EXT->NoCpt != substr(cLine,5,12)
     if ddRecLock()
       EXT->NoSeqExt := substr(cLine,2,3)
       nMont := val(substr(cLine,43,12))

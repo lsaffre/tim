@@ -1,0 +1,7 @@
+20130109
+========
+
+Projekt "CODA 2" scheint fertig: TIM kann jetzt Kontoauszüge 
+im Format CODA Version 1 *und* 2 einlesen. 
+Zumindest mit drei Testdateien.
+Checkin.

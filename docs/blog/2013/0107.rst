@@ -1,13 +1,45 @@
 20130107
 ========
 
-- Erstmal ein Checkin meiner ersten Änderungen vom 12.12.12:
+Weiter mit Projekt "CODA 2". 
+Erstmal ein Checkin meiner ersten Änderungen vom 12.12.12:
 
-  Die alte Coda_f_Import umbenannt nach Coda_f_Import_1997.
+- Die alte Coda_f_Import umbenannt nach Coda_f_Import_1997.
   Die neue Coda_f_Import wird jetzt auf 
   Standard-CODA-2.3-FR.pdf basieren.  
-  Die aufrufende CodaImport() erwartet jetzt nicht mehr 
-  `.t.` oder `.f.`,
-  sondern `NIL` oder eine Fehlermeldung.
   
+- Die aufrufende CodaImport() erwartet jetzt nicht mehr 
+  einen numerischen Fehlercode, sondern .t. oder .f. (und bei .f.
+  soll dann SetMsg() die Fehlermeldung enthalten)
   
+
+TIM muss zumindest eine Zeitlang beide CODA-Version kennen.
+Das ist nötig, weil die Bank *auf Anfrage* 
+und *pro Konto* auf die neue Version umschaltet. 
+Also der Systemverwalter weiß nicht genau, 
+wann die ersten Auszüge mit der neuen Version kommen,
+und es kann passieren, dass die Bank nicht alle Konten 
+zugleich umstellt, also dass der Kunde die Auszüge eines 
+Kontos in Version 1 und die Auszüge eines anderen Kontos in Version 2 kriegt.
+Versions-Code steht in Kolonne 128 des Header-Records.
+
+
+CODA 2 kennt verschiedene Möglichkeiten zur Angabe 
+des Kontos, das da importiert wird.
+Code "Structure du compte": 
+
+- 0 = numéro de compte belge 
+- 1 = numéro de compte étranger 
+- 2 = IBAN du numéro de compte belge 
+- 3 = IBAN du numéro de compte étranger
+
+Bis auf weiteres mach ich mir mal keine unnötige Arbeit 
+und lass TIM nur die Möglichkeiten 0 und 2 vertragen.
+Bei Möglichkeit 2 konvertiert er die IBAN des belgischen 
+Kontos ins belgische lokale 12-stellige Format 
+(einfach indem er die vier ersten Zeichen abschneidet).
+
+Die neue Version macht jetzt (auch für CODA-Version 1) 
+einen Test, ob die angegebene Kontonummer gültig ist.
+
+
