@@ -12,7 +12,7 @@ group key={||month(ForValue())} \
       after=iif(RptToCsv(),{||.t.},{||RptTit2().and.PrintTotal(1,2).and.RptTit2()}) \
       text={|nCount|dtocf(ForValue(),"mmmm yyyy","E")+ " :"} align="R"
 #endif
-group text={|nCount|"Total"} 
+group text={|nCount|"Total"}
 
 column header="Date" \
        width=15 \

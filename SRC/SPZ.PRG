@@ -1,17 +1,14 @@
-** Copyright (c) 2005-2012 Luc Saffre
+** Copyright (c) 2005-2013 Luc Saffre
 **
 ** This file is part of TIM.
-**
 ** TIM is free software: you can redistribute it and/or modify it
 ** under the terms of the GNU General Public License as published by
 ** the Free Software Foundation; either version 3 of the License, or
 ** (at your option) any later version.
-**
 ** TIM is distributed in the hope that it will be useful, but WITHOUT
 ** ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
 ** or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public
 ** License for more details.
-**
 ** You should have received a copy of the GNU General Public License
 ** along with TIM. If not, see <http://www.gnu.org/licenses/>.
 
@@ -130,8 +127,11 @@ if PAR->IdPrt == "P"
     do while !eof() .and. PLP->IdPar1 == PAR->IdPar
       if PLP->Type $ "81-,82-,83-,84-"
         /*
-        PLP->IdPar2 ist die familie. 
-        nur dispensieren, wenn die familie auch DDL hat im Zeitraum
+        PLP->IdPar2 ist die Familie. 
+        nur dispensieren, wenn die Familie auch DDL hat im Zeitraum.
+        N.B. eine Person kann Mitglied mehrerer Familien sein, 
+        von denen lediglich die letzte eine DDL hat. 
+        Das reicht fr die Dispens.
         */
         n := 0
         if DbfScan({oDls(),oDla(),oPar()},4,;
@@ -140,12 +140,11 @@ if PAR->IdPrt == "P"
           "DlaExist(DLS->IdDla).and.'D'$DLA->Attrib",bEval,NIL,.f.)
           if n > 0
             cIdPar := "" // PLP->IdPar2
+            exit
           endif
         endif
-        exit
-      else
-        skip
       endif
+      skip
     enddo
   close area
   RETURN cIdPar if cIdPar != NIL
@@ -199,8 +198,14 @@ RETURN DbfScan({oDlp(),oDls(),oPar()},2,;
     
 FUNCTION ParDDLScan(d1,d2)
 /* 
-  Direkte DL sind DLS, bei denen die Person pers”nlich anwesend war
-  und deren DLA Attribut D hat.
+  
+Analysiert die Direkten DL (DDL) des Partners im Zeitraum [d1,d2].
+DDL sind DLSs, bei denen die Person pers”nlich anwesend war
+und deren Dienstleistungsart (DLA) Attribut D hat.
+Speichert die Anzahl der DDL in einer Variablen "AnzDDL", 
+das Datum der ersten DDL in einer Variablen DDL1 und das 
+Datum der letzten DDL in einer Variablen DDL2.
+
 */
 local nAnzDDL := 0
 local dDDL1 := ctod("")
@@ -216,7 +221,7 @@ if PAR->IdPrt == "P"
   RETURN .f. if ! DbfScan({oDlp(),oDls(),oPar(),oDla()},2,;
     PAR->IdPar+dtos(d1),;
     "DLP->IdPar+dtos(DLP->Date)<='"+PAR->IdPar+dtos(d2)+"'",;
-    "DlsExist(DLP->IdDls).and.DlaExist(DLS->IdDla).and.'D'$DLA->Attrib",bEval,NIL,.f.)
+    "DlsExist(DLP->IdDls).and.!DLS->Etat$'AV'.and.DlaExist(DLS->IdDla).and.'D'$DLA->Attrib",bEval,NIL,.f.)
   open area oDlp()
     set order to 2
     // softseek PAR->IdPar
@@ -232,7 +237,7 @@ elseif PAR->IdPrt == "G"
   RETURN .f. if ! DbfScan({oDls(),oDla(), oPar()},4,;
     PAR->IdPar+dtos(d1),;
     "DLS->IdPar+dtos(DLS->Date)<='"+PAR->IdPar+dtos(d2)+"'",;
-    "DlaExist(DLS->IdDla).and.'D'$DLA->Attrib",bEval,NIL,.f.)
+    "!DLS->Etat$'AV'.and.DlaExist(DLS->IdDla).and.'D'$DLA->Attrib",bEval,NIL,.f.)
   open area oDls()
     set order to 4
     softseek PAR->IdPar

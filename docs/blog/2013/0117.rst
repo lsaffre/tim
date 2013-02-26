@@ -1,0 +1,26 @@
+20130117
+========
+
+Zwei Problemmeldungen führen zur Entlarvung zweier subtiler Bugs in DEF_SPZ : 
+
+1.- E120322 est présenté comme "Mehr als 2 Behandlungen, aber keine ANF".
+Or, cette personne n'a honoré qu'une seule DDL (il y a des autres DDL
+mais avec statut A ou V). TIM ne devrait donc pas inspecter les NOTIZEN.
+
+-> ParDDLScan(d1,d2) zählte irrtümlich auch DLS mit, 
+deren Status Abgesagt oder Verpasst war.  Behoben.
+
+
+2.- E100128 est présenté  comme "Stand ABGESCHLOSSEN .... kein ABB".
+Or, cette personne n'a été vue que dans le cadre d'une famille. Les
+NOTIZEN devraient, en toute logique Timiesque, n'être inspectées que
+dans le cadre de cette famille.
+
+
+-> Das war ebenfalls ein Bug:
+ParMsgHolder() hörte fälschlicherweise schon nach der ersten Familie auf zu suchen. 
+TIM hat die Regel, dass Familienmitglieder von den Notizen dispensiert sind. 
+Aber nur dann, wenn die Familie auch DDL hat im Zeitraum. 
+Besagte Person ist Mitglied von zwei Familien. 
+Die erste, "alte" Familie war in 2012 keinmal anwesend, die zweite wohl. 
+Behoben.
