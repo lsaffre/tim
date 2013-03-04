@@ -28,7 +28,7 @@ static slNo00 := .f.
 FUNCTION ntom(nVal,nDec,nLenMont)
 default nLenMont to snLenMont
 default nDec to snDec
-// LogConsole(utos(nVal)+","+utos(nDec)+","+utos(nLenMont))
+//~ LogConsole(utos(nVal)+","+utos(nDec)+","+utos(nLenMont))
 if abs(nVal) < Tolerance(nDec)
   RETURN space(nLenMont) 
 endif

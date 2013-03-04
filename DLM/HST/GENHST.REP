@@ -108,11 +108,13 @@ group text={|x|"TOTAL"} align="L" when={||.t.} after={||.t.}
 column header=tr("Accnt","Konto","Compte") \
        width=LenIdGen() \
        text={||GEN->IdGen}
+       
 #if hasdlm("BIL")
 column header="Bil." \
        width=LenIdBil() \
        text={||GEN->IdBil}
 #endif
+
 column header=tr("Description","Bezeichnung","Description") \
        width=30 \
        text={||padr(GenName(NIL,TplLang()),30)}
@@ -121,6 +123,7 @@ column header=tr("Description","Bezeichnung","Description") \
 column header=tr("Opening bal","Beginnsaldo","Solde init") \
        width=LenSolde() \
        value={||DlgValue("Saldo1")}  \
+       type="C" \
        text={|x| DcSolde('D',x) } \
        xsum={|x| DcSolde('D',x) }
 #endif
@@ -128,11 +131,11 @@ column header=tr("Opening bal","Beginnsaldo","Solde init") \
 column header="Debit" \
        width=LenMntF() \
        value={||DlgValue("D")}  \
-       type="T" //  text={|x|ntomf(x)} xsum={|x| ntomf(x) }
+       type="N" 
 column header=tr("Credit","Kredit","Cr‚dit") \
        width=LenMntF() \
        value={||DlgValue("C")}  \
-       type="T" //  text={|x|ntomf(x)} xsum={|x| ntomf(x) }
+       type="N" 
 
 column header=if(getvar("ShowSaldo1") == "X",\
                  tr("final balance","Endsaldo","Solde final"), \
@@ -141,6 +144,7 @@ column header=if(getvar("ShowSaldo1") == "X",\
        value={||\
          DlgValue("Saldo1")+DlgValue("D")-DlgValue("C")\
        }  \
+       type="C" \
        text={|x| DcSolde('D',x) } \
        xsum={|x| DcSolde('D',x) }
 

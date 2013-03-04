@@ -3548,7 +3548,7 @@ elseif cType == GTYPE_NUMERIC
   default nDecPos to SetDecPos()
   * RETURN ltrim(ntom(v,nDecPos,20)) if slExcelUser
   RETURN mont2csv(ntom(v,nDecPos,20)) // '"'+komma(ltrim(ntom(v,nDecPos,20)))+'"'
-elseif cType == GTYPE_AMOUNT
+elseif cType == GTYPE_AMOUNT // T
   if "," $ v
     raise("invalid amount "+utos(v)+cSrc)
   endif

@@ -564,11 +564,19 @@ for i := 1 to len(rpt[RPT_COLUMNS])
       next j
       lFound := .t.
     endif
-    if lDetail
-      cText := xeval(cln[CLN_TEXT],nValue)
+    if lDetail 
+      if rpt[RPT_TOCSV] .and. cln[CLN_TYPE]==GTYPE_NUMERIC
+        cText := 0
+      else
+        cText := xeval(cln[CLN_TEXT],nValue)
+      endif
     endif
-  * elseif rpt[RPT_TOCSV]
-  *   cText := ""
+  elseif rpt[RPT_TOCSV]
+    if cln[CLN_TYPE] == GTYPE_NUMERIC
+      cText := 0
+    else
+      cText := ""
+    endif
   else
     cText := space(&(cln[CLN_WIDTH]))
   endif

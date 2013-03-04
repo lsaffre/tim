@@ -1,0 +1,8 @@
+20130304
+========
+
+Saldenliste Generalkonten (GENHST.REP) machte ein rotes Fenster, 
+wenn man "Export nach CSV" angekreuzt hatte.
+Da war einerseits in der GENHST.REP ein Kolonnentyp falsch deklariert 
+und andererseits ein Bug in der REPORT.PRG.
+
