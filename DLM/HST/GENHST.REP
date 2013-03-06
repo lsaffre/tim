@@ -120,12 +120,19 @@ column header=tr("Description","Bezeichnung","Description") \
        text={||padr(GenName(NIL,TplLang()),30)}
 
 #if getvar("ShowSaldo1") == "X"
+#if RptToCsv()
+column header=tr("Opening bal","Beginnsaldo","Solde init") \
+       width=LenMntF() \
+       value={||DlgValue("Saldo1")}  \
+       type="N" 
+#else
 column header=tr("Opening bal","Beginnsaldo","Solde init") \
        width=LenSolde() \
        value={||DlgValue("Saldo1")}  \
        type="C" \
        text={|x| DcSolde('D',x) } \
        xsum={|x| DcSolde('D',x) }
+#endif
 #endif
 
 column header="Debit" \
@@ -137,6 +144,16 @@ column header=tr("Credit","Kredit","Cr‚dit") \
        value={||DlgValue("C")}  \
        type="N" 
 
+#if RptToCsv()
+column header=if(getvar("ShowSaldo1") == "X",\
+                 tr("final balance","Endsaldo","Solde final"), \
+                 tr("sum","Summe","Somme")) \
+       width=LenMntF() \
+       value={||\
+         DlgValue("Saldo1")+DlgValue("D")-DlgValue("C")\
+       }  \
+       type="N" 
+#else
 column header=if(getvar("ShowSaldo1") == "X",\
                  tr("final balance","Endsaldo","Solde final"), \
                  tr("sum","Summe","Somme")) \
@@ -147,6 +164,7 @@ column header=if(getvar("ShowSaldo1") == "X",\
        type="C" \
        text={|x| DcSolde('D',x) } \
        xsum={|x| DcSolde('D',x) }
+#endif
 
 total text={||""} \
       when={|nCount|nCount<=1.or.RptTit3()} \

@@ -1,0 +1,16 @@
+20130306
+========
+
+Der Bugfix von vorgestern in der `REPORT.PRG` hatte einen 
+neuen Bug reingebracht: manche Beträge blieben immer 
+leer in der .csv-Datei.
+Jetzt scheint alles richtig zu sein.
+
+Man merkt, dass ich nicht mehr an Clipper gewöhnt bin.
+Außerdem ist die `REPORT.PRG` wirklich ein Musterbeispiel 
+für hochempfindlichen Code, wo man am besten mit den 
+Fingern davonbleibt...
+
+Die Beginn- und Endsalden  der GENHST.REP wurden ja bisher 
+bei Export nach .csv nicht als numerische Kolonne erkannt. 
+Jetzt wohl. Negative Zahl heißt D, positiv C.

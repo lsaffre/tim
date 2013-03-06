@@ -550,7 +550,7 @@ for i := 1 to len(rpt[RPT_COLUMNS])
   endif
   if xeval(cln[CLN_WHEN],0)
     if cln[CLN_VALUE] == NIL
-      nValue := NIL
+      cText := xeval(cln[CLN_TEXT],NIL)
     else
       nValue := xeval(cln[CLN_VALUE])
       default nValue to 0 // 20070516
@@ -562,28 +562,23 @@ for i := 1 to len(rpt[RPT_COLUMNS])
           next k
         endif
       next j
-      lFound := .t.
-    endif
-    if lDetail 
-      if rpt[RPT_TOCSV] .and. cln[CLN_TYPE]==GTYPE_NUMERIC
-        cText := 0
+      if rpt[RPT_TOCSV] 
+        if cln[CLN_TYPE] == GTYPE_NUMERIC
+          cText := val2csv(cln[CLN_TYPE],nValue," in column "+ntrim(i))
+        else
+          cText := xeval(cln[CLN_TEXT],nValue)
+          cText := val2csv(cln[CLN_TYPE],cText," in column "+ntrim(i))
+        endif
       else
         cText := xeval(cln[CLN_TEXT],nValue)
       endif
-    endif
-  elseif rpt[RPT_TOCSV]
-    if cln[CLN_TYPE] == GTYPE_NUMERIC
-      cText := 0
-    else
-      cText := ""
+      lFound := .t.
     endif
   else
-    cText := space(&(cln[CLN_WIDTH]))
+    cText := ""
   endif
   if lDetail
-    if rpt[RPT_TOCSV]
-      cText := val2csv(cln[CLN_TYPE],cText," in column "+ntrim(i))
-    elseif rpt[RPT_TOHTML]
+    if rpt[RPT_TOHTML]
       cText := DrvCvtString(val2str(cln[CLN_TYPE],cText,;
         " in column "+ntrim(i)))
       if cln[CLN_VALUE] == NIL
