@@ -40,24 +40,22 @@ column header="A" width=1 text={||PAR->IdPrt}
 column header="Name" width=25 text={||padr(ParName(),25)}
 column header="Straáe" width=35 \
        text={||padr(trim1(ParStreet())+ParCity(),35)}
-column header="Beginnsaldo" \
+column header=tr("Opening bal","Beginnsaldo","Solde init") \
        width=LenMntF() \
        value={||DlgValue("Saldo1")}  \
-       text={|x| ntomf(x) } \
-       xsum={|x| ntomf(x) }
+       type="N" // text={|x| ntomf(x) } xsum={|x| ntomf(x) }
 column header="Debit" \
        width=LenMntF() \
        value={||DlgValue("Debit")}  \
-       text={|x|ntomf(x)} \
-       xsum={|x| ntomf(x) }
-column header="Kredit" \
+       type="N" // text={|x| ntomf(x) } xsum={|x| ntomf(x) }
+column header=tr("Credit","Kredit","Cr‚dit") \
        width=LenMntF() \
        value={||DlgValue("Credit")}  \
-       text={|x|ntomf(x)} \
-       xsum={|x| ntomf(x) }
-column header="Endsaldo" \
+       type="N" // text={|x| ntomf(x) } xsum={|x| ntomf(x) }
+       
+column header=tr("final balance","Endsaldo","Solde final") \
        width=LenMntF() \
        value={||DlgValue("Saldo1")+DlgValue("Debit")-DlgValue("Credit")}  \
-       text={|x| ntomf(x) } \
-       xsum={|x| ntomf(x) }
+       type="N" // text={|x| ntomf(x) } xsum={|x| ntomf(x) }
+       
 total when={||.t.} // text={||"Gesamt"}

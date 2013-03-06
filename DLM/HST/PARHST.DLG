@@ -60,6 +60,8 @@ field name="DC" \
 
 before setvar("PRN2PDF.out",padr(AppRoot()+"\pdf\parhst.pdf",200))
 #include "ASPDF.DLG"
+#include "TOCSV.DLG"
+
 
 after SetSolde("2")
 after DlgDefine("ParFilter",".t.")
