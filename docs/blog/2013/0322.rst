@@ -1,0 +1,6 @@
+20130322
+========
+
+ParMviUpdate() hatte einen Bug: markierte alle Partner als Altfälle, 
+die keine einzige Buchung hatten.
+

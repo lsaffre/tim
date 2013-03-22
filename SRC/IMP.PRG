@@ -186,6 +186,7 @@ als w„re Partner 2 leer gewesen.
 FUNCTION ParMviUpdate(dDateE,dDateF,dDateA)
 local lHatOffeneForderung := .f.
 local lHatEinnahme := .f.
+local lHatBuchungen := .f.
 local lAltfall := .t.
 local jnl
 local lOkay := .f.
@@ -196,6 +197,7 @@ open area oMvi()
   ddSetOrder(2)
   softseek PAR->IdPar
   do while lOkay.and.!eof().and.MVI->IdPar == PAR->IdPar
+    lHatBuchungen := .t.
     if TaskInter() ; lOkay := .f. ; endif
     if (jnl := JnlLocate(MVI->IdJnl)) != NIL
       if MVI->Date2 > dDateA
@@ -220,6 +222,9 @@ open area oMvi()
     endif
     skip
   enddo
+  if ! lHatBuchungen
+    lAltfall := .f.
+  endif
   if lOkay .and. lAltfall
     ddSetOrder(8) // MVI->IdPar2
     softseek PAR->IdPar
