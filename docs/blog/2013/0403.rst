@@ -1,0 +1,40 @@
+20130403
+========
+
+Änderungen in Funktion ParMviUpdate(), die mit folgenden Optionen aufgerufen wird:
+
+╔══════════ Altfälle und Eingeschlafene D. ══════════╗
+║ Eingeschlafener Debitor, wenn:                     ║
+║ - offene Forderungen älter als : 02.02.13          ║
+║ - letzte Einzahlung älter als  : 02.02.13          ║
+║ Altfall wenn letzte Bewegung älter als  : 03.04.12 ║
+║ (nur Partner*          )                           ║
+╚════════════════════════════════════════════════════╝
+
+a) Meine Aussage am Telefon, dass ein einmal gesetztes A nicht gelöscht wird, war
+   *falsch*. TIM macht es richtig. Also das war nicht die Erklärung des Problems.
+
+b) Es zählt das *Belegdatum* (MVI->Date2). Also es ist korrekt, dass Partner 
+   7153 zum Altfall wird, dessen letzte Bewegung am 20.03.2012 war.
+
+c) Um *kein* Altfall zu werden, muss die letzte Bewegung *strikt* jünger als der
+   Schwellentag sein. Zum Beispiel hat Partner 21874 die letzte Buchung genau am
+   26.03.2012 und wurde deshalb noch als Altfall markiert. Auch alle anderen Fälle 
+   der Feststellung 2 haben somit eine "logische" Erklärung.
+
+d) Hier nun eine neue Version mit folgenden zwei Änderungen:
+
+- Dieses *strikt* aus Punkt c) habe ich geändert, denn es ist ein
+  Fehler: die Option lautet ja "Altfall wenn letzte Bewegung *älter*
+  als". Also in Zukunft gilt: wer am Schwellentag noch eine Bewegung
+  hatte, wird *kein* Altfall.
+
+- Außerdem berücksichtigt die neue Version jetzt das Archiv. Mit der
+  Einschränkung, dass keines der Schwellendaten sich "im Archiv"
+  befinden darf. Also wenn im Januar 2010 zuletzt archiviert wurde und
+  man den 31.12.2009 in einem der drei Datumsfelder angibt, dann kriegt
+  man wahrscheinlich nicht das erwünschte Resultat.
+  Regel: Wenn jemand überhaupt keine Buchungen hat (auch nicht im
+  Archiv), wird er weder Altfall noch Eingeschlafender Debitor.
+
+

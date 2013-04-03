@@ -183,6 +183,11 @@ als w„re Partner 2 leer gewesen.
 
 **/
 
+FUNCTION ParHasMvi(cIdPar)
+RETURN .t. if HasRecords(oMvi(),2,'MVI->IdPar',cIdPar)
+RETURN HasRecords(oMvi(),8,'MVI->IdPar2',cIdPar)
+
+
 FUNCTION ParMviUpdate(dDateE,dDateF,dDateA)
 local lHatOffeneForderung := .f.
 local lHatEinnahme := .f.
@@ -191,16 +196,30 @@ local lAltfall := .t.
 local jnl
 local lOkay := .f.
 RETURN .t. if PAR->IdPar==repl("0",LenIdPar())
+
+/*
+lHatBuchungen soll .t. sein, wenn er in irgendeinem Archiv eine Buchung hat
+*/
+RETURN .f. if ! ArcEval({||lHatBuchungen .or. ;
+  (lHatBuchungen := ParHasMvi(PAR->IdPar))!= NIL})
+  
 RETURN .f. if ! ddRecLock()
+if !lHatBuchungen
+  PAR->Attrib := strtran(trim(PAR->Attrib),"E")
+  PAR->Attrib := strtran(trim(PAR->Attrib),"A")
+  unlock record
+  // SetMsg(trim(ParName())+" : "+PAR->Attrib)
+  RETURN .t.
+endif
 open area oMvi()
   lOkay := .t.
   ddSetOrder(2)
   softseek PAR->IdPar
   do while lOkay.and.!eof().and.MVI->IdPar == PAR->IdPar
-    lHatBuchungen := .t.
+    //~ lHatBuchungen := .t.
     if TaskInter() ; lOkay := .f. ; endif
     if (jnl := JnlLocate(MVI->IdJnl)) != NIL
-      if MVI->Date2 > dDateA
+      if MVI->Date2 >= dDateA
         lAltfall := .f.
       endif
       if jnl[JNL_IDGRJ] == "TRE"
@@ -222,80 +241,21 @@ open area oMvi()
     endif
     skip
   enddo
-  if ! lHatBuchungen
-    lAltfall := .f.
-  endif
+  //~ if ! lHatBuchungen
+    //~ lAltfall := .f.
+  //~ endif
   if lOkay .and. lAltfall
     ddSetOrder(8) // MVI->IdPar2
     softseek PAR->IdPar
     do while lOkay.and.!eof().and.MVI->IdPar2 == PAR->IdPar
       if TaskInter() ; lOkay := .f. ; endif
-      if MVI->Date2 > dDateA
+      if MVI->Date2 >= dDateA
         lAltfall := .f.
       endif
       skip
     enddo
   endif
 close area
-* open area oMvi()
-*   lOkay := .t.
-*   ddSetOrder 2
-*   KeyGoBottom(PAR->IdPar,"MVI->IdPar")
-*   do while lOkay.and.(!lHatEinnahme.or.!lHatOffeneForderung);
-*     .and.!eof().and.!bof().and.MVI->IdPar==PAR->IdPar
-*     if TaskInter() ; lOkay := .f. ; endif
-*     if (jnl := JnlLocate(MVI->IdJnl)) != NIL
-*       if MVI->Date2 > dDateA
-*         lAltfall := .f.
-*       endif
-*       if jnl[JNL_IDGRJ] == "TRE"
-*         if MVI->DC == DC_CREDIT // Einnahme
-*           if trim(SayIdBud(MVI->IdBud)) != "P87/000/00"
-*             if MVI->Date2 >= dDateE
-*               lHatEinnahme := .t.
-*             endif
-*           endif
-*         endif
-*       elseif jnl[JNL_IDGRJ] == "FFO"
-*         if !empty(MVI->MontUs)
-*           if MVI->Date2 <= dDateF
-*             lHatOffeneForderung := .t.
-*           endif
-*         endif
-*       endif
-*     endif
-*     skip -1
-*   enddo
-*   if lOkay
-*     ddSetOrder 8 // MVI->IdPar2
-*     KeyGoBottom(PAR->IdPar,"MVI->IdPar2")
-*     do while lOkay.and.(!lHatEinnahme.or.!lHatOffeneForderung);
-*       .and.!eof().and.!bof().and.MVI->IdPar2==PAR->IdPar
-*       if TaskInter() ; lOkay := .f. ; endif
-*       if (jnl := JnlLocate(MVI->IdJnl)) != NIL
-*         if MVI->Date2 > dDateA
-*           lAltfall := .f.
-*         endif
-*         if jnl[JNL_IDGRJ] == "TRE"
-*           if MVI->DC == DC_CREDIT // Einnahme
-*             if trim(SayIdBud(MVI->IdBud)) != "P87/000/00"
-*               if MVI->Date2 >= dDateE
-*                 lHatEinnahme := .t.
-*               endif
-*             endif
-*           endif
-*         elseif jnl[JNL_IDGRJ] == "FFO"
-*           if !empty(MVI->MontUs)
-*             if MVI->Date2 <= dDateF
-*               lHatOffeneForderung := .t.
-*             endif
-*           endif
-*         endif
-*       endif
-*       skip -1
-*     enddo
-*   endif
-* close area
 if lHatOffeneForderung .and. ! lHatEinnahme
   PAR->Attrib := strtran(trim(PAR->Attrib),"E")+"E"
 else
@@ -303,8 +263,10 @@ else
 endif
 if lAltfall
   PAR->Attrib := strtran(trim(PAR->Attrib),"A")+"A"
+  //~ Confirm(PAR->IdPar + trim(ParName()) + " ist ein Altfall")
 else
   PAR->Attrib := strtran(trim(PAR->Attrib),"A")
+  //~ Confirm(PAR->IdPar + trim(ParName()) + " ist kein Altfall")
 endif
 unlock record
 // SetMsg(trim(ParName())+" : "+PAR->Attrib)
