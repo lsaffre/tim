@@ -1007,6 +1007,13 @@ RETURN "0"
 #ifdef DEF_IMP
 
 FUNCTION ImpWriteZau(cFilename)
+if ImpImlFind("!IsIBAN(IML->Compte1)")
+  SetMsg("Dokument enth„lt Zahlungen an Empf„nger ohne BIC/IBAN")
+  RETURN .f.
+endif
+RETURN fparse("IMP2PAIN.XML",cFilename,"[]",NIL,NIL,NIL,NIL,"XML")
+
+FUNCTION OldImpWriteZau(cFilename)
 local cReturn := ""
 local jnl := JnlLocate(IMP->IdJnl)
 * local lOkay := .t.

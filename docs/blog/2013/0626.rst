@@ -1,0 +1,8 @@
+20130626
+=======
+
+ParLastDate() berücksichtigt jetzt nur noch 
+direkte Dienstleistungen. Dazu muss sie in der DLA 
+nachschauen, die sie jedoch nicht selber öffnet. Also der rufende 
+Code (z.B. PARSETH.ACT) sollte gewährleisten, dass die DLA 
+offen ist. 

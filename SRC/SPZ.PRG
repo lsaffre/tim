@@ -516,8 +516,10 @@ RETURN DbfSum({oPar()},"1",4,PAR->IdPar2,"PAR->IdPar2=='"+PAR->IdPar2+"'")
 
 FUNCTION ParLastDate
 local d := PAR->Date1
-d := max(d,DbfOnBottom(oDls(),4,"DLS->Date",d,PAR->IdPar,"IdPar"))
-d := max(d,DbfOnBottom(oDlp(),2,"DLP->Date",d,PAR->IdPar,"IdPar"))
+open area oDla()
+  d := max(d,DbfOnBottom(oDls(),4,"DLS->Date",d,PAR->IdPar,"IdPar","DlaExist(DLS->IdDla).and.'D'$DLA->Attrib"))
+  d := max(d,DbfOnBottom(oDlp(),2,"DLP->Date",d,PAR->IdPar,"IdPar"))
+close area
 RETURN d
 
 FUNCTION oDla

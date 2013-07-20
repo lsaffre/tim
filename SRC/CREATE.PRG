@@ -3105,7 +3105,7 @@ RETURN padr(cRoot,nLen)
 
 **
 **
-FUNCTION DbfOnBottom(ad,nOrder,xcOnLast,uReturn,cKey,xlWhile,xlFilter)
+FUNCTION DbfOnBottom(ad,nOrder,xcOnLast,uReturn,cKey,xcKey,xlFilter)
 open area ad
   if nOrder != NIL
     ddSetOrder(nOrder)
@@ -3113,7 +3113,7 @@ open area ad
   if cKey == NIL
     go bottom
   else
-    KeyGoBottom(cKey,xlWhile,xlFilter)
+    KeyGoBottom(cKey,xcKey,xlFilter)
   endif
   if !eof()
     uReturn := xparse(xcOnLast)

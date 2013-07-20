@@ -489,6 +489,7 @@ RETURN .t.
 FUNCTION PpsExec(cTplIni)
 local lOkay 
 local bWriter := sbWriter
+local cTpl
 snLMargin := 1
 snRMargin := 1
 snTMargin := 0
@@ -511,9 +512,11 @@ sbWriter := {|x|NilWriter(x)}
 if slActivePps 
   lOkay := FileExec(trim(cTplIni)+".PPS") 
 else
-  lOkay := TplParse( ;
-    TplValue(TPLTYPE_INI,cTplIni,{||TplMemo()},""),;
-    "INI:"+cTplIni,.f.)
+  cTpl := TplValue(TPLTYPE_INI,cTplIni,{||TplMemo()},"x")
+  if cTpl == "x"
+    cTpl := TplValue(TPLTYPE_INI,"_STD_",{||TplMemo()},"")
+  endif
+  lOkay := TplParse(cTpl,"INI:"+cTplIni,.f.)
 endif    
 snMaxVPos := snPapHeight - snBMargin
 sbWriter := bWriter 

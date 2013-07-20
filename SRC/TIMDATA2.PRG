@@ -510,8 +510,9 @@ RETURN IbanFormat(BanSplit(cBan)[3])
 FUNCTION BqePostEdit(x,cCountry)
 local aBan := BanSplit(x,cCountry)
 RETURN x if aBan == NIL
-RETURN aBan[BAN_BIC]+":"+aBan[BAN_IBAN] if isiban(x)
-RETURN aBan[BAN_NBAN]
+RETURN aBan[BAN_BIC]+":"+aBan[BAN_IBAN] 
+// RETURN aBan[BAN_BIC]+":"+aBan[BAN_IBAN] if isiban(x)
+// RETURN aBan[BAN_NBAN]
 
 FUNCTION BanParse(x,cCountry)
 local aBan := BanSplit(x,cCountry)
@@ -661,11 +662,11 @@ cFieldname := "PAR->" + cFieldname
 if isiban(x)
   aBan := BanSplit(x,cCountry)
   &cFieldname := aBan[BAN_BIC] + ":" + aBan[BAN_IBAN]
+elseif cCountry == "BE"
+  x := BanBeFormat(BanUnformat(x))
+  &cFieldname := be2bic(x) + ':' + be2iban(x)
 else
-  if cCountry == "BE"
-    x := BanBeFormat(BanUnformat(x))
-  endif
-  &cFieldname := x
+  SetMsg("Cannot convert non-Belgian NBAN to BIC:IBAN.")
 endif
 RETURN NIL
 

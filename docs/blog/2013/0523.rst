@@ -1,0 +1,9 @@
+20130523
+========
+
+Wenn ein ungültiger Druckparametersatz angegeben wurde, dann verwendet 
+TIM stillschweigend die (ziemlich nutzlosen) hardkodierten 
+Standardwerte. Ab heute schaut er vorher noch nach, ob es einen 
+Druckparametersatz namens "_STD_" gibt und liest den dann ein.
+
+function PpsExec() in ostream.prg, 
