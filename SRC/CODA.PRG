@@ -876,10 +876,14 @@ RETURN lOkay
 FUNCTION CodaEdit(aComptes)
 local i
 local a := {}
+local cNBAN
 for i := 1 to len(aComptes)
   if ! empty(aComptes[i])
-    if DbfPeek(oCpt(),strtran(aComptes[i],'-'),".t.",.f.)
-      DictAddItem(a, padr(aComptes[i],14))
+    // if DbfPeek(oCpt(),strtran(aComptes[i],'-'),".t.",.f.)
+    cNBAN := BanSplit(aComptes[i])[BAN_NBAN]
+    if DbfPeek(oCpt(),strtran(cNBAN,'-'),".t.",.f.)
+      // DictAddItem(a, padr(aComptes[i],14))
+      DictAddItem(a, padr(cNBAN,14))
     endif
   endif
 next i

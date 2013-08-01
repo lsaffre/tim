@@ -1,0 +1,8 @@
+20130801
+=======
+
+- CodaEdit() funktionierte nicht für Partner, deren Konten 
+  im BIC:IBAN-Format gespeichert waren.
+- ImpWriteZau ist wieder die alte Version, 
+  die neue Version heisst Imp2PAIN.
+- N.B. JNL->Compte muss bis auf weiteres  im NBAN bleiben.

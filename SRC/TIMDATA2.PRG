@@ -472,7 +472,7 @@ endif
 RETURN x
 
 
-STATIC FUNCTION BanSplit(cBan,cCountry)
+FUNCTION BanSplit(cBan,cCountry)
 local nSplit
 local cIdBic := ""
 local cIBAN := ""
