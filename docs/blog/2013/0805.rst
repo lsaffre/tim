@@ -1,0 +1,6 @@
+20130805
+=======
+
+
+Imp2PaIn() gibt jetzt den Namen der generierten XML-Datei zurück.
+

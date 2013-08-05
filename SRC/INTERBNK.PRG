@@ -1011,7 +1011,8 @@ if ImpImlFind("!IsIBAN(IML->Compte1)")
   SetMsg("Dokument enth„lt Zahlungen an Empf„nger ohne BIC/IBAN")
   RETURN .f.
 endif
-RETURN fparse("IMP2PAIN.XML",cFilename,"[]",NIL,NIL,NIL,NIL,"XML")
+RETURN .f. if !fparse("IMP2PAIN.XML",cFilename,"[]",NIL,NIL,NIL,NIL,"XML")
+RETURN cFilename
 
 FUNCTION ImpWriteZau(cFilename)
 local cReturn := ""
