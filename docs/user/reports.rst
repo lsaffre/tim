@@ -68,6 +68,8 @@ Saldenliste Kunden
 
 
 
+.. _HSTPAR:
+
 Historik Kunden (Lieferanten)
 -----------------------------
 

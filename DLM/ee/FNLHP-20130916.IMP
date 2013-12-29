@@ -1,0 +1,19 @@
+// import from Hansapank CSV file
+// 20100704 : IdDev moved from 7 to 8, DC moved from 8 to 10, mont from 6 to 7, tehingutyyp from 10 to 12
+// 20130528 : they removed column "Saaja konto" at position 5; tehingutyyp moved from 12 to 10
+CSV .t.
+// SeekKey is NIL
+LineValidate i_fields[7]==FIN->IdDev.or.!SetMsg('field 8 is not '+FIN->IdDev)
+LineValidate i_fields[10]+","$"MK,PT,K,TT,X,M,S,I,MD,KM,MV,".or.!SetMsg('invalid value in field 10')
+
+FieldUpdate FNL->DC if(i_fields[8]=="D","D","C")
+FieldUpdate FNL->Date ctod(i_fields[3])
+FieldUpdate FNL->Mont padl(strtran(i_fields[6],",","."),LenMont())
+FieldUpdate FNL->IdCpt ActExec("HP2GEN")
+FieldUpdate FNL->IdCtr " "
+FieldUpdate FNL->Libell  utf2dos(trim1(i_fields[4])+trim1(i_fields[5]))
+
+InputFile DbPath()+"\"+trim1(ArcName(),"\")+"20"+left(FIN->Periode,2)+"-"+right(FIN->Periode,2)+".CSV"
+FieldDisplay Amount       i_fields[6]
+FieldDisplay Description  utf2dos(trim1(i_fields[4])+trim1(i_fields[5]))
+FieldDisplay count        ntrim(i_count)

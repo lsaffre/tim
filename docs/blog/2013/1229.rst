@@ -1,0 +1,5 @@
+20131229
+========
+
+Neue Funktion :func:`FIN2PAIN`, ähnlich wie :func:`IMP2PAIN`, parst
+die neue Datei `FIN2PAIN.XML`

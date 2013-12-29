@@ -87,14 +87,14 @@ bestimmten Datum waren::
 
 Diese Funktion wird z.B. benötigt, 
 
-  - wenn man beim :term:`Euro-Umstieg`
+  - wenn man beim `Euro-Umstieg`
     die Abschluss- und Übertragsbuchungen der 
-    :term:`Partnerkonten` *nachträglich* machen will 
+    `Partnerkonten` *nachträglich* machen will 
     (also nachdem schon Rechnungen und Zahlungen im ersten EUR-Jahr
     verbucht wurden).
     
-  - wenn man eine :term:`Saldenliste Kunden` oder 
-    :term:`Saldenliste Lieferanten` mit einer frühreren Situation
+  - wenn man eine `Saldenliste Kunden` oder 
+    `Saldenliste Lieferanten` mit einer frühreren Situation
     drucken will.
 
 N.B.: Wenn man :menuselection:`Sammelhistorik rekonstruieren` lässt,

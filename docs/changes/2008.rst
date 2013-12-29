@@ -305,18 +305,24 @@
 - Nachtrag 20080316 :func:`RepPrint` : SetAsPdf(.f.) und SetAsMail(.f.) werden jetzt nur gemacht, wenn cIdDlg nicht NIL ist. Denn z.B. DLM\DCL\DCLPRINT.ACT ruft zuerst DlgExec() und dann je nach Auswahl verschiedene RepPrint() ohne weiteren Dialog.
 
 - DLM\DCL\DCLDCF.REP 
-  a) druckt alle Zahlen jetzt ohne Nachkommastellen. In Estland wird die Buchhaltung zwar auf den Cent genau geführt (DevDecPos("EEK") ist 2), aber in der Bilanz muss man die Beträge runden.
+
+  a) druckt alle Zahlen jetzt ohne Nachkommastellen. In Estland wird
+     die Buchhaltung zwar auf den Cent genau geführt (DevDecPos("EEK")
+     ist 2), aber in der Bilanz muss man die Beträge runden.
   
-  b) Ich definiere jetzt eine bcDcfText, die ich als :cmacro:`GRP_TEXT` für alle Gruppen benutze. Der Codeblock in dieser Variablen bentuzt RptGroup() um den Level rauszufinden.
+  b) Ich definiere jetzt eine bcDcfText, die ich als
+     :c:macro:`GRP_TEXT` für alle Gruppen benutze. Der Codeblock in
+     dieser Variablen bentuzt RptGroup() um den Level rauszufinden.
   
-  c) Neue Möglichkeit M+ für DCF->Type. In DcfValues() habe ich ein paar eher ästhetische Änderungen gemacht.
+  c) Neue Möglichkeit M+ für DCF->Type. In DcfValues() habe ich ein
+     paar eher ästhetische Änderungen gemacht.
   
 20080320
 --------
 
-- Das :cmacro:`GRP_WHEN` bekam als nCount und nDtlCount meistens 1 statt des tatsächlichen Wertes. Dadurch konnte effektiv kein Gruppentitel definiert werden, der nur erscheint, wenn mehr als 1 Record in der Gruppe vorkommen. Jetzt geht das.
-- Wenn :cmacro:`GRP_BEFORE` .f. zurück gibt, dann galt das bisher als Filter (gewisse Totals wurden dann nicht gedruckt). Jetzt gilt es als Fehler und TIM fragt dann MsgContinue().
-- :cmacro:`GRP_TEXT` kann jetzt NIL zurück geben, und das bedeutet, dass für diese Instanz der Gruppe weder Titel noch Summen gedruckt werden sollen.
+- Das :c:macro:`GRP_WHEN` bekam als nCount und nDtlCount meistens 1 statt des tatsächlichen Wertes. Dadurch konnte effektiv kein Gruppentitel definiert werden, der nur erscheint, wenn mehr als 1 Record in der Gruppe vorkommen. Jetzt geht das.
+- Wenn :c:macro:`GRP_BEFORE` .f. zurück gibt, dann galt das bisher als Filter (gewisse Totals wurden dann nicht gedruckt). Jetzt gilt es als Fehler und TIM fragt dann MsgContinue().
+- :c:macro:`GRP_TEXT` kann jetzt NIL zurück geben, und das bedeutet, dass für diese Instanz der Gruppe weder Titel noch Summen gedruckt werden sollen.
 - Einige fundamentale Änderungen im Reportgenerator. Buggefahr.
 - DLM\DCL\DCLDCF.REP weiter optimiert
 - DcfValues() weiter optimiert. Neue Möglichkeit "M-" (oder "I-" oder "F-") zeigt die Zahl nur an, wenn sie negativ ist.

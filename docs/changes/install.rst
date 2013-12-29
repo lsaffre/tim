@@ -24,7 +24,7 @@ anpassen.
 (chronologische Erfassung forcieren) kriegen. Normalerweise sollte
 dieses Attribut für alle FIN-Journale gesetzt werden.
 
-5. August 1997. In den Datenzeilen aller *.hcl-Dateien muss am Ende ein
+5. August 1997. In den Datenzeilen aller `.hcl`-Dateien muss am Ende ein
 weiteres Alt-124 ("|") hinzugefügt werden. Default-Wert für dieses neue
 Feld ist "ntomf(nSum)" (braucht nicht eingetragen zu werden).
 
@@ -68,7 +68,7 @@ sie vor dem tim /check manuell angepasst werden: TRM->IdArt wird TRM->IdTac.
   
 8. Oktober 1997. Man kann jetzt in den Rechnungsbüchern das Format der (bisher 
 hard-codierten) Kolonnen "Dok.Nr.", "Datum" und "Konto" selbst bestimmen. Bei 
-Installation beachten : Bestehende Layout-Dateien (*.hcl) müssen wie folgt 
+Installation beachten : Bestehende Layout-Dateien (``*.hcl``) müssen wie folgt 
 manuell konvertiert werden (aus Standard-Datenbank übernehmen). (1) hcl-Dateien 
 für HistJnl() müssen jetzt ebenfalls die drei Kolonnen "Dok.Nr.", "Datum" und 
 "Konto" definieren. (2) hcl-Dateien für VnlListe() müssen die Kolonnen "Art.Nr" 
@@ -152,17 +152,19 @@ stehen.
 26. November 1997 (DEF_REMISE). VNL->PrixR berücksichtigt jetzt nicht mehr die 
 Menge (VNL->Qte). TIM macht die Konvertierung automatisch (971126.ind) 
 
-Sonntag, 14. Dezember 1997 ?                                           
-- q *.qry : repl all "attr S" with "skip .t."
-- q *.qry : delete "aoffset" entries
+Sonntag, 14. Dezember 1997::
 
-Mittwoch, 17. Dezember 1997                                             
+    - q *.qry : repl all "attr S" with "skip .t."
+    - q *.qry : delete "aoffset" entries
+
+Mittwoch, 17. Dezember 1997
 Neue Felder ART->GP und VNL->GP wenn DEF_PROVI.
 Bei Installation beachten: field handles von cust-Feldern sind
 dadurch um 1 verschoben.
 
 24.12.97                                                                
-Bei Installation beachten :
+Bei Installation beachten::
+
   ren main.hlp index.hlp
   ren tim*.hlp main*.hlp
 
@@ -173,7 +175,7 @@ definieren:
 ddAddSpecial({||ParVnaEdit(VEN->IdPar)},"~Fakturierungsvorschläge [F6]",-5)
 
 08.01.1998
-*.tcs-Dateien vom HELP-Verzeichnis ins Datenbankverzeichnis verschieben.
+``*.tcs``-Dateien vom HELP-Verzeichnis ins Datenbankverzeichnis verschieben.
 
 12.01.1998
 Zahlungsverkehr mit Fremdwährung (allgemeine Buchhaltung). Die neuen

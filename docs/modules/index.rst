@@ -1,4 +1,5 @@
-﻿Static Modules
+﻿==============
+Static Modules
 ==============
 
 .. toctree::
@@ -10,4 +11,3 @@
    *
    
    
-

@@ -1,5 +1,5 @@
-20130626
-=======
+20130626 ParLastDate()
+======================
 
 ParLastDate() berücksichtigt jetzt nur noch 
 direkte Dienstleistungen. Dazu muss sie in der DLA 

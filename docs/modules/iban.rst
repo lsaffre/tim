@@ -80,7 +80,7 @@ Global functions
 .. function:: BanClean(x)
 
   Converts the specified value of a BAN field to new storage format. 
-  See `20090219`_
+  See :blogref:`20090219`
  
 .. function:: BanSplit(x)
 

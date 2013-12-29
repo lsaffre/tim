@@ -6,7 +6,6 @@
    
    user/index
    blog/index
-   changes/index
    topics/index
    tables/index
    modules/index

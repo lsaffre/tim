@@ -1,12 +1,12 @@
 20130720
-=======
+========
 
-DEF_IMP : Die bisherige ImpWriteZau() (die eine .oti und/oder .vme-Datei schrieb) 
-wurde umbenannt nach OldImpWriteZau().
-Die neue ImpWriteZau() erzeugt jetzt eine XML-Datei im SEPA-Format, 
-wozu sie die Vorlage IMP2PAIN.XML benutzt.
-Bevor sie etwas schreibt, prüft sie nach, ob auch alle IML->Compte 
-des Dokuments eine BIC:IBAN enthalten.
+:staticmod:`DEF_IMP` : Die bisherige ImpWriteZau() (die eine .oti
+und/oder .vme-Datei schrieb) wurde umbenannt nach OldImpWriteZau().
+Die neue ImpWriteZau() erzeugt jetzt eine XML-Datei im SEPA-Format,
+wozu sie die Vorlage IMP2PAIN.XML benutzt.  Bevor sie etwas schreibt,
+prüft sie nach, ob auch alle IML->Compte des Dokuments eine BIC:IBAN
+enthalten.
 
 Changed gsbNBAN() so that it no longer stores the NBAN 
 but a BIC:IBAN.

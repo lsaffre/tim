@@ -5,146 +5,146 @@ Der Reportgenerator
 Report properties
 -----------------
 
-.. cmacro:: RPT_AREA     
-.. cmacro:: RPT_ORDER    
-.. cmacro:: RPT_START    
-.. cmacro:: RPT_WHILE    
-.. cmacro:: RPT_FILTER   
-.. cmacro:: RPT_GROUPS   
-.. cmacro:: RPT_COLUMNS  
-.. cmacro:: RPT_TOTALS   
-.. cmacro:: RPT_INDEX    
-.. cmacro:: RPT_ONEACH   
-.. cmacro:: RPT_HDR1     
-.. cmacro:: RPT_HDR2     
-.. cmacro:: RPT_HDR3     
-.. cmacro:: RPT_DETAIL   
-.. cmacro:: RPT_VALRECORD    
-.. cmacro:: RPT_TEXTWIDTH    
-.. cmacro:: RPT_TEXTCOLUMNS  
-.. cmacro:: RPT_NOVALUE      
-.. cmacro:: RPT_BEFORE       
-.. cmacro:: RPT_AFTER        
+.. c:macro:: RPT_AREA     
+.. c:macro:: RPT_ORDER    
+.. c:macro:: RPT_START    
+.. c:macro:: RPT_WHILE    
+.. c:macro:: RPT_FILTER   
+.. c:macro:: RPT_GROUPS   
+.. c:macro:: RPT_COLUMNS  
+.. c:macro:: RPT_TOTALS   
+.. c:macro:: RPT_INDEX    
+.. c:macro:: RPT_ONEACH   
+.. c:macro:: RPT_HDR1     
+.. c:macro:: RPT_HDR2     
+.. c:macro:: RPT_HDR3     
+.. c:macro:: RPT_DETAIL   
+.. c:macro:: RPT_VALRECORD    
+.. c:macro:: RPT_TEXTWIDTH    
+.. c:macro:: RPT_TEXTCOLUMNS  
+.. c:macro:: RPT_NOVALUE      
+.. c:macro:: RPT_BEFORE       
+.. c:macro:: RPT_AFTER        
 
-.. cmacro:: RPT_COLSEP       
+.. c:macro:: RPT_COLSEP       
    column separator
    
-.. cmacro:: RPT_ROWSEP      
+.. c:macro:: RPT_ROWSEP      
    row separator
    
-.. cmacro:: RPT_PRETTL      
-.. cmacro:: RPT_POSTTTL     
-.. cmacro:: RPT_PRINTLINE   
-.. cmacro:: RPT_HEADER      
-.. cmacro:: RPT_TOCSV       
-.. cmacro:: RPT_RECNOS      
-.. cmacro:: RPT_FORLOOP     
-.. cmacro:: RPT_LINES       
-.. cmacro:: RPT_TOHTML      
+.. c:macro:: RPT_PRETTL      
+.. c:macro:: RPT_POSTTTL     
+.. c:macro:: RPT_PRINTLINE   
+.. c:macro:: RPT_HEADER      
+.. c:macro:: RPT_TOCSV       
+.. c:macro:: RPT_RECNOS      
+.. c:macro:: RPT_FORLOOP     
+.. c:macro:: RPT_LINES       
+.. c:macro:: RPT_TOHTML      
 
 Report Groups
 -------------
 
-.. cmacro:: GRP_KEY      
+.. c:macro:: GRP_KEY      
 
-.. cmacro:: GRP_STOP    
+.. c:macro:: GRP_STOP    
 
-.. cmacro:: GRP_COUNT   
+.. c:macro:: GRP_COUNT   
    Anzahl der verarbeiteten Records
-.. cmacro:: GRP_KEYVALUE 
+.. c:macro:: GRP_KEYVALUE 
 
-.. cmacro:: GRP_TEXT     
+.. c:macro:: GRP_TEXT     
 
-.. cmacro:: GRP_VALUES  
+.. c:macro:: GRP_VALUES  
 
-.. cmacro:: GRP_WHEN       
+.. c:macro:: GRP_WHEN       
 
    ob mich irgendwelche Total dieser Gruppe möglicherweise
    interessieren. Wenn GRP_WHEN nein sagt, werden die Totale erst gar
    nicht nach ihrer Meinung gefragt.
 
-.. cmacro:: GRP_ALIGN     
+.. c:macro:: GRP_ALIGN     
 
-.. cmacro:: GRP_HEADER    
+.. c:macro:: GRP_HEADER    
 
    Wird ausgeführt, bevor der erste Record *verarbeitet* wird
    (unabhängig davon, ob dieser Record gedruckt wird oder nicht).
  
-.. cmacro:: GRP_BEFORE   
+.. c:macro:: GRP_BEFORE   
 
    Wird ausgeführt, bevor der erste Record *gedruckt* wird.
    Oder, wenn kein einziger Record gedruckt wird, vor dem ersten Total,
    das gedruckt wird.
 
-.. cmacro:: GRP_DTLCOUNT 
+.. c:macro:: GRP_DTLCOUNT 
 
    Anzahl der effektiv ausgedruckten Records
 
-.. cmacro:: GRP_AFTER    
+.. c:macro:: GRP_AFTER    
 
    Wird ausgeführt, bevor das erste TOTAL der Gruppe gedruckt wird.
    Kriegt 2 Parameter mit : GRP_COUNT und GRP_DTLCOUNT
    Muss .t. oder .f. zurück geben.
    Wenn .f., dann werden die TOTALs nicht gedruckt.
 
-.. cmacro:: GRP_DONE     
+.. c:macro:: GRP_DONE     
 
    array of booleans indicating whether the total has been printed
 
-.. cmacro:: GRP_TTLCOUNT 
+.. c:macro:: GRP_TTLCOUNT 
 
    array of record counts per total
    
-.. cmacro:: GRP_FORMAT
-.. cmacro:: FORMAT_BOLD
+.. c:macro:: GRP_FORMAT
+.. c:macro:: FORMAT_BOLD
 
-.. cmacro:: GRP_AFTERTTL 
+.. c:macro:: GRP_AFTERTTL 
 
    20050621 : 
    mit ``afterTotals {||PrintLine()}`` kann man angeben, dass nach
    den Totals der Gruppe eine Leerzeile kommt.
 
-.. cmacro:: GRP_STARTED   
+.. c:macro:: GRP_STARTED   
 
 
 Report Columns
 --------------
 
-.. cmacro:: CLN_HEADER
-.. cmacro:: CLN_WIDTH 
+.. c:macro:: CLN_HEADER
+.. c:macro:: CLN_WIDTH 
 
-.. cmacro:: CLN_WHEN  
+.. c:macro:: CLN_WHEN  
    xl die Bedingung
  
-.. cmacro:: CLN_VALUE  
+.. c:macro:: CLN_VALUE  
 
    xn (ggf. der Wert, der summiert wird)
   
-.. cmacro:: CLN_TEXT   
+.. c:macro:: CLN_TEXT   
 
    xc (der Text, der gedruckt wird)
    
-.. cmacro:: CLN_XSUM
+.. c:macro:: CLN_XSUM
   
-.. cmacro:: CLN_TYPE 
+.. c:macro:: CLN_TYPE 
 
-.. cmacro:: CLN_DECPOS 
+.. c:macro:: CLN_DECPOS 
 
    used when TYPE is N
 
-.. cmacro:: TTL_WHEN   
+.. c:macro:: TTL_WHEN   
 
    Ob das Total ausgedruckt wird
    
-.. cmacro:: TTL_TEXT   
+.. c:macro:: TTL_TEXT   
 
    Die "Überschrift" des Totals
    
-.. cmacro:: TTL_FOR    
+.. c:macro:: TTL_FOR    
 
    Welche Records in diesem Total summiert werden
    
-.. cmacro:: TTL_AFTER  
+.. c:macro:: TTL_AFTER  
 
    Wird nach Ausdruck des Totals ausgeführt
    

@@ -88,7 +88,7 @@
 * #define DEF_HST
 * #define DEF_DCL
 
-#define DEF_DBDEDIT
+// #define DEF_DBDEDIT
 #define DEF_TLG
 #define DEF_EVT
 #define DEF_OLDPARSE

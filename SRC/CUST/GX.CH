@@ -1,5 +1,5 @@
 **
-** File Name ...... : cpasana.ch
+** File Name ...... : gx.ch
 ** Application .... : TIM300
 ** Description .... : Modification causes re-compilation of each .prg
 ** Copyright ...... : Luc Saffre, P.A.C. Systems, Eupen, Belgium

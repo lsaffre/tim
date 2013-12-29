@@ -1,5 +1,4 @@
-﻿
-Benutzerhandbuch
+﻿Benutzerhandbuch
 ================
 
 .. toctree::
@@ -8,7 +7,6 @@ Benutzerhandbuch
    accounting/index
    faq/index
    howto/index
-   news/index
    glossary
    reports
    

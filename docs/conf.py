@@ -13,6 +13,10 @@
 
 import sys, os
 
+from atelier.sphinxconf import configure
+configure(globals())
+
+
 # If your extensions are in another directory, add it here. If the directory
 # is relative to the documentation root, use os.path.abspath to make it
 # absolute, like shown here.
@@ -20,10 +24,6 @@ import sys, os
 
 # General configuration
 # ---------------------
-
-# Add any Sphinx extension module names here, as strings. They can be extensions
-# coming with Sphinx (named 'sphinx.ext.*') or your custom ones.
-extensions = []
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['.templates']
@@ -39,7 +39,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = u"TIM"
-copyright = u'2008-2010, Luc Saffre'
+copyright = u'2008-2013, Luc Saffre'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -70,7 +70,7 @@ html_sidebars = {
 
 # List of directories, relative to source directory, that shouldn't be searched
 # for source files.
-exclude_trees = ['.build']
+exclude_trees = ['.build','changes']
 
 # The reST default role (used for this markup: `text`) to use for all documents.
 #default_role = None
@@ -198,4 +198,10 @@ latex_documents = [
 #srcref_base_uri="http://svn.berlios.de/wsvn/opentim/trunk"
 srcref_base_uri="http://code.google.com/p/tim/source/browse"
 
-from timtools.sphinx import setup
+setup1 = setup
+from timtools.sphinx import setup as setup2
+
+def setup(app):
+    setup1(app)
+    setup2(app)
+

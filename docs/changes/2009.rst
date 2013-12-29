@@ -59,8 +59,8 @@
   :xfile:`FNLFILL.DLG`.
   
   
-- :func:`_rupture` führt den :cmacro:`GRP_BEFORE` jetzt nur aus, 
-  wenn auch :cmacro:`GRP_DTLCOUNT` > 0 ist. Durch diesen Bug wurden
+- :func:`_rupture` führt den :ref:`GRP_BEFORE` jetzt nur aus, 
+  wenn auch :ref:`GRP_DTLCOUNT` > 0 ist. Durch diesen Bug wurden
   (wahrscheinlich seit 20080320) in der :xfile:`HSTPAR.REP`
   auch solche Partner gedruckt, die weder Bewegungen noch Beginnsaldo
   hatten (sondern lediglich Buchungen in früheren Perioden).

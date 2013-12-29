@@ -3,6 +3,8 @@
 
 - :staticmod:`DEF_IMP`. Buchungen übernehmen. Die Änderung vom :doc:`0831` hatte die  unerwünschte Nebenwirkung, dass TIM beim Übernehmen von Buchungen in manchen Fällen eine Buchung zu viel auswählte. Die neue Regel ist jetzt so: wenn man ENTER drückt und *keine Buchung ausgewählt* hat, dann wird die (unausgewählte) Buchung genommen, auf der man gerade stand.
 
-- Für TIM mach ich jetzt den Blog auch so wie in Lino. Es lohnt sich freilich nicht, die Einträge aus :doc:`/changes/index` systematisch zu konvertieren.
+- Für TIM mach ich jetzt den Blog auch so wie in Lino. Es lohnt sich
+  freilich nicht, die Einträge aus `/changes/index` systematisch zu
+  konvertieren.
 
   check-in

@@ -1,5 +1,5 @@
 20130801
-=======
+========
 
 - CodaEdit() funktionierte nicht für Partner, deren Konten 
   im BIC:IBAN-Format gespeichert waren.

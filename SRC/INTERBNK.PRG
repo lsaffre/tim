@@ -1331,6 +1331,20 @@ RETURN lOkay
 
 #ifdef DEF_FIN
 
+
+FUNCTION Fin2PAIN(cFilename,xcFnlCompte)
+local nCount 
+default xcFnlCompte to "PAR->Compte1"
+nCount := FinFnlCount(xcFnlCompte,"!IsIBAN("+xcFnlCompte+")")
+if nCount > 0
+  SetMsg("Dokument enth„lt Zahlungen an Empf„nger ohne BIC/IBAN")
+  RETURN .f.
+endif
+RETURN .f. if !fparse("FIN2PAIN.XML",cFilename,"[]",NIL,NIL,NIL,NIL,"XML")
+RETURN cFilename
+
+
+
 ** 20040428:
 ** replace FinOtiCreate() with FinWriteZau()
 **
