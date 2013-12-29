@@ -1333,13 +1333,13 @@ RETURN lOkay
 
 
 FUNCTION Fin2PAIN(cFilename,xcFnlCompte)
-local nCount 
+* local nCount 
 default xcFnlCompte to "PAR->Compte1"
-nCount := FinFnlCount(xcFnlCompte,"!IsIBAN("+xcFnlCompte+")")
-if nCount > 0
-  SetMsg("Dokument enth„lt Zahlungen an Empf„nger ohne BIC/IBAN")
-  RETURN .f.
-endif
+* nCount := FinFnlCount(xcFnlCompte,"!IsIBAN("+xcFnlCompte+")")
+* if nCount > 0
+*   SetMsg("Dokument enth„lt Zahlungen an Empf„nger ohne BIC/IBAN")
+*   RETURN .f.
+* endif
 RETURN .f. if !fparse("FIN2PAIN.XML",cFilename,"[]",NIL,NIL,NIL,NIL,"XML")
 RETURN cFilename
 
