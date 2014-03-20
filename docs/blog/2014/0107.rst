@@ -1,0 +1,9 @@
+20140107
+=======
+
+New file `dlm/IBAN/BICPICK2.QRY`. 
+To activate this, use F11 during BICPICK and add a new entry in FLT.
+
+
+
+

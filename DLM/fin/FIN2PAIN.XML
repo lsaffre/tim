@@ -31,7 +31,8 @@
 [=DlgPlus("i",1)]
 [=ParExist(FNL->IdCpt)]
 [=setvar("ban",BanParse(PAR->Compte1))]
-[=getvar("ban")!=NIL.or.!SetMsg("Invalid BIC:IBAN : "+trim(PAR->Compte1))]
+[=getvar("ban")!=NIL.or.Confirm("Invalid BIC:IBAN for "+trim(PAR->Compte1),MsgContinue())]
+[=len(trim(getvar("ban")[2]))>6.or.Confirm("Could not find a BIC for NBAN "+trim(PAR->Compte1),MsgContinue())]
 <CdtTrfTxInf>
 <PmtId><EndToEndId>.</EndToEndId></PmtId>
 <Amt><InstdAmt Ccy="[=FIN->IdDev]">[=ltrim(FNL->Mont)]</InstdAmt></Amt>

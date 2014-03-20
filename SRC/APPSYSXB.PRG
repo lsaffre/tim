@@ -1,5 +1,5 @@
 ** Copyright (c) 1992-2001 PAC Systems
-** Copyright (c) 2001-2008 Luc Saffre
+** Copyright (c) 2001-2014 Luc Saffre
 **
 ** This file is part of TIM.
 **
@@ -32,6 +32,12 @@ static snRows := 25
 static snCols := 80
 static snFontWidth := 9
 static snFontHeight := 16
+
+/* codepage: must be 255*/
+static snCodePage := 255 // OEM
+// static snCodePage := 1 // DEFAULT_CHARSET
+// static snCodePage := 2 // SYMBOL_CHARSET
+
 #ifdef __OS2__
 static scFontName := "System VIO"
 #endif
@@ -80,7 +86,8 @@ if oFont != NIL
   soFont:familyName := oFont:familyName
   soFont:height     := oFont:height
   soFont:width      := oFont:width
-  soFont:codepage := 255 // OEM
+  // soFont:codepage := 255 // OEM
+  soFont:codepage := snCodePage
   soFont:create()
   SetAppWindow():setFont(soFont)
 endif
@@ -109,7 +116,7 @@ else
     soFullFont:familyName := oCrt:fontName
     soFullFont:height     := int((aSizeDesktop[2]-snFullBottom-snFullDelta) / snRows)
     soFullFont:width      := int((aSizeDesktop[1]-snFullDelta) / snCols)
-    soFullFont:codePage   := 255 // OEM
+    soFullFont:codePage   := snCodePage 
     soFullFont:create()                        // Create font
   endif
   oCrt:setFont(soFullFont)
@@ -145,7 +152,7 @@ PROCEDURE AppSys()
   soFont:familyName   := scFontName
   soFont:width      := snFontWidth
   soFont:height     := snFontHeight
-  soFont:codePage   := 255 // OEM
+  soFont:codePage   := snCodePage
   soFont:fixed      := .t.
   soFont:create()
 
@@ -186,7 +193,7 @@ PROCEDURE AppSys()
       #endif
       soFont:width      := snFontWidth
       soFont:height     := snFontHeight
-      soFont:codePage   := 255 // OEM
+      soFont:codePage   := snCodePage
       soFont:fixed      := .t.
       soFont:create()
 

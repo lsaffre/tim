@@ -125,7 +125,7 @@ if PAR->IdPrt == "P"
   open area oPlp()
     softseek PAR->IdPar
     do while !eof() .and. PLP->IdPar1 == PAR->IdPar
-      if PLP->Type $ "81-,82-,83-,84-"
+      if PLP->Type $ "81-,82-,83-,84-,75 ,75-"
         /*
         PLP->IdPar2 ist die Familie. 
         nur dispensieren, wenn die Familie auch DDL hat im Zeitraum.

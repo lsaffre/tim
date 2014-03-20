@@ -370,7 +370,8 @@ if cCountry != NIL
   xlFilter := "BIC->Country=="+utos(cCountry)
 endif
 RETURN DbfPick({oBic()},;
-  "Select Bank Identifier Code","BICPICK",cStart,xlFilter)
+  "Select Bank Identifier Code","BICPICK",cStart,xlFilter,;
+  NIL,NIL,"BIC->IdBic")
 
 FUNCTION MsgBicExist(cIdBic)
 RETURN cIdBic + utrp(" : unknown BIC!",;

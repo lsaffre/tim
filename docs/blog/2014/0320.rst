@@ -1,0 +1,7 @@
+========
+20140320
+========
+
+Trying to run TIM in Wine. Basically it works, but it is rather slow. 
+Getting help from the Wine forum:
+http://forum.winehq.org/viewtopic.php?f=8&t=22091

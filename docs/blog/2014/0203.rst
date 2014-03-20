@@ -1,0 +1,9 @@
+20140203
+=======
+
+
+PickBic() gab, wenn man eine belgische BIC auswählte, nicht 
+nur die BIC zurück, sondern dahinter auch die dreistellige 
+Banknummer.
+
+
