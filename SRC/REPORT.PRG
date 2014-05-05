@@ -587,7 +587,7 @@ for i := 1 to len(rpt[RPT_COLUMNS])
         cText := '<td class="numberCell">' + cText
       endif
       cText += "</td>"
-    elseif cln[CLN_WIDTH] != NIL
+    elseif cln[CLN_WIDTH] != NIL .and. !rpt[RPT_TOCSV]
       if cln[CLN_VALUE] == NIL
         // class Text
         cText := padl(cText,&(cln[CLN_WIDTH]))

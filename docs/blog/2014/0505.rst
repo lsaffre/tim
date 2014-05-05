@@ -1,0 +1,6 @@
+20140505
+========
+
+Beim Export nach .csv konnte es passieren, dass die TIM die Werte auch in 
+der csv-Datei auf die Kolonnenbreite abschnitt.
+

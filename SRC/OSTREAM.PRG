@@ -579,7 +579,7 @@ RETURN NIL
 **
 STATIC FUNCTION PrnSendLine(cLine)
 local nPad
-// debug Sendconsole("PrnSendLine("+utos(cLine)+")")
+Sendconsole("20140428 PrnSendLine("+utos(cLine)+") apswidth is "+ntrim(snApsWidth))
 // evtl Zeile zentrieren oder rechtsbÅndig setzen
 if ALIGN_RIGHT $ scAlign
   nPad := t_cpl() - len(TextUnFormat(cLine))
@@ -995,6 +995,7 @@ FntActivate(a[6]) // FntName()
 snApsWidth  := a[7]
 snMaxVPos   := a[8]
 sbHeader    := a[9]
+Sendconsole("20140428 RestoreStatus() apswidth is "+ntrim(snApsWidth))
 RETURN NIL
 
 FUNCTION p_MsgDisplay(cMsg)
@@ -1660,7 +1661,7 @@ FUNCTION p_SetWidth(nApsWidth)
 local cMsg
 FntApsActivate(nApsWidth)
 snApsWidth := nApsWidth
-// Confirm("p_setWidth() snApsWidth "+ntrim(snApsWidth)+" "+scPrnBuffer)
+Sendconsole("20140428 p_setWidth() apswidth is "+ntrim(snApsWidth))
 if scPageAlign == PAGEALIGN_RIGHT
   snLMargin := snPapWidth - snRMargin - (nApsWidth / FntPitch())
   if snLMargin < 0
@@ -1812,7 +1813,7 @@ FUNCTION p_SetFont(cIdFnt)
 PrnFlush()
 FntActivate(cIdFnt)
 snApsWidth := int((snPapWidth - snLMargin - snRMargin) * FntPitch())
-// Confirm("p_SetFont() snApsWidth "+ntrim(snApsWidth)+" "+scPrnBuffer)
+Sendconsole("20140428 p_setFont() apswidth is "+ntrim(snApsWidth))
 eval(sbWriter,FntCtrl())
 RETURN NIL
 
