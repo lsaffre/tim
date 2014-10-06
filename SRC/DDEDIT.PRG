@@ -2796,7 +2796,12 @@ RETURN xparse(qry[QRY_ONADDCOLUMNS])
 **
 FUNCTION ddQryReset(cIdQry)
 local qry
+#ifdef __XPP__
+// 20141007 this seems to solve it. See blog.
+local lGoTop := .t.
+#else
 local lGoTop := .f.
+#endif
 * LogConsole("20071025 ddQryReset()")
 if cIdQry == NIL
   qry := CurQry()
@@ -2826,7 +2831,7 @@ if lGoTop
   endif
 else
   * LogConsole("20071025 ddQryReset() !lGoTop")
-  ddRefreshAll()
+ddRefreshAll()
 endif
 ddSayStatus()
 RETURN .t.
@@ -3065,9 +3070,10 @@ if snRequest == DDEDIT_BROWSE
     * 20070524 if slIsEof
     rest_recno(nRecNo)
     QuickStabilize()
+    // LogConsole("20141007 ddRefreshAll()" + utos(nRowPos) + " " + utos(soBrowse:rowPos))
     if nRowPos < soBrowse:rowPos
       soBrowse:rowPos := nRowPos
-      * soBrowse:configure() // neu seit 20071018
+      // soBrowse:configure() // neu seit 20071018  // tried to reactivate 20141007
     elseif nRowPos > soBrowse:rowPos
       soBrowse:rowPos := nRowPos
       soBrowse:configure()

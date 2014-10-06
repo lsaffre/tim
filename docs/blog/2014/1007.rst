@@ -1,0 +1,60 @@
+20141007
+========
+
+It seems that I solved an old problem which was 
+had been made reproducible by MN:
+
+Signalétique / Fournisseurs 
+"Versich"
+F9
+(cursor is on the last of 4 rows which after the following would want to be the first)
+F11
+select (alle nach Match)
+
+--> Error in array index
+
+oError:args         :
+          -> VALTYPE: O CLASS: TBrowse
+oError:canDefault   : N
+oError:canRetry     : N
+oError:canSubstitute: Y
+oError:cargo        : NIL
+oError:description  : Error in array index
+oError:filename     : 
+oError:genCode      :          4
+oError:operation    : :forceStable
+oError:osCode       :          0
+oError:severity     :          2
+oError:subCode      :       1012
+oError:subSystem    : BASE
+oError:thread       :          1
+oError:tries        :          0
+------------------------------------------------------------------------------
+CALLSTACK:
+------------------------------------------------------------------------------
+Called from QUICKSTABILIZE(712)
+Called from DDREFRESHALL(3049)
+Called from DDQRYRESET(2829)
+Called from DDVIEWQUERY(3275)
+Called from (B)DDDOCOMMAND(1381)
+Called from HMENU(127)
+Called from DDDOCOMMAND(1413)
+Called from DDBROWSE(1031)
+Called from DDEDIT(652)
+Called from PARHSTEDIT(714)
+Called from (B)OPAR(1143)
+Called from HMENU(127)
+Called from DDDOCOMMAND(1413)
+Called from DDBROWSE(1031)
+Called from DDEDIT(652)
+Called from PRTPAREDIT(778)
+Called from (B)XPARSE(0)
+Called from VMENU(432)
+Called from HMENU(171)
+Called from MAIN(176)
+
+
+
+The solution is: my test to set lGoTop only "if ! ddCheckWhile() .or. ! &sxlFilter" 
+seems to come from old times and to be both 
+useless and disturbing in Xbase++
