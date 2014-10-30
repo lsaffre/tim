@@ -1,0 +1,7 @@
+20141030
+=========
+
+ImlPar2Validate() prüft jetzt den Fall, dass IdPar2 auf leer gesetzt 
+wurde. Und ruft dann ParValidate(IML->IdPar) auf, die die 
+Kontonummer wieder auf die des Partners zurück setzt.
+

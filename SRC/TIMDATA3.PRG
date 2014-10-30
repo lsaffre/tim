@@ -1222,7 +1222,9 @@ RETURN .f. if ! ParValidate(IML->IdPar)
 RETURN ph_Refresh()
 
 FUNCTION ImlPar2Validate()
-if ! empty(IML->IdPar2)
+if empty(IML->IdPar2)
+  RETURN .f. if ! ParValidate(IML->IdPar)
+else
   RETURN .f. if ! ParValidate(IML->IdPar2)
 endif
 RETURN ph_Refresh()

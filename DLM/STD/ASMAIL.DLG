@@ -15,7 +15,7 @@ field name="mailto" \
 field name="mailbcc" \
       caption=" mailbcc " \
       picture="@k@s70"
-field name="mailhost" \
+// field name="mailhost" \
       value=padr(getvar("mailhost",.f.,""),240)\
       caption="SMTP host " \
       picture="@k@s70" \
@@ -23,7 +23,7 @@ field name="mailhost" \
 field name="mailbody" \
       default=""\
       caption="Comment " \
-      picture="80x10"\
+      picture="76x5"\
       reader={|oGet|MemoReader(oGet)}
 after setvar("mailhost",trim(getvar("mailhost")))
 after setvar("mailto",trim(getvar("mailto")))
