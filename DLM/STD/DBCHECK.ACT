@@ -5,6 +5,7 @@ UsrIsAlone().or.Confirm( \
 )
 SetTplIni("LISTE")
 DlgExec("DBCHECK")
+SetDecPos(2)
 
 empty(DlgValue("AppIndex")).or.AppReorg(.f.) //.or.Confirm(MsgContinue())
 empty(DlgValue("AppRebuild")).or.AppReorg(.f.,NIL,.f.,.f.,.t.) // .or.Confirm(MsgContinue())

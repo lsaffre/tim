@@ -2910,7 +2910,7 @@ if !empty(cAttach)
   s += "," + "attachment="+quote(dos2latin1(fileurl(cAttach)))
 endif
 #ifdef __XPP__
-  * RETURN .f. if ! Confirm("RunShell('"+s+"','"+cPath+"'")
+  RETURN .f. if ! Confirm("RunShell('"+s+"','"+cPath+"'")
   RunShell(s,cPath,.t.)
   RETURN .t.
 #else

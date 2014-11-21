@@ -579,7 +579,7 @@ RETURN NIL
 **
 STATIC FUNCTION PrnSendLine(cLine)
 local nPad
-Sendconsole("20140428 PrnSendLine("+utos(cLine)+") apswidth is "+ntrim(snApsWidth))
+// Sendconsole("20140428 PrnSendLine("+utos(cLine)+") apswidth is "+ntrim(snApsWidth))
 // evtl Zeile zentrieren oder rechtsbÅndig setzen
 if ALIGN_RIGHT $ scAlign
   nPad := t_cpl() - len(TextUnFormat(cLine))

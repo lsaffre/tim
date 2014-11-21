@@ -129,7 +129,11 @@ local aDate_ca
 LogConsole("EID_GET() returned "+utos(a))
 aadd(a,.f.) // EID_BIRTH_CA 27 // ungenaues Geburtsdatum
 // Confirm("foo "+utos(a[EID_ERROR]))
-RETURN a if a[EID_ERROR] != NIL
+if a[EID_ERROR] != NIL
+  if !Confirm(a[EID_ERROR], MsgSure(), MSG_NO)
+    RETURN a 
+  endif
+endif
 a[EID_NATIONALITY] := eid2nat(a[EID_NATIONALITY])
 a[EID_COUNTRY] := eid2nat(a[EID_COUNTRY])
 a[EID_VALIDITY_BEGIN] := stod(a[EID_VALIDITY_BEGIN])

@@ -1,0 +1,16 @@
+20141121
+==========
+
+Investigating for "Error 21" when reading an eId card.
+
+When GetEid() detects an error, then it now asks for an 
+interactive confirmation instead of simply abandoning 
+(the default action)::
+
+  if a[EID_ERROR] != NIL
+    if !Confirm(a[EID_ERROR], MsgSure(), MSG_NO)
+      RETURN a 
+    endif
+  endif
+  
+  

@@ -1,0 +1,11 @@
+//
+// BICPICK2.QRY - generated 07.01.2014
+// for BIC.FOX
+//
+window 15 60 0 0 
+column 3 Lnd
+column 4 NBID
+column 2 Name der Bank pict @k@s29
+column 1 BIC pict @K@!
+order 2
+help BICPICK
