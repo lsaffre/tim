@@ -1,0 +1,1 @@
+A customizable database application used since 1994 in Belgium by over 50 users. Keyboard-only user interface. Old, but being actively maintained. Written in Clipper and Xbase++.
