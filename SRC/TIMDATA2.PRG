@@ -475,6 +475,7 @@ RETURN x
 
 FUNCTION BanSplit(cBan,cCountry)
 local nSplit
+local ban
 local cIdBic := ""
 local cIBAN := ""
 local cNBAN := ""
@@ -487,13 +488,16 @@ RETURN { x, cIdBic, cIBAN } if empty(x)
 default cCountry to nat2iso(MemPays)
 nSplit := at(":",x)
 if nSplit == 0 // National BAN, no IBAN
-  if cCountry == "BE"
+  if isalpha(left(x,2))
+    cIBAN := trim(x)
+    if left(cIBAN,2) == "BE"
+      cBan := BanBeFormat(substr(cIBAN,5))
+      cIdBic := be2bic(cBan)
+    endif
+  elseif cCountry == "BE"
     cIBAN := be2iban(x)
     cIdBic := be2bic(x)
     cBan := BanBeFormat(x)
-  * else
-  *   cIBAN := x
-  *   cIdBic := ""
   endif
   RETURN { trim(cBan), cIdBic, cIBAN }
 endif
@@ -684,11 +688,15 @@ x := strtran(x,"-")
 x := strtran(x,".")
 RETURN x
 
-FUNCTION gsbIBAN(x,cCountry,cFieldname)
-local aBan := BanSplit(&cFieldname,cCountry)
-RETURN padr(IbanFormat(aBan[BAN_IBAN]),34) if x == NIL
+FUNCTION gsbIBAN(x, cCountry, cFieldname)
+local aBan 
+if x == NIL
+  aBan := BanSplit(&cFieldname, cCountry)
+  RETURN padr(IbanFormat(aBan[BAN_IBAN]), 34)
+endif
+aBan := BanSplit(x, cCountry)
 cFieldname := "PAR->" + cFieldname
-&cFieldname := aBan[BAN_BIC] + ":" + BanUnformat(x)
+&cFieldname := aBan[BAN_BIC] + ":" + aBan[BAN_IBAN]
 RETURN NIL
 
 

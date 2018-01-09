@@ -16,7 +16,7 @@ group text={|x|"Gesamt"}
 column header="Per." width=4 text={||PER->Periode}
 column header=padl("1",LenMntF()) \
        width=LenMntF() \
-       value={||CttBase('IdCtr=="V".and.IdTax$"18 ,20 "')} \
+       value={||CttBase('IdCtr=="V".and.IdTax$"18 ,20 ,21 "')} \
        type="T" // text={|x|ntomf(x)} xsum={|x| ntomf(x) }
 column header=padl("3",LenMntF()) \
        width=LenMntF() \
@@ -40,7 +40,7 @@ column header=padl("5",LenMntF()) \
        type="T" // text={|x|ntomf(x)} xsum={|x| ntomf(x) }
 column header=padl("4-5",LenMntF()) \
        width=LenMntF() \
-       value={||round(getvar("4"),0)-round(getvar("5"),0)} \
+       value={||getvar("4")-getvar("5")} \
        type="T" // text={|x|ntomf(x)} xsum={|x| ntomf(x) }
 column header=padl("round",LenMntF()) \
        width=LenMntF() \

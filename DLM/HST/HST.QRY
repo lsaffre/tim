@@ -1,18 +1,18 @@
 //
-// HST.QRY - generated 22.04.08
+// HST.QRY - generated 12.05.15
 // for HST.FOX
 //
 column 3 Jnl pict @K@!
 column 9 Periode
 column 0 GW block DevDefault(HST->Periode) skip .t.
-column 11 =utr("Amount","Betrag","Montant")
+column 11 =utr("Amount","Betrag","Montant") expr HstDcMont("D","EUR")
 column 0 FW block HstIdDev() skip .t.
 column 12 =utr("Amnt FC","Betrag FW","MontDev")
 column 0 BEF block ntom(HstMont("BEF"),0) skip .t.
 column 0 DEM block ntom(HstMont("DEM"),2) skip .t.
 column 0 EUR block ntom(HstMont("EUR"),2) skip .t.
 column 0 USD block ntom(HstMont("USD"),2) skip .t.
-column 6 =utr("Date","Datum","Date") say ""
+column 6 =utr("Date","Datum","Date") sumfmt ""
 column 1 IdGen
 column 2 IdPar
 column 4 IdDoc pict @K@!

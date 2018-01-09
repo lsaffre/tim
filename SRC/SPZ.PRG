@@ -35,6 +35,7 @@ DLP : Klienten pro Sitzung
 #define PRBATTR_H "H" // nicht benutzen und nicht anzeigen
 #define PRBATTR_T "T" // "Titel" (nicht benutzen, aber wohl anzeigen)
 #define DLAATTR_D "D" // Direkte Dienstleistung
+#define DLAATTR_N "N" // Netzwerkpartner
 
 FUNCTION ParIsFE()
 RETURN "R"$PAR->Attrib.or."I"$PAR->Attrib.or."2"$PAR->Attrib
@@ -503,11 +504,47 @@ RETURN lOkay
 
 
 
+FUNCTION oNpa
+static b
+RETURN b if b != NIL
+define data b                 ;
+       name NPA ;
+       predelete ConfirmDelete()
+ddIndex b on NPA->IdNpa
+ddIndex b on upper(NPA->Ref)
+ddIndex b on upper(NPA->Name1)
+ddFld IdNpa   ,C, LenIdPrb(),0  when .f. picture PIC_ID
+ddFld Ref   ,C,12,0
+ddFld Name1 ,C,60,0 picture "@K@S25"
+ddFld Name2 ,C,60,0 picture "@K@S25"
+ddFld Name3 ,C,60,0 picture "@K@S25"
+ddEndDef()
+RETURN b
+
+FUNCTION NpaName(cId)
+if cId != NIL .and. cId != NPA->IdNpa
+  seek cId in NPA
+endif
+RETURN trim(LngExpr("NPA->Name",TplLang()))
+
+
+FUNCTION PickNpa(cStart,xlFilter)
+RETURN DbfPick( ;
+  {oNpa()},;
+  "Auswahl Netzwerkpartnerart", ;
+  "NPAPICK",;
+  cStart,;
+  xlFilter,NIL,NIL,;
+  "NPA->IdNpa";
+)
+
 #else
 
 FUNCTION oPpr() ; RETURN NIL
+FUNCTION oNpa() ; RETURN NIL
 
 #endif DEF_PRB
+
 
 FUNCTION ParParCount
 RETURN DbfSum({oPar()},"1",4,PAR->IdPar2,"PAR->IdPar2=='"+PAR->IdPar2+"'")
@@ -734,6 +771,14 @@ RETURN !SetMsg('"'+DLS->Zahlart+'": ungltige Zahlart!') ;
   if empty(DbcText("DLSZAHL.DBC",DLS->Zahlart))
 RETURN .t.
 
+FUNCTION DlsDlpValidate()
+RETURN !SetMsg(MsgDlaExist(DLS->IdDla)) if ! DlaExist(DLS->IdDla)
+if DLAATTR_N $ DLA->Attrib
+  RETURN !SetMsg("Mindestens ein Netzwerkpartner muss anwesend sein!") ;
+    if DlsDlpCount({||iif(empty(PAR->IdNpa),0,1)}) == 0
+endif
+RETURN .t.
+
 FUNCTION DlsPostEdit()
 *local fld
 *local cStand
@@ -862,7 +907,7 @@ RETURN b
 
 FUNCTION DlpIsValid()
 RETURN !SetMsg(MsgParExist(DLP->IdPar)) if ! ParExist(DLP->IdPar)
-RETURN !SetMsg(DLP->IdPar+" : keine Person!") if ! PAR->IdPrt $ "PRSZ"
+// RETURN !SetMsg(DLP->IdPar+" : keine Person!") if ! PAR->IdPrt $ "PRSZ"
 RETURN .f. if ! DlsExist(DLP->IdDls)
 RETURN .t.
 
@@ -888,6 +933,7 @@ RETURN a
 STATIC FUNCTION DlsDlpTest()
 local a
 RETURN .f. if ! DlsIsValid()
+RETURN .f. if ! DlsDlpValidate()
 a := DlsDlpSuggest()
 RETURN .t. if HasRecords(oDlp(),1,"DLP->IdDls",DLS->IdDls)
 * if HasRecords(oDlp(),1,"DLP->IdDls",DLS->IdDls)
@@ -1039,7 +1085,25 @@ DbfEdit(;
   NIL;
 )
 RETURN .f. if ! DlsDlpFill()
+setrs_unknown()
 RETURN DlsDlpUpdate()
+
+
+FUNCTION DlsDlpCount(xnValue)
+local lOkay := .f.
+local nCount := 0
+open area oDlp(), oPar()
+  lOkay := .t.
+  softseek DLS->IdDls
+  do while !eof().and.DLP->IdDls==DLS->IdDls
+    if !ParExist(DLP->IdPar) ; lOkay := .f. ; break ; endif
+    nCount += eval(xnValue)
+    skip
+  enddo
+close area
+RETURN nCount
+
+
 
 #else
 
@@ -1650,7 +1714,7 @@ RETURN .f. if !DbfDelete(NIL,NIL,{oPpr()},1,PAR->IdPar)
 #ifdef DEF_PLP
 RETURN .f. if !DbfDelete(NIL,NIL,{oPlp()},1,PAR->IdPar)
 RETURN .f. if !DbfDelete(NIL,NIL,{oPlp()},2,PAR->IdPar)
-#endif DEF_PRB
+#endif DEF_PLP
 #ifdef DEF_DLS
 // RETURN .f. if !DbfDelete(NIL,NIL,{oDls()},4,PAR->IdPar)
 // RETURN .f. if !DbfDelete(NIL,NIL,{oDlp()},2,PAR->IdPar)

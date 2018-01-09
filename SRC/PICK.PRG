@@ -1007,7 +1007,7 @@ if prt == NIL
 endif
 default cTitle to MSG026 + trim(prt[PRT_NAME])
 default cStart to ""
-open area b, oPlz(), oNat(), oClb()
+open area b, oPlz(), oNat(), oClb(), oNpa()
   if empty(prt[PRT_ID]) .or. prt[PRT_ID] == padr("*",LEN_IDPRT)
     if ! empty(cStart)
       softseek trim(cStart)

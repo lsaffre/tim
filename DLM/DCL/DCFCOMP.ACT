@@ -11,7 +11,7 @@ DbfScan(\
   "HST->IdGen=='"+GEN->IdGen+"'.and.HST->Periode<='"+MemPer2+"'",\
   ".t.",\
   "DlgPlus(\
-    if(HST->Periode<MemPer1,'I1','M1'),eval(DcfHstValue()))",\
+    if(HST->Periode<MemPer1,'I1','M1'),eval(DcfValExpr()))",\
   NIL,.f.\
 )
 
@@ -26,7 +26,7 @@ DbfScan(\
     ".t.",\
     "DlgPlus(\
       if(HST->Periode<MemPer1,'I2','M2'),\
-      eval(DcfHstValue()))",\
+      eval(DcfValExpr()))",\
   NIL,.f.\
 )
 
@@ -41,7 +41,7 @@ empty(getvar("range3")).or.DbfScan(\
     ".t.",\
     "DlgPlus(\
       if(HST->Periode<MemPer1,'I3','M3'),\
-      eval(DcfHstValue()))",\
+      eval(DcfValExpr()))",\
   NIL,.f.\
 )
 

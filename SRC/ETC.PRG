@@ -2649,14 +2649,16 @@ local cNB := xparse(xcNB)
 RETURN .f. if cNB == NIL
 cNB := padr(cNB,10)
 cLine += padr(PRJ->Chassis,17)
-cLine += right(VEN->Km,7)
+// Kilometrage avec 7 chiffres, if missing character, ZEROS needs to be filled in.
+// cLine += right(VEN->Km,7)
+cLine += padl(alltrim(VEN->Km),7,"0")
 cLine += "120"
 cLine += dtos(VEN->DateRec)
 cLine += cNoTva1
 cLine += cNoTva2
 cLine += cNB
 cLine += dtos(PRJ->Zulassung)
-cLine += space(2)
+cLine += "00"
 fwrite(fd,cLine+CR_LF)
 RETURN .t.
 

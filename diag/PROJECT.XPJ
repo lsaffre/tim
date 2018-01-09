@@ -1,0 +1,21 @@
+[PROJECT]
+    DEBUG         = no
+    // DEBUG         = yes
+    VERSION       = 2.0
+    GUI           = yes
+    // INCLUDE       = T:\DATA\LUC\PRG\TIM4
+    INCLUDE       = C:\ALASKA\XPPW32\INCLUDE
+    OBJ_DIR       = .
+    LIB           = C:\ALASKA\XPPW32\LIB
+    RC_COMPILE    = arc
+    RC_FLAGS      = /v
+    COMPILE       = xpp
+    COMPILE_FLAGS = /Q/ES/W/N/A 
+    DEBUG_SAVE    = yes
+    LINKER        = alink
+    LINK_FLAGS    =
+    win7test.exe
+
+
+[win7test.exe]
+    win7test.prg

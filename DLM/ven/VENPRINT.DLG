@@ -23,6 +23,7 @@ field name="Copies" \
       picture="999"
 
 #include "PREVIEW.DLG"
+#include "ASPDF.DLG"
 
 // field block={|x|SetPreview(x)} \
       caption2=utr(" Preview"," Seitenvorschau "," pr‚visualisation") \

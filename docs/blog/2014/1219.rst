@@ -1,0 +1,6 @@
+20141219
+==========
+
+
+In function CarPassLine, the kilometrage must be padded with zeros, not with spaces. 
+

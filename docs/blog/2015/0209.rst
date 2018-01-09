@@ -1,0 +1,8 @@
+20150209
+==========
+
+In der ostream.prg waren noch drei Debug-Meldungen im Stil::
+
+  Sendconsole("20140428 RestoreStatus() apswidth is "+ntrim(snApsWidth))
+  
+(Rausgeholt.)

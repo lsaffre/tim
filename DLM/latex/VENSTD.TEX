@@ -155,7 +155,7 @@
 
 [etc endif] \
 \hfill
-[=alltrim(substr(MemName3,at(" ",MemName3)))], [=tr("","den","le")] [ven date]
+[=tr("Date:","Datum:","Date:")] [ven date]
 
 \textbf{\large [=DlgValue("DocTitle")]}
 [etc if DlgValue("AsFax")==" "]
@@ -398,17 +398,28 @@ Fax~: [=trim(PAR->Fax)] \
 [etc if VEN->IdReg=="S"]
 \raggedleft
 [=tr("",\
-  "Innergemeinschaftliche Dienstleistungen.",\
-  "Prestations de services intracommunautaires.",\
-  "Intracommunity services.",\
-  "Intracommunautaire prestaties."\
+  "Innergemeinschaftliche Dienstleistungen (B2B).",\
+  "Prestations de services intracommunautaires (B2B).",\
+  "Intracommunity services (B2B).",\
+  "Intracommunautaire prestaties (B2B)."\
 )]
-[etc if MemPays=="EE "]
-[="KM 0% vastavalt KMS õ 15 lg 4 p 1 (direktiiv art 21)."]
+[="K„ibemaksum„„r 0% vastavalt KMS õ 15 (4) 1)."]
+\raggedright
+\nopagebreak
+[etc endif]
+
+[etc if VEN->IdReg=="N"]
+[etc if MemPays=="EE ".and.PAR->Pays!="EE "]
+\raggedleft
+[etc if .f. .and. year(VEN->Date) < 2015]
+[="Elektrooniliselt osutatavad teenused."]
+[="Kliendi asukoha riik"] \textbf{[=Nat2iso(PAR->Pays)]} (km 21\%).
 [etc endif]
 \raggedright
 \nopagebreak
 [etc endif]
+[etc endif]
+
 
 \bigskip
 

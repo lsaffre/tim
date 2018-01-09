@@ -470,6 +470,48 @@ RETURN uReturn
 * TplParse(cTpl)
 * RETURN .t.
 
+// used by TIM2WAUV.EXP
+FUNCTION VenMvtInit()
+local a
+local jnl := JnlLocate(VEN->IdJnl)
+RETURN .f. if jnl == NIL
+RETURN .f. if (a := VenVnlInit(jnl)) == NIL
+saMvt := {}
+open area oVnl(),oGen(),oArt(),oGra(),oVen(),oNew(),oNgr(),oVna(),oDls()
+  softseek VEN->IdJnl + VEN->IdDoc
+  do while ! eof() .and. FIELD->IdJnl == VEN->IdJnl ;
+                   .and. FIELD->IdDoc == VEN->IdDoc
+    if ! VnlVarCollect()
+      Warning(MsgIdJnlDoc() + " : " + SetMsg())
+      exit
+    endif
+    if ! VnlRefExist()
+      Warning(MsgIdJnlDoc() + " : " + SetMsg())
+      exit
+    endif
+    #ifdef DEF_ART
+      if FIELD->Code == LNCODE_REMARQ
+        seek padr("*",LenIdArt()) in ART
+      endif
+    #endif DEF_ART
+    if ! VnlMvtCollect(jnl,saMvt)
+      Warning(MsgIdJnlDoc() + " : " + SetMsg())
+      exit
+    endif
+    skip
+  enddo
+  #ifdef DEF_VENREMISE
+    VenMvtRemise(saMvt)
+  #endif
+  #ifdef DEF_FRF
+    VenFrfCollect(jnl,saMvt)
+  #endif DEF_FRF
+  VenMvtRound(saMvt,jnl)
+close area
+VnlRestore(a)
+RETURN .t.
+
+
 **
 ** VenVnlList()
 **

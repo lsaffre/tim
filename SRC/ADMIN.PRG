@@ -1759,6 +1759,7 @@ aadd( a, oNat() )
 #ifdef DEF_PRB
   aadd( a, oPrb() )  // Probleme
   aadd( a, oPpr() )  // Partnerprobleme
+  aadd( a, oNpa() )  // Netzwerkpartnerarten
 #endif DEF_PRB
 #ifdef DEF_ADR
   aadd( a, oAdr() )

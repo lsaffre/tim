@@ -134,3 +134,4 @@
 
 #define DEF_FRF
 
+#define DEF_4LANG
