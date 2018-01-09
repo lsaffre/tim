@@ -198,10 +198,10 @@ latex_documents = [
 #srcref_base_uri="http://svn.berlios.de/wsvn/opentim/trunk"
 srcref_base_uri="http://code.google.com/p/tim/source/browse"
 
-setup1 = setup
+#setup1 = setup
 from timtools.sphinx import setup as setup2
 
 def setup(app):
-    setup1(app)
+    #setup1(app)
     setup2(app)
 

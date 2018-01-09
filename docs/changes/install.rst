@@ -171,8 +171,9 @@ Bei Installation beachten::
 08.01.1998 
 Automatik-Fakturierung.
 VEN->[F6] gibt es jetzt nicht mehr. Wer will, kann das in der ven.act
-definieren:
-ddAddSpecial({||ParVnaEdit(VEN->IdPar)},"~Fakturierungsvorschläge [F6]",-5)
+definieren::
+  
+  ddAddSpecial({||ParVnaEdit(VEN->IdPar)},"~Fakturierungsvorschläge [F6]",-5)
 
 08.01.1998
 ``*.tcs``-Dateien vom HELP-Verzeichnis ins Datenbankverzeichnis verschieben.
@@ -182,23 +183,29 @@ Zahlungsverkehr mit Fremdwährung (allgemeine Buchhaltung). Die neuen
 Felder _DevDebit und _DevCredit sollten in FNLDEV.QRY eingebaut werden.
 
 19980114
+
 - Neues Feld GEN->IdDev :
   - tim /check
   - 980114.ind
 
 19980115
+
 - Kundenliste nach Umsatz.
-  - Datei MNUPRINT.DBC :
-    ~Fakturierung|~Kundenliste Umsatz|RepPrint("PAR002","PAR002","...")
+  - Datei MNUPRINT.DBC ::
+      
+      ~Fakturierung|~Kundenliste Umsatz|RepPrint("PAR002","PAR002","...")
+      
   - PAR002.REP und PAR002.DLG : Aus Standard-Datenbank übernehmen.
 
 19980116
 Automatik-Fakturierung.
 PAR->[F6] gibt es jetzt nicht mehr. Wer will, kann das in der par.act
-definieren:
-ddAddSpecial({||ParVnaEdit(PAR->IdPar)},"~Fakturierungsvorschläge [F6]",-5)
+definieren::
+  
+  ddAddSpecial({||ParVnaEdit(PAR->IdPar)},"~Fakturierungsvorschläge [F6]",-5)
 
 19980127
+
 - Die neue Tabelle IPR.DBF (Basispreise) übernimmt ab heute die
   Entscheidung, welches Preisfeld der Artikelstammdaten in einem
   Fakturationsdokument als Standardvorgabe verwendet werden soll.
@@ -211,29 +218,37 @@ ddAddSpecial({||ParVnaEdit(PAR->IdPar)},"~Fakturierungsvorschläge [F6]",-5)
   - PGP.DBC manuell anpassen.
 
 19980204
+
 - Automatik-Fakturierung. Bei Installation beachten.
   Verschiedene Anpassungen.
 
 19980209
+
 - Report-Generator (RepPrint()). Die when= Klausel eines total kriegt
   jetzt nicht mehr nGroup als Parameter, sondern die Anzahl der Records,
   die (für diese Gruppe) in diesem Total berücksichtigt wurden.
-  => "q *.rep" und nachschauen, ob dieser Parameter benutzt wird.
+  => ``q *.rep`` und nachschauen, ob dieser Parameter benutzt wird.
 
 19980216
-- Bei Installation beachten : Der Eintrag Inputfile aller *.imp-Dateien
-  muss jetzt zwischen Anführungszeichen stehen.
-  => "q *.imp" und
+
+- Bei Installation beachten : Der Eintrag Inputfile aller
+  `*.imp`-Dateien muss jetzt zwischen Anführungszeichen stehen.  Also
+  ``q *.imp`` und ::
+    
     Inputfile import.txt
-  ersetzen durch
+    
+  ersetzen durch::
+    
     Inputfile "import.txt"
 
 19980227
-- Daten exportieren. Wenn der Dateiname im Exportfilter (*.exp) keine
+
+- Daten exportieren. Wenn der Dateiname im Exportfilter (`*.exp`) keine
   Pfadangabe enthält, schreibt TIM die Datei jetzt nicht mehr nach
-  c:\tim\export, sondern nach c:\tim\temp.
+  `c:\tim\export`, sondern nach `c:\tim\temp`.
 
 19980305
+
 - Wenn DEF_ART und nicht DEF_ACF, dann ist das Feld ART->RefExt jetzt
   standardmäßig vordefiniert. Bei Installation beachten : wenn in der
   ART.ACT also ein Feld RefExt definiert war, muss dieses versteckt
@@ -242,75 +257,92 @@ ddAddSpecial({||ParVnaEdit(PAR->IdPar)},"~Fakturierungsvorschläge [F6]",-5)
   LenAcfRef.
 
 19980309
+
 - DEF_MULT. Neues Feld VNL->Mult = Multiplikator.
   Field handles von cust-Feldern aus der VNL.ACT haben sich dadurch um 1
   erhöht. Also "q vnl*.qry" und "q vnl*.msk" : handle++ if handle >= 38.
 
 19980312
+
 - Das DLGATTR_R wird jetzt nicht mehr berücksichtigt.
   Bei Installation beachten : für jedes field mit attrib="R" muss
   stattdessen ein "before DlgDefine()" angegeben werden.
-  Also q *.dlg und nach attrib="R" suchen.
+  Also ``q *.dlg`` und nach `attrib="R"` suchen.
 
 xxxx
+
 - Der Eintrag title in Dialogdateien muss jetzt eine expression (kein
   Codeblock mehr) sein.
-  q *.dlg
+  ``q *.dlg``
 
 19980324
+
   Fakturierung. Die Taste [F5] auf einem Partner ist jetzt
   konfigurierbar. Um die bisherige Belegung zu behalten, muss folgender
-  Eintrag in der par.act gemacht werden :
-  ddAddSpecial(\
-    {||ParVenEdit(PAR->IdPar)},\
-    "~Fakturationsdokumente  [F5]",\
-    -4\
-  )
-  Eine mögliche Alternative zur bisherigen Belegung wäre :
-  ddAddSpecial(\
-    {||DbfEdit(\
-       { oVen(),oPar(),oPlz() },\
-       "Fakturationsdokumente",\
-       "VENPAR",NIL,NIL,\
-       PAR->IdPar,"VEN->IdPar",\
-       NIL,\
-       "VenCreate('" + PAR->IdPar + "')"\
-    )},\
-    "~Fakturationsdokumente  [F5]",\
-    -4\
-  )
+  Eintrag in der par.act gemacht werden::
+    
+      ddAddSpecial(\
+        {||ParVenEdit(PAR->IdPar)},\
+        "~Fakturationsdokumente  [F5]",\
+        -4\
+      )
+  
+  Eine mögliche Alternative zur bisherigen Belegung wäre::
+    
+      ddAddSpecial(\
+        {||DbfEdit(\
+           { oVen(),oPar(),oPlz() },\
+           "Fakturationsdokumente",\
+           "VENPAR",NIL,NIL,\
+           PAR->IdPar,"VEN->IdPar",\
+           NIL,\
+           "VenCreate('" + PAR->IdPar + "')"\
+        )},\
+        "~Fakturationsdokumente  [F5]",\
+        -4\
+      )
+  
   (Wobei VENPAR.QRY die Dokumente aller Journale pro Partner nach Datum
   sortiert).
 
 19980326
+
 - In der tim.dbi kann jetzt ein neuer Eintrag OnMainMenu stehen (oder
   mehrere). Bei Installation beachten : die bisherigen Standardvorgaben
-  folgendermaßen eintragen :
-  OnMainMenu SayAgenda(UserDate())  // DEF_PRESTO
-  oder
-  OnMainMenu memodisplay(\
-    StrParse(memoread(dbPath()+"\news.txt")),\
-    1,0,21,80\
-  )
+  folgendermaßen eintragen::
+    
+    OnMainMenu SayAgenda(UserDate())  // DEF_PRESTO
+  
+  oder::
+    
+      OnMainMenu memodisplay(\
+        StrParse(memoread(dbPath()+"\news.txt")),\
+        1,0,21,80\
+      )
 
 19980330
+
 - Die Artikelattribute sind jetzt nicht mehr hard-codiert und können und
   müssen jetzt in der Datei ARTATTR.DBC definiert werden.
 
 19980402
+
 - PLZ.QRY kopieren nach PLZNAT.QRY
 
 19980421
+
 - DEF_VNA. Um das bisherige Verhalten bei [Insert] auf der VNA.DBF
   beizubehalten, müssen folgende Einträge in der tim.dbi hinzugefügt
-  werden:
-  PreVnaCreate "B" $ UsrAttrib()
-  PreVnaCreate Confirm(\
-    "Fakturationsvorschlag manuell erstellen.",\
-    MsgSure()\
-  )
+  werden::
+    
+      PreVnaCreate "B" $ UsrAttrib()
+      PreVnaCreate Confirm(\
+        "Fakturationsvorschlag manuell erstellen.",\
+        MsgSure()\
+      )
 
 19980423
+
 - DEF_TAX und DEF_VEN. REGATTR_A in der REGATTR.DBC eintragen und
   eventuell für alle MWSt-Regimes einschalten.
 - DEF_VNA. Die Taste [F6] auf einem Artikel war bisher noch
@@ -377,7 +409,7 @@ xxxx
     "~Attribute                     ",\
     -36\
   )
-- Der bisherige Befehl "before" in *.rep-Dateien wurde umbenannt
+- Der bisherige Befehl "before" in `*.rep`-Dateien wurde umbenannt
   in "ValidateRecord" (wird automatisch gemacht).
 
 19980611
@@ -424,11 +456,13 @@ xxxx
     SetMnuDone()
 
 19980623
+
 - Konfiguration MWSt-Erklärung. Nicht-abzugsfähige MWSt wurde im Feld 84
   und 85 nicht berücksichtigt.
-- mnu*.dbc : in den Aufrufen von VenTvaListe() muss cIdReg manuell durch
-  xlParFilter ersetzt werden. Der bisherige Parameter cIdReg wurde
-  intern in der Bedingung "PAR->IdReg $ cIdReg" ausgewertet.
+  
+- `mnu*.dbc` : in den Aufrufen von VenTvaListe() muss cIdReg manuell
+  durch xlParFilter ersetzt werden. Der bisherige Parameter cIdReg
+  wurde intern in der Bedingung "PAR->IdReg $ cIdReg" ausgewertet.
 
 19980630
 - DEF_ARC (Aufräumen). Die bisherige Funktion Aufraeumen() heißt jetzt
@@ -464,28 +498,38 @@ xxxx
   rausgeholt werden.
 
 19980702
-  *.dlg :
+
+  `*.dlg`::
+  
     field name="preview" ... value="X" ...
-  muss ersetzt werden durch
+    
+  muss ersetzt werden durch::
+    
     field block={|x|SetPreview(x)}
+    
   Dadurch ist es jetzt möglich, den Druckparametersatz und Seitenbereich
   (Seite von... bis) in eine dlg-Datei einzubauen. Bisher war das nicht
-  möglich. Dazu benutzt man den folgenden field-Befehl :
+  möglich. Dazu benutzt man den folgenden field-Befehl::
+    
     field block={|x|SetRange(x)} [value=space(10)]
     field block={|x|SetTplIni(x)} [value="STD"]
 
 19980720
 - CUST_AVOD :
-  - Aus Standarddatenbank AVOD übernehmen :
+  - Aus Standarddatenbank AVOD übernehmen::
+      
     *.dlg, *.rep, 980617.ind, *.def, ipr*.*, dev*.qry, gen.qry, ifc.qry,
-    reg.qry, ven.wrn, flt.dbf, fnl*.qry, fin*.qry, hst*.qry, ctr*.qry,
+    reg.qry, ven.wrn, flt.dbf, fnl*.qry, fin*.qry, `hst*.qry, ctr*.qry,
     *.def
-  - Anpassen : tim.dbi, mnu*.dbc, ctr.dbf
+    
+  - Anpassen : ``tim.dbi, mnu*.dbc, ctr.dbf``
+    
   - Löschen : ???.act
   - Manuell ändern : Generalkonten 4010..4060 umbenennen nach
     6010..6060.
 
 19980722 (CUST_HOLZ)
+
 - STM.DEF : Felder VKLIdDoc und VKLLine sowie EKLIdDoc und EKLLine
   manuell definieren.
 - Bestehende Daten manuell konvertieren. Anschließend evtl. die Felder

@@ -1,5 +1,5 @@
 20140203
-=======
+========
 
 
 PickBic() gab, wenn man eine belgische BIC auswählte, nicht 
