@@ -20,11 +20,11 @@ column header=padl("1",LenMntF()) \
        type="T" // text={|x|ntomf(x)} xsum={|x| ntomf(x) }
 column header=padl("3",LenMntF()) \
        width=LenMntF() \
-       value={||CttBase('IdCtr=="V".and.IdTax$"IS ,XS "')} \
+       value={||CttBase('IdCtr=="V".and.IdTax$"IS ,XS ,X  "')} \
        type="T" // text={|x|ntomf(x)} xsum={|x| ntomf(x) }
 column header=padl("3.1",LenMntF()) \
        width=LenMntF() \
-       value={||CttBase('IdCtr=="V".and.IdTax$"IM "')} \
+       value={||CttBase('IdCtr=="V".and.IdTax$"IM ,IS "')} \
        type="T" // text={|x|ntomf(x)} xsum={|x| ntomf(x) }
 column header=padl("3.2",LenMntF()) \
        width=LenMntF() \
