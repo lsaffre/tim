@@ -589,7 +589,7 @@ RETURN trim(LngExpr("DLA->Name",TplLang()))
 
 
 
-FUNCTION LenIdDls() ; RETURN 6
+FUNCTION LenIdDls() ; RETURN 7
 
 // #define LEN_IDDLS 6
 
