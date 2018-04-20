@@ -308,6 +308,7 @@ ddFld Memo3    ,M, 10,0
 #else
   ddFld GP     ,C, 0, 0 GET_NUM attrib H
 #endif DEF_PROVI
+ddFld _Marge ,C,6,2 attrib V block ntom((val(ART->Prix1)-val(ART->PrixR))*100/val(ART->PrixR),2,6)
 
 #ifdef DEF_IVT
   action b key K_SH_F2   prompt MSG021 ;
