@@ -4,9 +4,11 @@ header2 PerText()
 area { oPer() }
 order 1 // GEN->IdBil+GEN->IdGen
 ValidateRecord {|| (MemPer1:=MemPer2:=PER->Periode)!=NIL }
-ValidateRecord {|| setvar("4",CttTaxe('IdCtr=="V".and.IdTax$"18 ,20 "'))}
-ValidateRecord {|| setvar("5",CttTaxe('IdCtr=="E".and.IdTax$"D5 ,D18,D20"'))}
-ValidateRecord {|| setvar("6",CttTaxe('IdCtr=="E".and.IdTax$"IM "'))}
+ValidateRecord {|| setvar("1a",CttBase('IdCtr=="V".and.IdTax$"18 ,20 ,21 "'))}
+ValidateRecord {|| setvar("1b",CttBase('IdCtr=="E".and.IdTax$"IM ,IS "'))}
+ValidateRecord {|| setvar("4",CttTaxe('IdCtr=="V".and.IdTax$"18 ,20 ,21 "'))}
+ValidateRecord {|| setvar("5a",CttTaxe('IdCtr=="E".and.IdTax$"D5 ,D18,D20"'))}
+ValidateRecord {|| setvar("6",CttBase('IdCtr=="E".and.IdTax$"IM ,IS "'))}
 // filter {|| !"H"$BIL->Attrib}
 start MemPer1 // trim(DlgValue("IdGen1"))
 while cblock("PER->Periode <= '"+MemPer2+"'")
@@ -14,9 +16,17 @@ while cblock("PER->Periode <= '"+MemPer2+"'")
 group text={|x|"Gesamt"}
 
 column header="Per." width=4 text={||PER->Periode}
+// column header=padl("1a",LenMntF()) \
+       width=LenMntF() \
+       value={||getvar("1a")} \
+       type="T" // text={|x|ntomf(x)} xsum={|x| ntomf(x) }
 column header=padl("1",LenMntF()) \
        width=LenMntF() \
-       value={||CttBase('IdCtr=="V".and.IdTax$"18 ,20 ,21 "')} \
+       value={||getvar("1a")+getvar("1b")} \
+       type="T" // text={|x|ntomf(x)} xsum={|x| ntomf(x) }
+column header=padl("1b",LenMntF()) \
+       width=LenMntF() \
+       value={||getvar("1b")} \
        type="T" // text={|x|ntomf(x)} xsum={|x| ntomf(x) }
 column header=padl("3",LenMntF()) \
        width=LenMntF() \
@@ -26,29 +36,37 @@ column header=padl("3.1",LenMntF()) \
        width=LenMntF() \
        value={||CttBase('IdCtr=="V".and.IdTax$"IM ,IS "')} \
        type="T" // text={|x|ntomf(x)} xsum={|x| ntomf(x) }
-column header=padl("3.2",LenMntF()) \
+// column header=padl("3.2",LenMntF()) \
        width=LenMntF() \
        value={||CttBase('IdCtr=="V".and.IdTax$"XM "')} \
        type="T" // text={|x|ntomf(x)} xsum={|x| ntomf(x) }
-column header=padl("4",LenMntF()) \
+// column header=padl("4a",LenMntF()) \
        width=LenMntF() \
        value={||getvar("4")} \
        type="T" // text={|x|ntomf(x)} xsum={|x| ntomf(x) }
+column header=padl("4b",LenMntF()) \
+       width=LenMntF() \
+       value={||getvar("1b")*0.20} \
+       type="T" // text={|x|ntomf(x)} xsum={|x| ntomf(x) }
+column header=padl("4",LenMntF()) \
+       width=LenMntF() \
+       value={||getvar("4")+getvar("1b")*0.20} \
+       type="T" // text={|x|ntomf(x)} xsum={|x| ntomf(x) }
 column header=padl("5",LenMntF()) \
        width=LenMntF() \
-       value={||getvar("5")} \
+       value={||getvar("5a")+getvar("1b")*0.20} \
        type="T" // text={|x|ntomf(x)} xsum={|x| ntomf(x) }
-column header=padl("4-5",LenMntF()) \
-       width=LenMntF() \
-       value={||getvar("4")-getvar("5")} \
-       type="T" // text={|x|ntomf(x)} xsum={|x| ntomf(x) }
-column header=padl("round",LenMntF()) \
+// column header=padl("round",LenMntF()) \
        width=LenMntF() \
        value={||getvar("4")-getvar("5")-(round(getvar("4"),0)-round(getvar("5"),0))} \
        type="T" // text={|x|ntomf(x)} xsum={|x| ntomf(x) }
 column header=padl("6",LenMntF()) \
        width=LenMntF() \
        value={||getvar("6")} \
+       type="T" // text={|x|ntomf(x)} xsum={|x| ntomf(x) }
+column header=padl("13",LenMntF()) \
+       width=LenMntF() \
+       value={||getvar("5a")-getvar("4")} \
        type="T" // text={|x|ntomf(x)} xsum={|x| ntomf(x) }
 total text={||""} when={||.t.}
 

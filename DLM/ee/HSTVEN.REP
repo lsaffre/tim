@@ -118,8 +118,12 @@ column header="Supplier" width=LenMntF() \
        value={||HstDcMont("C",SetDevise())} \
        text={|x|ntomf(x)} xsum={|x| ntomf(x) }
 // The purchases themselves don't need to be declared
-column header="Purchases" width=LenMntF() \
-       when={||GEN->IdClj$"80"} \
+column header="PurchNat." width=LenMntF() \
+       when={||GEN->IdClj$"80".and.!HST->IdTax$"IM ,IS "} \
+       value={||HstDcMont("D",SetDevise())} \
+       text={|x|ntomf(x)} xsum={|x| ntomf(x) }
+column header="Purch.EU" width=LenMntF() \
+       when={||GEN->IdClj$"80".and.HST->IdTax$"IM ,IS "} \
        value={||HstDcMont("D",SetDevise())} \
        text={|x|ntomf(x)} xsum={|x| ntomf(x) }
 
