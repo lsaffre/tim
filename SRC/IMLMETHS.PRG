@@ -1921,6 +1921,9 @@ FUNCTION PerPerCtr(cPeriode)
 local nYear
 RETURN "200" + substr(cPeriode,2,1) if left(cPeriode,1) == "A"
 RETURN "201" + substr(cPeriode,2,1) if left(cPeriode,1) == "B"
+RETURN "202" + substr(cPeriode,2,1) if left(cPeriode,1) == "C"  // added 20180817
+RETURN "203" + substr(cPeriode,2,1) if left(cPeriode,1) == "D"
+RETURN "204" + substr(cPeriode,2,1) if left(cPeriode,1) == "E"
 RETURN "20" + left(cPeriode,2) if set(_SET_EPOCH) >= 2000
 RETURN "19" + left(cPeriode,2)
 
