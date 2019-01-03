@@ -262,7 +262,10 @@ if len(x) == 2 // LEN_YEAR
          x + strtran(str(PerShift()+12,LEN_PERIODE-LEN_YEAR)," ","0")
   endif
 endif
-if val(x)>1900 .and. val(x) < 3000     // 19991013
+if FixY2K() .and. val(x)>1900 .and. val(x) < 3000     // 19991013
+  MemPer1 := y2p(val(x))+"01"
+  MemPer2 := y2p(val(x))+"12"
+elseif !FixY2K() .and. val(x)>1999 .and. val(x) < 3000     // 20190103
   MemPer1 := y2p(val(x))+"01"
   MemPer2 := y2p(val(x))+"12"
 elseif (nPos := at("-",x)) == 0

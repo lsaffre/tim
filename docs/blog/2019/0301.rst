@@ -1,0 +1,39 @@
+:date: 2019-01-03
+
+=========================
+Thursday, January 3, 2019
+=========================
+
+Users who have FixY2K set to .f. will probably need a new version because in
+HST.DLM TIM does::
+
+  OnLogin SetPeriode(PerActive())
+
+And :func:`PerActive` returns "1901" (which is correct), but
+:func:`SetPeriode` calls ``GetPeriode('1901')`` which dit until today::
+
+    FUNCTION GetPeriode(x)
+    local nPos
+    x := upper(trim(x))
+    if len(x) == 2 // LEN_YEAR
+      if PerLocate(x + strtran( ;
+        str(PerShift()+1,LEN_PERIODE-LEN_YEAR), ;
+        " ", "0") ;
+      ) != NIL
+        x := x + strtran(str(PerShift()+1,LEN_PERIODE-LEN_YEAR)," ","0") ;
+             + "-" + ;
+             x + strtran(str(PerShift()+12,LEN_PERIODE-LEN_YEAR)," ","0")
+      endif
+    endif
+    if val(x)>1900 .and. val(x) < 3000     // 19991013
+      MemPer1 := y2p(val(x))+"01"
+      MemPer2 := y2p(val(x))+"12"
+    elseif (nPos := at("-",x)) == 0
+      MemPer1 := MemPer2 := PerConvert(trim(x))
+    else
+      MemPer1 := PerConvert(alltrim(left(x,nPos-1)))
+      MemPer2 := PerConvert(alltrim(substr(x,nPos+1)))
+    endif
+    ...
+
+
