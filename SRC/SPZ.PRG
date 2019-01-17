@@ -771,14 +771,6 @@ RETURN !SetMsg('"'+DLS->Zahlart+'": ungltige Zahlart!') ;
   if empty(DbcText("DLSZAHL.DBC",DLS->Zahlart))
 RETURN .t.
 
-FUNCTION DlsDlpValidate()
-RETURN !SetMsg(MsgDlaExist(DLS->IdDla)) if ! DlaExist(DLS->IdDla)
-if DLAATTR_N $ DLA->Attrib
-  RETURN !SetMsg("Mindestens ein Netzwerkpartner muss anwesend sein!") ;
-    if DlsDlpCount({||iif(empty(PAR->IdNpa),0,1)}) == 0
-endif
-RETURN .t.
-
 FUNCTION DlsPostEdit()
 *local fld
 *local cStand
@@ -1103,6 +1095,13 @@ open area oDlp(), oPar()
 close area
 RETURN nCount
 
+FUNCTION DlsDlpValidate()
+RETURN !SetMsg(MsgDlaExist(DLS->IdDla)) if ! DlaExist(DLS->IdDla)
+if DLAATTR_N $ DLA->Attrib
+  RETURN !SetMsg("Mindestens ein Netzwerkpartner muss anwesend sein!") ;
+    if DlsDlpCount({||iif(empty(PAR->IdNpa),0,1)}) == 0
+endif
+RETURN .t.
 
 
 #else
