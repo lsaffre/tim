@@ -374,6 +374,9 @@ RETURN .t.
 
 FUNCTION dblogin()
 local cIdDos
+*if SetBatch()
+*    raise("SetBatch() returns .t. in dblogin!")
+*endif
 if empty(scIdDos)
   * warning("gonna PickDataPath()")
   RETURN .f. if (cIdDos := PickDataPath(scIdDos)) == NIL
@@ -418,6 +421,7 @@ MemLang3 :=  padr(MemLang3,LenIdLng())
 #ifdef DEF_4LANG
   MemLang4 :=  padr(MemLang4,LenIdLng())
 #endif
+
 AppSaveMem()
 slMustLogin := .f.
 RETURN .f. if ! MnuLoad(UsrIdMnu())

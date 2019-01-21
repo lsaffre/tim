@@ -109,13 +109,21 @@ local nKey
 #endif DEF_GUI
 RETURN .f. if ! DlgLoad(cIdDlg)
 default lPermanent to .f.
+// raise("20190121"+utos(lDlg))
 default lDlg to !SetBatch()
+// if SetBatch()
+// if lDlg
+//    raise("SetBatch() returns "+iif(SetBatch(), ".t.",".f.")+" in DlgExec!")
+// endif
 for i := 1 to len(saDlgBefore)
   if ! xparse(saDlgBefore[i])
     lOkay := .f.
     exit
   endif
 next i
+*if !lOkay .or. !lDlg .or. len(saDlgFields) == 0
+*  raise("saDlgFields is "+utos(lOkay)+utos(lDlg)+utos(saDlgFields))
+*endif
 if lOkay .and. lDlg .and. len(saDlgFields) > 0
   default scDlgTitle to cIdDlg
   nWidth := len(scDlgTitle)
@@ -268,6 +276,7 @@ if lOkay .and. lDlg .and. len(saDlgFields) > 0
         close window
         lOkay := .f.
       else
+        // raise("20190121")
         nKey := ReadScr() // aReadKeys)
         close window
         if nKey == K_ALT_F10

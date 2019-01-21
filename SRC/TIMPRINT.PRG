@@ -954,7 +954,7 @@ SetDlgTitle(tpl[TPL_NAME])
 if OpenPrinter( ;
     tpl[TPL_IDOPT],NIL,tpl[TPL_WIDTH], ;
     NIL,NIL,NIL,tpl[TPL_IDDLG], ;
-    SetAsPdf(),SetAsMail();
+    NIL, SetAsPdf(),SetAsMail();
   )
   p_MsgDisplay(tpl[TPL_NAME])
   scIdTpl := tpl[TPL_IDTPL]
@@ -1028,7 +1028,7 @@ snGenCredit := 0
 scIdTpl := tpl[TPL_IDTPL]
 if OpenPrinter( ;
     tpl[TPL_IDOPT],NIL,tpl[TPL_WIDTH],;
-    NIL,NIL,NIL,tpl[TPL_IDDLG], SetAsPdf(),SetAsMail() ;
+    NIL,NIL,NIL,tpl[TPL_IDDLG], NIL, SetAsPdf(),SetAsMail() ;
   )
   p_MsgDisplay(tpl[TPL_NAME])
   scIdTpl := tpl[TPL_IDTPL]
@@ -1709,7 +1709,7 @@ endif
 SetDlgTitle(tpl[TPL_NAME])
 if OpenPrinter( ;
     tpl[TPL_IDOPT],NIL,tpl[TPL_WIDTH], ;
-    NIL,NIL,NIL,tpl[TPL_IDDLG], SetAsPdf(),SetAsMail() ;
+    NIL,NIL,NIL,tpl[TPL_IDDLG], NIL, SetAsPdf(),SetAsMail() ;
   )
   p_MsgDisplay(tpl[TPL_NAME])
   scIdTpl := tpl[TPL_IDTPL]
@@ -2885,7 +2885,7 @@ SetDlgTitle(tpl[TPL_NAME])
 * endif
 if OpenPrinter( ;
     tpl[TPL_IDOPT],cPreview,tpl[TPL_WIDTH], ;
-    NIL,NIL,NIL,tpl[TPL_IDDLG], SetAsPdf(),SetAsMail() ;
+    NIL,NIL,NIL,tpl[TPL_IDDLG], NIL, SetAsPdf(),SetAsMail() ;
   )
   p_MsgDisplay(tpl[TPL_NAME])
   TplParse(tpl[TPL_MEMO])
@@ -2915,7 +2915,7 @@ default cTitle to "Imprimer Groupe d'articles"
 SetDlgTitle(tpl[TPL_NAME])
 if OpenPrinter( ;
     tpl[TPL_IDOPT],NIL,tpl[TPL_WIDTH], ;
-    NIL,NIL,NIL,tpl[TPL_IDDLG], SetAsPdf(),SetAsMail() ;
+    NIL,NIL,NIL,tpl[TPL_IDDLG], NIL, SetAsPdf(),SetAsMail() ;
   )
   scIdTpl := tpl[TPL_IDTPL]
   p_MsgDisplay(tpl[TPL_NAME])
