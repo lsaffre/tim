@@ -1,0 +1,10 @@
+:date: 2019-02-07
+
+==========================
+Thursday, February 7, 2019
+==========================
+
+When pasting some text into a CHAR field with [Alt-Ins] and that text contained
+newlines, TIM accepted these special characters although they should exist only
+in MEMO fields, non in one-line CHAR fields.  Now TIM replaces newlines by a
+single space before pasting them into a CHAR field.

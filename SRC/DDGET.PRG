@@ -1159,6 +1159,11 @@ RETURN "unknown event"+ntrim(n)
 FUNCTION GetPaste(oGet,s)
 local i
 RETURN NIL if s == NIL
+if oGet:cargo[AG_TYPE] != GTYPE_MEMO
+  s := strtran(s, chr(13)+chr(10), " ")
+  s := strtran(s, chr(13), " ")
+  s := strtran(s, chr(10), " ")
+endif
 for i := 1 to len(s)
   oGet:insert(substr(s,i,1))
 next i
