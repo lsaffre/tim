@@ -1,0 +1,8 @@
+:date: 2019-07-29
+
+=====================
+Monday, July 29, 2019
+=====================
+
+:func:`PickFile` caused a RTE when cPath was NIL and user pressed DEL.  Fixed.
+When cPath is NIL, TIM cannot delete the file and simply does not react to DEL.

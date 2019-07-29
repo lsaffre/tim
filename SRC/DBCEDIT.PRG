@@ -177,7 +177,7 @@ do while .t.
                  padr(x[1],12) + " : " + padr(x[2],50) ;
                } ;
                title (cTitle) ;
-               delete {|x|FileDelete(cPath + "\" + x[1])} ;
+               delete {|x|iif(cPath==NIL,.f.,FileDelete(cPath + "\" + x[1]))} ;
                create {|x|DbcCreate(x,cPath,cTitle)} ;
                help "FILEPICK" ;
                start nStart
