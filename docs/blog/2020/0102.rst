@@ -1,0 +1,24 @@
+:date: 2020-01-02
+
+=========================
+Thursday, January 2, 2020
+=========================
+
+Fixed yet another Y2K bug:
+
+Until 2019, users with fixy2k switched off could  enter "2000" or "2019" in a
+Period Range field, and TIM replaced this by "0001-0012" or "1901-1912"
+respectively. TIM detected that the user wants to consider a whole year.
+But in 2020, when we type "2001" we want "January 2020", not "0101-0112".
+
+The limit is now raised from ">1999" to ">2015", so the trick continues to work
+for 2020 to 2099, but for the years 2000 to 2015 it has been disabled because
+these strings might mean a real period.  We assume that "2015" might still mean Period 15 of year 2000.
+
+Das Problem tritt **nicht** auf bei Benutzern, die noch mit FixY2K arbeiten
+(also noch Buchungen von vor 2000 in ihrer Datenbank haben und deshalb mit
+Perioden A0, B0 usw arbeiten).
+
+Das Problem ist scheinbar ebenfalls "inaktiv" bei Benutzern, die kein DevToggle
+haben (also keinen Umstieg BEF/EUR konfiguriert haben) bzw. die schon 2001
+nach EUR umgestiegen waren.
