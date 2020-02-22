@@ -296,6 +296,7 @@ endif
 RETURN .f. if ! VenPreEdit()
 RETURN .f. if ! DocDelete(jnl,VEN->IdDoc,lConfirm)
 #ifdef DEF_HOLZ
+  if "D" $ jnl[JNL_ATTRIB]  // nur Lieferscheine haben Journalatribut D
   open area oStm()
     ddSetOrder(StmOrder(cIdJnl))
     softseek cIdDoc
@@ -311,6 +312,7 @@ RETURN .f. if ! DocDelete(jnl,VEN->IdDoc,lConfirm)
       goto nRecNo
     enddo
   close area
+  endif
 #endif DEF_HOLZ
 open area oVnl(VEN->Etat)
   lOkay := .t. // nReturn := DDDEL_NOCONFIRM
