@@ -144,7 +144,7 @@
 
 // #define SIMULATE_CARD_READER
 
-// #define DEF_FOX
+#define DEF_FOX
 
 #define DEF_CHANGELOG
 
