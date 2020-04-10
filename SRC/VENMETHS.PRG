@@ -3329,6 +3329,7 @@ open area oStm()
       if ddRecLock()
         cLine := NextNum(cLine)
         &("STM->"+cIdJnl+"Line") := cLine
+        unlock record  // was missing. fixed 20200407
       else
         lOkay := .f.
       endif

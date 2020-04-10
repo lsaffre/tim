@@ -1,0 +1,8 @@
+:date: 2020-04-07
+
+======================
+Tuesday, April 7, 2020
+======================
+
+VenStmSort() called ddRecLock() but not "unlock record". This caused a "record
+still locked" runtime error afterwards.
