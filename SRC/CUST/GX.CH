@@ -127,6 +127,7 @@
 
 
 #define DEF_ADS // request ADS-specific functions
+#define DEF_FOX
 
 #define DEF_TPLTEXT
 
@@ -144,7 +145,6 @@
 
 // #define SIMULATE_CARD_READER
 
-#define DEF_FOX
 
 #define DEF_CHANGELOG
 
