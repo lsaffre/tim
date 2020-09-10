@@ -1,5 +1,5 @@
 //
-// VENVKRA.QRY - generated 15.03.12
+// VENVKRA.QRY - generated 08.09.20
 // for VEN.FOX
 //
 column 2 =utr("Doc.#","Dok.Nr","NøDoc") pict @K@!
@@ -11,8 +11,9 @@ column 31 IdPrj pict @K@!
 column 6 =utr("Amount","Betrag","Montant") pict @K@! expr val(mont) sumfmt ntom(nSum)
 column 7 St pict !
 column 5 Betreff pict @K@S14
-column 28 =utr("Ccy","W„.","Dev") pict @K@!
 column 19 Per. pict @K@!
+column 0 VAT id block ParExpr(VEN->IdPar,"strtran(PAR->NoTva,'.','')") skip .t.
+column 28 =utr("Ccy","W„.","Dev") pict @K@!
 column 14 ZA pict @K@!
 column 9 =utr("Term","Z-Ziel","Ech‚ance") sumfmt ""
 column 13 Attr pict @K@!

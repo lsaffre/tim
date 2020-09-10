@@ -25,6 +25,10 @@ column header=padl("1a",LenMntF()) \
        width=LenMntF() \
        value={||getvar("1b")} \
        type="T" // text={|x|ntomf(x)} xsum={|x| ntomf(x) }
+column header=padl("6=1b",LenMntF()) \
+       width=LenMntF() \
+       value={||getvar("6")} \
+       type="T" // text={|x|ntomf(x)} xsum={|x| ntomf(x) }
 column header=padl("1",LenMntF()) \
        width=LenMntF() \
        value={||getvar("1a")+getvar("6")} \
@@ -75,10 +79,6 @@ column header=padl("5.1",LenMntF()) \
 // column header=padl("round",LenMntF()) \
        width=LenMntF() \
        value={||getvar("4")-getvar("5")-(round(getvar("4"),0)-round(getvar("5"),0))} \
-       type="T" // text={|x|ntomf(x)} xsum={|x| ntomf(x) }
-column header=padl("6",LenMntF()) \
-       width=LenMntF() \
-       value={||getvar("6")} \
        type="T" // text={|x|ntomf(x)} xsum={|x| ntomf(x) }
 column header=padl("13",LenMntF()) \
        width=LenMntF() \

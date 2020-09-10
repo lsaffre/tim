@@ -1,0 +1,9 @@
+:date: 2020-09-10
+
+============================
+Thursday, September 10, 2020
+============================
+
+Little change in PERKMD : column 6 is now visible at the beginning (as it is
+used for computing column 1 as well). VENVKRA.QRY now also shows the VAT id
+numbers. Useful when filling the VP declaration.
