@@ -1,0 +1,8 @@
+:date: 2021-02-02
+
+=========================
+Tuesday, February 2, 2021
+=========================
+
+There was yet another Y2K bug in TIM: Entering "2101" into a period range field
+(handled by SetPeriode()) caused it to convert this into "1001-1012".

@@ -267,7 +267,7 @@ if FixY2K() .and. val(x)>1900 .and. val(x) < 3000     // 19991013
   MemPer2 := y2p(val(x))+"12"
 // when fix2yk is off and you enter "2000" or "2001" in a Period Range field, this means "the whole year".
 // But starting at 2020  we cannot use this trick any more because "2001" is also used for January 2020
-elseif !FixY2K() .and. val(x)>2015 .and. val(x) < 3000     // 20190103
+elseif !FixY2K() .and. val(x)>2015 .and. val(x) < 2100     // 20190103
   MemPer1 := y2p(val(x))+"01"
   MemPer2 := y2p(val(x))+"12"
 elseif (nPos := at("-",x)) == 0
