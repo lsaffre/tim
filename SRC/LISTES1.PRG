@@ -3726,6 +3726,118 @@ RETURN "Imprimer factures"
 
 #endif DEF_VEN
 
+#ifdef DEF_IMP
+
+FUNCTION ImpBatch()
+local jnl
+local i
+local aJnl := JnlList()
+local lSetBatch := SetBatch()
+local lAsPdf := SetAsPdf()
+static cIdJnl
+static cIdGrj := NIL
+static cIdDoc1
+static cIdDoc2
+static dDate
+static cAsPdf
+static cPdfRoot 
+default cIdGrj to space(LEN_IDGRJ)
+default cIdJnl to space(LenIdJnl())
+default cIdDoc1 to space(LenIdDoc())
+default cIdDoc2 to space(LenIdDoc())
+default dDate to ctod("")
+default cAsPdf to BUTTON_ON
+default cPdfRoot to padr(AppPath()+"\pdf\",200)
+SetPreview(BUTTON_OFF)
+open window (MsgImpBatch()) size 9,60 help "IMPBATCH"
+say "Journalgruppe "
+get cIdGrj picture PIC_ID  pick PickGrj(cIdGrj)
+say " Journal "
+get cIdJnl picture PIC_ID ;
+           pick PickIdJnl( ;
+             NIL,cIdJnl, ;
+             JnlList({|j|empty(cIdGrj).or.j[JNL_IDGRJ]==cIdGrj}) ;
+           )
+say "Nr. "
+get cIdDoc1 picture PIC_ID pick PickDoc(cIdJnl,cIdDoc1)
+say " bis "
+get cIdDoc2 picture PIC_ID pick PickDoc(cIdJnl,cIdDoc2)
+WinCr()
+SayGetPeriode()
+say "Datum "
+get dDate
+WinCr()
+GetRange()
+// WinCr()
+// SetTplIni("LISTE")
+// GetTplIni()
+GetPreview()
+WinCR()
+@ row(), col() get cAsPdf checkbox
+say " PDF generieren statt auszudrucken"
+WinCR()
+say "Verzeichnis PDF-Dateien "
+get cPdfRoot picture "@k@s30"
+nKey := ReadScr()
+close window
+RETURN .f. if nKey == K_ESC
+SetAsPdf(cAsPdf==BUTTON_ON)
+SetBatch(.t.)
+AppSaveMem()
+open area oImp(), oPar(), oPlz(), oNat()
+for i := 1 to len(aJnl)
+  jnl := aJnl[i]
+  if jnl[JNL_ALIAS] == "IMP" .and. len(trim(jnl[JNL_IDTPL])) > 0 .and. JNLATTR_I $ jnl[JNL_ATTRIB]
+    if empty(cIdGrj) .or. jnl[JNL_IDGRJ] == cIdGrj
+      if empty(cIdJnl) .or. jnl[JNL_IDJNL] == cIdJnl
+        cIdJnl := jnl[JNL_IDJNL]
+        softseek cIdJnl + trim(cIdDoc1)
+        do while ! eof() .and. IMP->IdJnl == cIdJnl
+          if TaskInter() ; exit ; endif
+          if ! empty(cIdDoc2)
+            if IMP->IdDoc > cIdDoc2 ; exit ; endif
+          endif
+          if IMP->Etat == DocStatClosed()
+            if ChkPeriode(IMP->Periode) == 0
+              if empty(dDate) .or. IMP->Date == dDate
+                  if ddRecLock()
+                    MsgDisplay(MsgIdJnlDoc() + " wird nachtr„glich gedruckt")
+                    setvar("PRN2PDF.out",alltrim(cPdfRoot)+alltrim(cIdJnl)+IMP->IdDoc+".pdf")
+                    ImpPrint(jnl[JNL_IDTPL], SetAsPdf())
+                    unlock record
+                    if LstError() != PRN_DONE
+                      if Confirm(MsgStopBatch())
+                        exit
+                      endif
+                    endif
+                  endif
+              endif
+            endif
+          endif
+          skip
+        enddo
+      endif
+    endif
+  endif
+next i
+close area
+SetBatch(lSetBatch)
+SetAsPdf(lAsPdf)
+RETURN .f.
+
+FUNCTION MsgStopBatch()
+#ifdef LG_GERMAN
+RETURN "Bearbeitung abbrechen (J/N) ?"
+#else
+RETURN "Interrompre le traitement (O/N) ?"
+#endif
+
+FUNCTION MsgImpBatch()
+RETURN "Dokumente drucken"
+
+#endif DEF_IMP
+
+
 #ifdef DEF_MVA
 
 #ifdef DEF_HST // nicht im ™SHZ

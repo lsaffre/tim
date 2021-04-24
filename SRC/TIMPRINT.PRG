@@ -1784,7 +1784,7 @@ RETURN NIL
 **
 ** ImpPrint()
 **
-FUNCTION ImpPrint(cIdTpl)
+FUNCTION ImpPrint(cIdTpl, lAsPdf)
 local jnl := JnlLocate(IMP->IdJnl)
 * local cLangue := MemLang1
 local cIdPrj 
@@ -1816,7 +1816,7 @@ open area oPar(), oPlz(), oNat(), oBud(), oPrj()
       seek IMP->IdPrj in PRJ
     endif
   #endif
-  PrintTemplate(jnl[JNL_IDTPT],cIdTpl)
+  PrintTemplate(jnl[JNL_IDTPT],cIdTpl, NIL, NIL, NIL, NIL, NIL, lAsPdf)
 close area
 RETURN MnuDone()
 
