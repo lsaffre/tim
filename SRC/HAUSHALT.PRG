@@ -1823,7 +1823,7 @@ if !lDebug .or. Confirm("Beanstandungen drucken (J/N)?")
 endif
 fclose(fd)
 if cDoIt == BUTTON_OFF
-  if !lDebug .or. Confirm("IMAUTO.ERR l”schen (J/N)?")
+  if !lDebug .or. Confirm("IMPAUTO.ERR l”schen (J/N)?")
     delete file (DbPath() + "\IMPAUTO.ERR")
   endif
 endif

@@ -3786,23 +3786,24 @@ SetBatch(.t.)
 AppSaveMem()
 open area oImp(), oPar(), oPlz(), oNat()
 for i := 1 to len(aJnl)
+  if TaskInter() ; exit ; endif
   jnl := aJnl[i]
-  if jnl[JNL_ALIAS] == "IMP" .and. len(trim(jnl[JNL_IDTPL])) > 0 .and. JNLATTR_I $ jnl[JNL_ATTRIB]
+  if jnl[JNL_ALIAS] == "IMP" .and. len(trim(jnl[JNL_IDTPL])) > 0 // .and. JNLATTR_I $ jnl[JNL_ATTRIB]
     if empty(cIdGrj) .or. jnl[JNL_IDGRJ] == cIdGrj
       if empty(cIdJnl) .or. jnl[JNL_IDJNL] == cIdJnl
-        cIdJnl := jnl[JNL_IDJNL]
-        softseek cIdJnl + trim(cIdDoc1)
-        do while ! eof() .and. IMP->IdJnl == cIdJnl
+        // cIdJnl := jnl[JNL_IDJNL]
+        softseek jnl[JNL_IDJNL] + trim(cIdDoc1)
+        do while ! eof() .and. IMP->IdJnl == jnl[JNL_IDJNL]
           if TaskInter() ; exit ; endif
           if ! empty(cIdDoc2)
             if IMP->IdDoc > cIdDoc2 ; exit ; endif
           endif
           if IMP->Etat == DocStatClosed()
             if ChkPeriode(IMP->Periode) == 0
-              if empty(dDate) .or. IMP->Date == dDate
+              if empty(dDate) .or. IMP->Date1 == dDate
                   if ddRecLock()
                     MsgDisplay(MsgIdJnlDoc() + " wird nachtr„glich gedruckt")
-                    setvar("PRN2PDF.out",alltrim(cPdfRoot)+alltrim(cIdJnl)+IMP->IdDoc+".pdf")
+                    setvar("PRN2PDF.out",alltrim(cPdfRoot)+alltrim(IMP->IdJnl)+IMP->IdDoc+".pdf")
                     ImpPrint(jnl[JNL_IDTPL], SetAsPdf())
                     unlock record
                     if LstError() != PRN_DONE
