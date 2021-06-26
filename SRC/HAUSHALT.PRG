@@ -808,6 +808,7 @@ open area oBud(), oCtb()
   ddSetOrder(ORD_BUD_HH)
   softseek cIdSbb
   do while lOkay .and. ! eof() .and. BUD->SubBud == cIdSbb
+    lPrint := .t.
     if TaskInter() ; lOkay := .f. ; exit ; endif
     if BUD->IdBud != cIdBud
       cIdBud := BUD->IdBud
