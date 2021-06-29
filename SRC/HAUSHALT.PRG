@@ -809,6 +809,7 @@ open area oBud(), oCtb()
   softseek cIdSbb
   do while lOkay .and. ! eof() .and. BUD->SubBud == cIdSbb
     lPrint := .t.
+    if BUDATTR_H $ BUD->Attrib ; lPrint := .f. ; endif
     if TaskInter() ; lOkay := .f. ; exit ; endif
     if BUD->IdBud != cIdBud
       cIdBud := BUD->IdBud
