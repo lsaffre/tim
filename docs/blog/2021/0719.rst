@@ -1,0 +1,13 @@
+========
+20210719
+========
+
+Änderungen:
+
+- DlsHasVnl(), _ParDlpCollect() , ParDls2Naf() & Co gehen jetzt davon aus, dass
+  VNL->IdDls jetzt aus DLS->IdDls+PAR-IdPar besteht (wobei PAR->IdPar immer die
+  Akte ist,auch wenn der Zahler ein anderer ist)
+
+- DlsVnlExpr() läuft jetzt ggf über alle VNL-Datensätze
+
+- oDlp() hat einen dritten Index DLP->Date+DLP->IdDls (für DLSEXP)

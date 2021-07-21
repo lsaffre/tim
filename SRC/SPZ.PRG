@@ -875,8 +875,9 @@ define data b              ;
        create  DlpCreate() ;
        postedit DlpIsValid() ;
        predelete DlpCanDelete().and.ConfirmDelete()
-ddIndex b on  DLP->IdDls+DLP->Line
-ddIndex b on  DLP->IdPar+dtos(DLP->Date)+DLP->IdDls // ORD_DLP_PARDATE
+ddIndex b on DLP->IdDls+DLP->Line
+ddIndex b on DLP->IdPar+dtos(DLP->Date)+DLP->IdDls // ORD_DLP_PARDATE
+ddIndex b on dtos(DLP->Date)+DLP->IdDls // used by DLSEXP.ACT
 ddFld IdDls    ,C,  LenIdDls(),0 when .f.
 ddFld IdPar    ,C, LenIdPar(),0  picture PIC_ID ;
   pick PickPar(IDPRT_P, DLP->IdPar) ;
@@ -1540,7 +1541,7 @@ open area oDlp(), oDls(), oDla(), oArt(), oPar()
                   .f.,;
                   ntom(DlsArtPrix()),;
                   "",;
-                  "(VNL->IdDls:='"+DLS->IdDls+"')!=NIL";
+                  "(VNL->IdDls:='"+DLS->IdDls+DLP->IdPar+"')!=NIL";
                 )
               * endif
             endif
@@ -1645,17 +1646,19 @@ FUNCTION DlsHasVnl()
   // bei PAC:
   RETURN HasRecords(oVnl(),3,"VNL->Match","DLS"+DLS->IdDls+"000")
 #else
-  RETURN HasRecords(oVnl(),3,"VNL->IdDls",DLS->IdDls)
+  RETURN HasRecords(oVnl(),3,"VNL->IdDls",DLS->IdDls+PAR->IdPar)
 #endif
 
 FUNCTION DlsVnlExpr(xuExpr,uExpr)
 open area oVnl(), oVen()
   ddSetOrder(3)
-  seek DLS->IdDls
-  if !eof()
+  softseek DLS->IdDls
+  do while !eof() .and. left(VNL->IdDls, LenIdDls()) == DLS->IdDls
     seek VNL->IdJnl+VNL->IdDoc in VEN
-    uExpr := &xuExpr
-  endif
+    if !empty(uExpr) ; uExpr += ", " ; endif
+    uExpr += &xuExpr
+    skip
+  enddo
 close area
 RETURN uExpr
 
