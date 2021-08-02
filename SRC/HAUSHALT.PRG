@@ -816,7 +816,6 @@ open area oBud(), oCtb()
       cLine := SayIdBud(BUD->IdBud)
       cLine += " " + padr(BUD->Name1,40)
       seek "E" + cIdBud + cPrevPer + "01" in CTB
-        if BUDATTR_H $ BUD->Attrib ; lPrint := .f. ; endif
         if BUD->IsSum == BUTTON_ON
           nTot1 += Db2Dev(SetDevise(),LastPeriode(CTB->Periode),val(CTB->Mont))
           * nTot1 += val(CTB->Mont)
@@ -824,7 +823,6 @@ open area oBud(), oCtb()
         cLine += " " + ntomf(Db2Dev(SetDevise(),LastPeriode(CTB->Periode),val(CTB->Mont)))
         * cLine += " " + ntomf(val(CTB->Mont))
       seek "A" + cIdBud + cPrevPer + "01" in CTB
-        if BUDATTR_H $ BUD->Attrib ; lPrint := .f. ; endif
         if BUD->IsSum == BUTTON_ON
           nTot2 += Db2Dev(SetDevise(),LastPeriode(CTB->Periode),val(CTB->Mont))
           * nTot2 += val(CTB->Mont)
@@ -832,14 +830,12 @@ open area oBud(), oCtb()
         cLine += " " + ntomf(Db2Dev(SetDevise(),LastPeriode(CTB->Periode),val(CTB->Mont)))
         * cLine += " " + ntomf(val(CTB->Mont))
       seek "E" + cIdBud + cPeriode + "00" in CTB
-        if BUDATTR_H $ BUD->Attrib ; lPrint := .f. ; endif
         if BUD->IsSum == BUTTON_ON
           nTot3 += Db2Dev(SetDevise(),LastPeriode(CTB->Periode),val(CTB->Mont))
           * nTot3 += val(CTB->Mont)
         endif
         cLine += " " + ntomf(Db2Dev(SetDevise(),LastPeriode(CTB->Periode),val(CTB->Mont)))
       seek "A" + cIdBud + cPeriode + "00" in CTB
-        if BUDATTR_H $ BUD->Attrib ; lPrint := .f. ; endif
         if BUD->IsSum == BUTTON_ON
           nTot4 += Db2Dev(SetDevise(),LastPeriode(CTB->Periode),val(CTB->Mont))
           * nTot4 += val(CTB->Mont)
@@ -913,6 +909,7 @@ open area oBud(), oCtb()
   ddSetOrder(ORD_BUD_HH)
   softseek cIdSbb
   do while lOkay .and. ! eof() .and. BUD->SubBud == cIdSbb
+    lPrint := .f.
     if TaskInter() ; lOkay := .f. ; exit ; endif
     if BUD->IdBud != cIdBud
       cIdBud := BUD->IdBud
@@ -932,12 +929,14 @@ open area oBud(), oCtb()
           endif
         endif
       next
-      if BUD->IsSum == BUTTON_ON
-        cLine := "{S}" + cLine + "{s}"
-      endif
-      PrintLine(cLine)
-      if BUD->IsSum == BUTTON_ON
-        PrintLine()
+      if lPrint .and. ! BUDATTR_H $ BUD->Attrib
+        if BUD->IsSum == BUTTON_ON
+          cLine := "{S}" + cLine + "{s}"
+        endif
+        PrintLine(cLine)
+        if BUD->IsSum == BUTTON_ON
+          PrintLine()
+        endif
       endif
     endif
     skip
