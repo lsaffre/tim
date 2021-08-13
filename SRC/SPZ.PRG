@@ -877,7 +877,7 @@ define data b              ;
        predelete DlpCanDelete().and.ConfirmDelete()
 ddIndex b on DLP->IdDls+DLP->Line
 ddIndex b on DLP->IdPar+dtos(DLP->Date)+DLP->IdDls // ORD_DLP_PARDATE
-ddIndex b on dtos(DLP->Date)+DLP->IdDls // used by DLSEXP.ACT
+// ddIndex b on dtos(DLP->Date)+DLP->IdDls // used by DLSEXP.ACT
 ddFld IdDls    ,C,  LenIdDls(),0 when .f.
 ddFld IdPar    ,C, LenIdPar(),0  picture PIC_ID ;
   pick PickPar(IDPRT_P, DLP->IdPar) ;
