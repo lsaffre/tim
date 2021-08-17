@@ -1364,7 +1364,7 @@ default lSammel to .t.
 blCollect := {|a| ;
   ParDls2Naf(a,jnl,dDate1,dDate2,lTagged,xlDlsFilter,;
     xcRemark,"''","''","''","DLS->Mont",;
-    ".f.",{||"(VNL->IdDls:='"+DLS->IdDls+"')!=NIL"});
+    ".f.",{||"(VNL->IdDls:='"+DLS->IdDls+DLS->IdPar+"')!=NIL"});
   .and. _ParDlpCollect(a,jnl,dDate1,dDate2,lTagged,xlDlsFilter);
 }
 if lSammel .and. PARATTR_S $ PAR->Attrib
@@ -1596,7 +1596,7 @@ open area oDls(), oDla(), oArt(), oPar()
           .f.,;
           DLS->Kassiert,;
           "",;
-          "(VNL->IdDls:='"+DLS->IdDls+"')!=NIL";
+          "(VNL->IdDls:='"+DLS->IdDls+DLS->IdPar+"')!=NIL";
         )
       endif
     endif
@@ -1639,14 +1639,14 @@ RETURN val(&c)
 
 FUNCTION DlsVnlSum()
 RETURN DbfSum({oVnl()},"val(VNL->cMont)",3,;
-  DLS->IdDls,"VNL->IdDls=='"+DLS->IdDls+"'")
+  DLS->IdDls,"left(VNL->IdDls,"+ntrim(LenIdDls())+")=='"+DLS->IdDls+"'")
 
-FUNCTION DlsHasVnl()
+FUNCTION DlsHasVnl(cIdPar)
 #ifdef DEF_VNA
   // bei PAC:
   RETURN HasRecords(oVnl(),3,"VNL->Match","DLS"+DLS->IdDls+"000")
 #else
-  RETURN HasRecords(oVnl(),3,"VNL->IdDls",DLS->IdDls+PAR->IdPar)
+  RETURN HasRecords(oVnl(),3,"VNL->IdDls",DLS->IdDls+cIdPar)
 #endif
 
 FUNCTION DlsVnlExpr(xuExpr,uExpr)
