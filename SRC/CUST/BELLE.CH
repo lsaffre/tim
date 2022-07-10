@@ -98,7 +98,7 @@
 * #define UPGRADE_96
 * #define DEF_PLS
 
-// FÅr Leute, die von CUST_AMG kommen
+// FÔøΩr Leute, die von CUST_AMG kommen
 * #define DEF_CARRY
 * #define DEF_CFN
 * #define DEF_MULT
@@ -136,3 +136,4 @@
 
 #define DEF_FRF
 
+// #define DEF_FOX
