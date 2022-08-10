@@ -472,10 +472,10 @@ local aAttrib := {}
   * aadd(aAttrib, { IFCATTR_C, "Dialogue 'paiement comptant'        " , 1 } )
   aadd(aAttrib, { IFCATTR_E, "Extourne automatique                " , 1 } )
   aadd(aAttrib, { IFCATTR_U, "FA : ne pas recalculer prix unitaire" , 1 } )
+  aadd(aAttrib, { IFCATTR_D, "FA : mentionner bons de livr.       " , 1 } )
   #ifdef DEF_VNA
   aadd(aAttrib, { IFCATTR_A, "Facturation automatique             " , 1 } )
   * aadd(aAttrib, { IFCATTR_G, "Facturation automatique cptes gÇn.  " , 1 } )
-  aadd(aAttrib, { IFCATTR_D, "FA : mentionner bons de livr.       " , 1 } )
   aadd(aAttrib, { IFCATTR_R, "FA : Lignes de sÇparation           " , 1 } )
   aadd(aAttrib, { IFCATTR_S, "FA : pas besoin de satisfaire       " , 1 } )
   aadd(aAttrib, { IFCATTR_X, "FA : ne pas confirmer les proposit¯ " , 1 } )
@@ -492,10 +492,10 @@ local aAttrib := {}
   * aadd(aAttrib, { IFCATTR_C, "Dialog 'Barzahlung'                   " , 1 } )
   aadd(aAttrib, { IFCATTR_E, "Automatische Gegenbuchung             " , 1 } )
   aadd(aAttrib, { IFCATTR_U, "StÅckpreise nicht neu rechnen bei AF  " , 1 } )
+  aadd(aAttrib, { IFCATTR_D, "Lieferscheine angeben bei AF          " , 1 } )
   #ifdef DEF_VNA
   aadd(aAttrib, { IFCATTR_A, "Automatik-Fakturierung                " , 1 } )
   * aadd(aAttrib, { IFCATTR_G, "Automatik-Fakturierung Generalkonten  " , 1 } )
-  aadd(aAttrib, { IFCATTR_D, "Lieferscheine angeben bei AF          " , 1 } )
   aadd(aAttrib, { IFCATTR_R, "Leerzeilen generieren bei AF          " , 1 } )
   aadd(aAttrib, { IFCATTR_S, "braucht nicht befriedigt zu werden    " , 1 } )
   aadd(aAttrib, { IFCATTR_X, "AF-VorschlÑge o. Dialog Åbernehmen    " , 1 } )

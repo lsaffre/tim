@@ -1505,7 +1505,8 @@ RETURN lOkay
 #define NF_MTVA  10
 #define NF_REMISE 11
 #define NF_IDTAX 12
-#define NF_ALEN  12
+#define NF_NB1 13
+#define NF_ALEN  13
 
 #define NFR_IDART 1
 #define NFR_HTVA  2
@@ -1609,9 +1610,11 @@ open area oVen(), oVnl(), oArt()
                   if !lByPrix .or. aNF[i][NF_PRIXU] == VNL->PrixU
                     if !lByDate .or. aNF[i][NF_DATE] == VEN->Date
                       if aNF[i][NF_IDART] ==  VNL->IdArt
-                        *if aNF[i][NF_REMISE] == VNL->Rabatt
-                          nf := aNF[i]
-                        *endif
+                        if aNF[i][NF_NB1] == trim(VEN->NB1)
+                          *if aNF[i][NF_REMISE] == VNL->Rabatt
+                            nf := aNF[i]
+                          *endif
+                        endif
                       endif
                     endif
                   endif
@@ -1645,6 +1648,7 @@ open area oVen(), oVnl(), oArt()
             nf[NF_IDTAX] := VNL->IdTax
             nf[NF_QTE] := nQte
             nf[NF_COUNT] :=  1
+            nf[NF_NB1] := trim(VEN->NB1)
             aadd(aNF,nf)
           else
             nf[NF_HTVA] += nHTVA
@@ -1698,16 +1702,17 @@ open area oVen(), oVnl(), oArt()
     seek (nf[NF_IDART]) in ART
     cDesig := ""
     if empty(nf[NF_IDDOC])
-      cDesig := trim1(ArtName(NIL,PAR->Langue))
+      cDesig := trim(ArtName(NIL,PAR->Langue))
       if lByDate
-        cDesig += dtoc(nf[NF_DATE]) + " "
+        cDesig += " " + dtoc(nf[NF_DATE]) 
       endif
       * if lByPlaque
       *   cDesig += trim1(nf[NF_PLAQUE])
       * endif
       if lByPrix
-        cDesig += komma(ltrim(nf[NF_PRIXU]))
+        cDesig += " " + komma(ltrim(nf[NF_PRIXU]))
       endif
+      cDesig += trim1b(nf[NF_NB1])
     endif
     if lByPrix
       cQte   := ntoq(nf[NF_QTE],ART->QteForm)
