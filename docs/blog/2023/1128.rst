@@ -1,0 +1,23 @@
+:date: 2023-11-28
+
+==========================
+Tuesday, November 28, 2023
+==========================
+
+Mit Matthias und Francis haben wir was Subtiles gemacht. Sie hatten
+versehentlich die HHVs für 2024 schon durch zwei HHAs bestätigt, bevor sie den
+Haushalt 2024 ausgedruckt hatten. Wir haben dann als Workaround rausgefunden,
+dass :func:`LstHaushalt` einen Parameter `cIdCdc` hat, den wir "nur" von
+"00" nach "01" ändern müssen.
+
+- MNU.DBC : LstHaushalt("00")
+
+Zusätzlich aber das Gleiche auch in den folgenden beiden DBC-Dateien:
+
+- H2024-04.DBC : die beiden Zeilen mit "Schätzungen" von 00 nach 01 gesetzt
+- H2024-03.DBC : alle Zeilen "00"
+
+Und dann stellte sich raus, dass dieser cIdCdc für die Unterteilungen 6 bis 8
+noch nicht berücksichtigt wird. TIM benutzte dort bishger hard-codiert immer
+"00" und "01" fürs Vorjahr. Das habe ich schnell in TIM geändert und ihnen einen
+neuen TIM kompiliert.

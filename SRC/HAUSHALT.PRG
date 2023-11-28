@@ -237,9 +237,9 @@ if !empty(c03+c04+c05+c07+c08bis+c09+c11+c12)
     endif
     if c07 == BUTTON_ON
       if cType == "H"
-        LstHH06("06","3",cPeriode,"Verwaltung der Fonds")
-        LstHH06("07","3",cPeriode,"Gesch„fte fr Rechnung von Dritten")
-        LstHH06("08","3",cPeriode,"Kassengesch„fte")
+        LstHH06("06","3",cPeriode,"Verwaltung der Fonds",cIdCdc)
+        LstHH06("07","3",cPeriode,"Gesch„fte fr Rechnung von Dritten",cIdCdc)
+        LstHH06("08","3",cPeriode,"Kassengesch„fte",cIdCdc)
       else
         LstRe06("06","3",cPeriode,"Verwaltung der Fonds")
         LstRe06("07","3",cPeriode,"Gesch„fte fr Rechnung von Dritten")
@@ -763,6 +763,7 @@ close area
 RETURN nValue
 
 FUNCTION LstHH06(cIdSbb,cDienst,cPeriode,cTitle,cIdCdc)
+// cIdCdc is normallu "00" (unconfirmed suggestions)
 local a := {}
 local cLine
 local cTit1 := padr("Funktionen",40)
@@ -829,13 +830,13 @@ open area oBud(), oCtb()
         endif
         cLine += " " + ntomf(Db2Dev(SetDevise(),LastPeriode(CTB->Periode),val(CTB->Mont)))
         * cLine += " " + ntomf(val(CTB->Mont))
-      seek "E" + cIdBud + cPeriode + "00" in CTB
+      seek "E" + cIdBud + cPeriode + cIdCdc in CTB
         if BUD->IsSum == BUTTON_ON
           nTot3 += Db2Dev(SetDevise(),LastPeriode(CTB->Periode),val(CTB->Mont))
           * nTot3 += val(CTB->Mont)
         endif
         cLine += " " + ntomf(Db2Dev(SetDevise(),LastPeriode(CTB->Periode),val(CTB->Mont)))
-      seek "A" + cIdBud + cPeriode + "00" in CTB
+      seek "A" + cIdBud + cPeriode + cIdCdc in CTB
         if BUD->IsSum == BUTTON_ON
           nTot4 += Db2Dev(SetDevise(),LastPeriode(CTB->Periode),val(CTB->Mont))
           * nTot4 += val(CTB->Mont)
