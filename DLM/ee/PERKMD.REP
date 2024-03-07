@@ -9,7 +9,7 @@ ValidateRecord {|| setvar("1a",CttBase('IdCtr=="V".and.IdTax$"18 ,20 ,21 "'))}
 ValidateRecord {|| setvar("4a",CttTaxe('IdCtr=="V".and.IdTax$"18 ,20 ,21 "'))}
 ValidateRecord {|| setvar("5a",CttTaxe('IdCtr=="E".and.IdTax$"D5 ,D18,D20"'))}
 ValidateRecord {|| setvar("6",CttBase('IdCtr=="E".and.IdTax$"IM ,IS "'))}
-ValidateRecord {|| setvar("4b",getvar("6")*0.20)}
+ValidateRecord {|| setvar("4b",getvar("6")*0.22)}
 // filter {|| !"H"$BIL->Attrib}
 start MemPer1 // trim(DlgValue("IdGen1"))
 while cblock("PER->Periode <= '"+MemPer2+"'")
