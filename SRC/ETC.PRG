@@ -2477,6 +2477,10 @@ RETURN lHasRecords
         elseif dOverflow == VEN->Date .and. nStk2 <= 1
           dOverflow := NIL
         endif
+        // 20240320 : Partner des Autos ist der der letzten Rechnung
+        if VEN->IdJnl$"VKR,EKR,EKM".and.!VenIsNC()
+            cIdPar := VEN->IdPar
+        endif
       endif
       skip
     enddo
