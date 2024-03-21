@@ -1369,6 +1369,8 @@ blCollect := {|a| ;
 }
 if lSammel .and. PARATTR_S $ PAR->Attrib
   //~ SendConsole("Found PARATTR_Z: "+ParName())
+  RETURN aNaf if !empty(PAR->Zahler)  // 20240318 Wer einen Zahler hat, wird ja ueber diesen fakturiert
+  RETURN NIL if ! eval(blCollect,aNaf)  // 20240313 Dienstleistungen an eine Akte mit Attribut S wurden bisher nie fakturiert
   lVertraulich := PARATTR_V $ PAR->Attrib
   RETURN NIL if ! DbfScan(;
     {oPar()},9,PAR->IdPar,"PAR->Zahler=="+utos(PAR->IdPar),;
@@ -1514,7 +1516,10 @@ open area oDlp(), oDls(), oDla(), oArt(), oPar()
     if &xlDlsFilter
     * if DLS->Zahlart=="R" // .and.!empty(DLS->Mont)
       if DLS->IdPar != DLP->IdPar
+        // 20240313 Ob Rechnung an die Akte der DLS oder die der DLP geht, wurde bisher dadurch 
+        // entschieden ob Akte der DLS den hardcodierten Sondertarif 99 hat. Aber die Kinder
         if DbfPeek(oPar(),DLS->IdPar,"PAR->Tarif",NIL) == "99"
+        // if DLS->IdPar == PAR->Zahler .or. DbfPeek(oPar(),DLS->IdPar,"PAR->Tarif",NIL) == "99" 
           seek DLS->IdDla in DLA
           if !empty(DLA->IdArt)
             if DLP->Etat$"SV"

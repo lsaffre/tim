@@ -595,9 +595,7 @@ open area oPar(), oArt()
             n := 0
           endif
           // if n is 0, loop stops without error
-          // Ich weiss nicht mehr, weshalb hier ein Loop auf dem Partner
-          // ist, solange es was zu fakturieren gibt... Muss irgendeinen
-          // historischen Grund haben... 20070112
+          // when there was an invoice issued, try again because maybe same partner receives multiple invoices
         endif
       enddo
     endif
