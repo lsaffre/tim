@@ -314,7 +314,7 @@ Fax~: [=trim(PAR->Fax)] \
 [etc endif]
 [****]
 [etc if VenHtva(VEN->IdDev,"20 ")!=0]
-[=tr("V.A.T.","MWSt.","T.V.A.","B.T.W.","K„ibemaks")] 20 \%
+[=tr("V.A.T.","MWSt.","T.V.A.","B.T.W.","K„ibemaks")] 22 \%
 &
 \PreserveBackSlash{\raggedleft}
 % [=VEN->IdDev]
@@ -479,7 +479,7 @@ Fax~: [=trim(PAR->Fax)] \
 [=VenIfcMemo()]
 [etc endif]
 [****** Ihre MWSt-Nummer **********]
-[etc if DlgValue("IsFacture").and.!empty(PAR->NoTva)]
+[etc if DlgValue("IsFacture").and.!empty(PAR->NoTva).and.VEN->IdReg!="N"]
 
   [=tr("Your V.A.T. ID:",\
   "Ihre MWSt-Nr.:",\
@@ -576,10 +576,10 @@ Fax~: [=trim(PAR->Fax)] \
 % Anweisung zum šberweisen
 [etc if DlgValue("IsFacture").and.!VenIsNc().and.!VEN->IdMfc$"BAR,DOM"]
   [etc if TplLang()=="F"]
-    R‚f‚rence paiement~: [=VEN->IdDoc].
+    R‚f‚rence paiement~: [=VEN->IdJnl+VEN->IdDoc].
   [etc endif]
   [etc if TplLang()=="D"]
-    Bei Zahlung bitte angeben: [=VEN->IdDoc].
+    Bei Zahlung bitte angeben: [=VEN->IdJnl+VEN->IdDoc].
   [etc endif]
 [etc endif]
 [****** Salutations]
