@@ -561,7 +561,7 @@ RETURN .f. if ! PreVenAuto(cIdJnl)
 open area oPar(), oArt()
   softseek trim(cIdPar1)
   do while lOkay .and. ! eof()
-    MsgDisplay(trim(ParName()) + "...")
+    MsgDisplay(PAR->IdPar+" "+trim(ParName()) + "...")
     MsgDisp2(ntrim0(++nCount * 100 / lastrec()) + "%" )
     if TaskInter() ; exit ; endif
     if ! empty(cIdPar2)

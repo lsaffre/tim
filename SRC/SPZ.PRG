@@ -1369,7 +1369,7 @@ blCollect := {|a| ;
 }
 if lSammel .and. PARATTR_S $ PAR->Attrib
   //~ SendConsole("Found PARATTR_Z: "+ParName())
-  RETURN aNaf if !empty(PAR->Zahler)  // 20240318 Wer einen Zahler hat, wird ja ueber diesen fakturiert
+  // Seit 20240425 wieder raus: RETURN aNaf if !empty(PAR->Zahler)  // 20240318 Wer einen Zahler hat, wird ja ueber diesen fakturiert
   RETURN NIL if ! eval(blCollect,aNaf)  // 20240313 Dienstleistungen an eine Akte mit Attribut S wurden bisher nie fakturiert
   lVertraulich := PARATTR_V $ PAR->Attrib
   RETURN NIL if ! DbfScan(;
@@ -1378,7 +1378,7 @@ if lSammel .and. PARATTR_S $ PAR->Attrib
   //~ SendConsole(ParName()+" : DbfScan() collected "+utos(aNaf))
 else
   // Performance : Akten mit unbekanntem Tarif/ArztHon kriegen sowieso keine Rechnung:
-  RETURN aNaf if left(PAR->Tarif,1)!="1".and.!right(PAR->IdPgp,1)$"123"
+  // RETURN aNaf if left(PAR->Tarif,1)!="0".and.!right(PAR->IdPgp,1)$"123"
   RETURN aNaf if lSammel .and. PARATTR_S $ DbfPeek(oPar(),PAR->Zahler,"Attrib","")
   //~ SendConsole("No PARATTR_Z: "+ParName())
   RETURN NIL if ! eval(blCollect,aNaf)
