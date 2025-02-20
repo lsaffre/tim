@@ -1,0 +1,42 @@
+// [hidden] called from GL2CSV.ACT
+Delimiter     csvsep()
+// Delimiter     chr(9)
+Confirm       off
+#include "DOS2WIN.CVT"
+
+LineValidate DlgDefine("Saldo1",DbfSum(\
+                 {oHst(),oVen(),oFin(),oPar(),oGen()},\
+                 "HstDcMont(DlgValue('DC'),SetDevise())",\
+                 1,\
+                 PAR->IdPar+trim(PerStart(MemPer1)),\
+                 'HST->IdPar==PAR->IdPar.and.HST->Periode<MemPer1',\
+                 DlgValue("HstFilter")\
+               ))
+LineValidate DlgDefine("Debit",DbfSum(\
+                 {oHst(),oVen(),oFin(),oPar(),oGen()},\
+                 "HstMont(SetDevise())",\
+                 1,\
+                 PAR->IdPar+MemPer1,\
+                 'HST->IdPar==PAR->IdPar.and.HST->Periode<=MemPer2',\
+                 DlgValue("HstFilter")+".and.HST->DC=='"+DlgValue("DC")+"'"\
+               ))
+LineValidate DlgDefine("Credit",DbfSum(\
+                 {oHst(),oVen(),oFin(),oPar(),oGen()},\
+                 "HstMont(SetDevise())",\
+                 1,\
+                 PAR->IdPar+MemPer1,\
+                 'HST->IdPar==PAR->IdPar.and.HST->Periode<=MemPer2',\
+                 DlgValue("HstFilter")+".and.HST->DC!='"+DlgValue("DC")+"'"\
+               ))
+// filter cblock(DlgValue("ParFilter"))
+LineValidate !is0(getvar("Debit")).or.!is0(getvar("Credit")).or.!is0(getvar("Saldo1"))
+// LineValidate DlgValue("Debit")>0.001.or.DlgValue("Credit")>0.001.or.DlgValue("Saldo1")>0.001
+
+FieldUpdate   IdPar        '"'+PAR->IdPar+'"'
+FieldUpdate   ParName      trim(ParName())
+FieldUpdate   NoTVA      trim(PAR->NoTva)
+FieldUpdate   Saldo1   val2csv("N", getvar("Saldo1"))
+FieldUpdate   Debit   val2csv("N", getvar("Debit"))
+FieldUpdate   Credit   val2csv("N", getvar("Credit"))
+FieldUpdate   Saldo2   val2csv("N", getvar("Saldo1")+getvar("Debit")-getvar("Credit"))
+

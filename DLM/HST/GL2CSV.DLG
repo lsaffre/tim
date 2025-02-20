@@ -1,0 +1,43 @@
+title "Buchhaltung nach CSV exportieren"
+
+#include "PERIODE.DLG"
+
+// field name="stat.Date1" caption="Periode vom  " \
+      default=ntod(year(UserDate())-1,1,1) \
+      attrib="N"
+// field name="stat.Date2" \
+      caption=" bis zum  " \
+      default=ntod(year(UserDate())-1,12,31) \
+      
+field name="GL2CSV.out" \
+      caption="  "+utr("Output directory ","Exportieren nach Ordner ","Exporter dans ") \
+      default=padr(AppRoot()+"\csv\",240) \
+      picture="@k@s35"
+      
+// field caption="Dienstleistungen des Jahres " \
+      name="Jahr" default=2006 picture="9999"
+
+field name="DoBalances" \
+    caption2=" Soldes" \
+    default="X" \
+    reader={|g|CbxReader(g)}
+
+field name="DoHist" \
+    caption2=" Historiques" \
+    default="X" \
+    reader={|g|CbxReader(g)}
+
+field name="DoVEN" \
+    caption2=" Facturiers" \
+    default="X" \
+    reader={|g|CbxReader(g)}
+
+field name="DoFIN" \
+    caption2=" Journaux financiers" \
+    default="X" \
+    reader={|g|CbxReader(g)}
+
+
+
+// validate Confirm("Statistik "+ntrim(getvar("Jahr")),MsgSure())
+

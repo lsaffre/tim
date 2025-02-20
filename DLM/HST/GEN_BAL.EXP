@@ -1,0 +1,35 @@
+// [hidden] called from GL2CSV.ACT
+Delimiter     csvsep()
+// Delimiter     chr(9)
+Confirm       off
+#include "DOS2WIN.CVT"
+
+#exec DlgDefine("b",{||if(\
+  CTG->Periode<MemPer1,\
+  DlgPlus('Saldo1',Db2Dev(SetDevise(),CTG->Periode,val(CTG->Debit)-val(CTG->Credit))),\
+  DlgPlus('Debit',Db2Dev(SetDevise(),CTG->Periode,val(CTG->Debit)))\
+    .and.DlgPlus('Credit',Db2Dev(SetDevise(),CTG->Periode,val(CTG->Credit)))\
+)})
+
+#exec setvar("Start", PerStart(MemPer1))
+
+LineValidate DlgDefine("Saldo1",0).and.DlgDefine("Debit",0).and.DlgDefine("Credit",0)
+LineValidate DbfScan(\
+    {oCtg()},\
+    1,\
+    GEN->IdGen+getvar("Start"),\
+    "CTG->IdGen=='"+GEN->IdGen+"'"\
+      +if(empty(MemPer2),"",".and.CTG->Periode<=MemPer2"),\
+    "CTG->Periode!=PerYear(CTG->Periode)",\
+    DlgValue('b'),NIL,.f.\
+)
+LineValidate !is0(getvar("Debit")).or.!is0(getvar("Credit")).or.!is0(getvar("Saldo1"))
+
+FieldUpdate   IdGen        GEN->IdGen
+FieldUpdate   GenName      trim(GenName())
+FieldUpdate   Saldo1   val2csv("N", getvar("Saldo1"))
+
+FieldUpdate   Debit   val2csv("N", getvar("Debit"))
+FieldUpdate   Credit   val2csv("N", getvar("Credit"))
+FieldUpdate   Saldo2   val2csv("N", getvar("Saldo1")+getvar("Debit")-getvar("Credit"))
+

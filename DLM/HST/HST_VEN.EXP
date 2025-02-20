@@ -1,0 +1,28 @@
+// [hidden] called from GL2CSV.ACT
+Delimiter     csvsep()
+// Delimiter     chr(9)
+Confirm       off
+#include "DOS2WIN.CVT"
+
+// FieldUpdate   Jnl   HST->IdJnl
+FieldUpdate   Doc   '"'+HST->IdDoc+'"'
+FieldUpdate   Line  '"'+HST->Line+'"'
+
+FieldUpdate   Date    dtocf(HST->Date,"yyyy-mm-dd")
+FieldUpdate   Periode   '"'+HST->Periode+'"'
+
+FieldUpdate   IdPar        '"'+HST->IdPar+'"'
+FieldUpdate   ParName      trim(ParName(HST->IdPar))
+FieldUpdate   ParNoTva      '"'+trim(ParField(HST->IdPar, {||PAR->NoTva}))+'"'
+FieldUpdate   VenIdReg      '"'+trim(VenField(HST->IdJnl+HST->IdDoc, {||VEN->IdReg}))+'"'
+// FieldUpdate   Match   '"'+HST->Match+'"'
+
+FieldUpdate   IdGen        HST->IdGen
+FieldUpdate   IdCtr        HST->IdCtr
+FieldUpdate   GenName      trim(GenName(HST->IdGen))
+// FieldUpdate   HstDocName  trim(HstDocName(IdJnl,IdDoc,Line))
+// FieldUpdate   DocPartner  trim(DocPartner(IdJnl,IdDoc,Line))
+
+FieldUpdate   Debit   if(HST->DC=='D',mont2csv(HST->Mont),'')
+FieldUpdate   Kredit  if(HST->DC=='C',mont2csv(HST->Mont),'')
+

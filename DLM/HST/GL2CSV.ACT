@@ -1,0 +1,78 @@
+// setvar("Jahr",2005)
+DlgExec("GL2CSV")
+// setvar("ds1",ntrim(getvar("Jahr")))
+// setvar("ds2",ntrim(getvar("Jahr")))
+// setvar("ds1",dtos(getvar("stat.Date1")))
+// setvar("ds2",dtos(getvar("stat.Date2")))
+
+setvar("pth",trim(getvar("GL2CSV.out")))
+right(getvar("pth"),1) == "\" .or. DlgPlus("pth", "\")
+DlgPlus("pth",utos(pnYear(MemPer1))+"\")
+PathExist(getvar("pth")).or.CreateDir(getvar("pth")).or.!SetMsg("Failed to create directory "+getvar("pth"))
+
+setvar("count", 0)
+setvar("HstIndex", 10)
+setvar("JnlIndex", 6)
+
+// SetExcelUser(.f.)
+// SetMont2CSV({|cMont|'"'+komma(alltrim(cMont))+'"'})
+// SetMont2CSV({|cMont|alltrim(cMont)})
+// csvsep(";")
+csvsep(chr(9))
+
+// Soldes
+
+empty(getvar("DoBalances")).or.DbfExport({oGen()},1,\
+  NIL,NIL,"len(trim(GEN->IdGen))==LenIdGen()",\
+  "GEN_BAL.EXP",NIL,getvar("pth")+"soldes-gen.csv").and.DlgPlus("count",1).or.Confirm(MsgContinue())
+
+setvar("DC",CtrDC("V"))
+setvar("HstFilter","HST->IdCtr=='V'")
+empty(getvar("DoBalances")).or.DbfExport({oPar()},2,\
+  NIL,NIL,".t.",\
+  "PAR_BAL.EXP",NIL,getvar("pth")+"soldes-cli.csv").and.DlgPlus("count",1).or.Confirm(MsgContinue())
+
+setvar("DC",CtrDC("E"))
+setvar("HstFilter","HST->IdCtr=='E'")
+empty(getvar("DoBalances")).or.DbfExport({oPar()},2,\
+  NIL,NIL,".t.",\
+  "PAR_BAL.EXP",NIL,getvar("pth")+"soldes-fou.csv").and.DlgPlus("count",1).or.Confirm(MsgContinue())
+
+
+// Historiques
+
+empty(getvar("DoHist")).or.DbfExport({oHst(), oGen(), oPar()},getvar("HstIndex"),\
+  MemPer1,"HST->Periode<='"+MemPer2+"'","empty(HST->IdCtr)",\
+  "HST_GEN.EXP",NIL,getvar("pth")+"historique-gen.csv").and.DlgPlus("count",1).or.Confirm(MsgContinue())
+
+empty(getvar("DoHist")).or.DbfExport({oHst(), oGen(), oPar()},getvar("HstIndex"),\
+  MemPer1,"HST->Periode<='"+MemPer2+"'","HST->IdCtr$'EA'",\
+  "HST_PAR.EXP",NIL,getvar("pth")+"historique-fou.csv").and.DlgPlus("count",1).or.Confirm(MsgContinue())
+
+empty(getvar("DoHist")).or.DbfExport({oHst(), oGen(), oPar()},getvar("HstIndex"),\
+  MemPer1,"HST->Periode<='"+MemPer2+"'","HST->IdCtr=='V'",\
+  "HST_PAR.EXP",NIL,getvar("pth")+"historique-cli.csv").and.DlgPlus("count",1).or.Confirm(MsgContinue())
+
+// Journaux
+
+// setvar("b", {||DbfExport({oVen(), oGen(), oPar()},getvar("JnlIndex"),\
+  JNL->IdJnl+MemPer1,"HST->IdJnl+HST->Periode<='"+JNL->IdJnl+MemPer2+"'",".t.",\
+  "VEN_JNL.EXP",NIL,getvar("pth")+"journal-"+lower(trim(JNL->IdJnl))+".csv").and.DlgPlus("count",1)})
+// empty(getvar("DoHist")).or.DbfScan({oJnl()},1,\
+  NIL,NIL,"'G'$JNL->Attrib.and.JNL->Alias=='VEN'",getvar("b")).or.Confirm(MsgContinue())
+
+setvar("b", {||DbfExport({oHst(), oFin(), oVen(), oGen(), oPar()},getvar("JnlIndex"),\
+  JNL->IdJnl+MemPer1,"HST->IdJnl+HST->Periode<='"+JNL->IdJnl+MemPer2+"'",".t.",\
+  "HST_VEN.EXP",NIL,getvar("pth")+"journal-"+lower(trim(JNL->IdJnl))+".csv").and.DlgPlus("count",1)})
+empty(getvar("DoVEN")).or.DbfScan({oJnl()},1,\
+  NIL,NIL,"'G'$JNL->Attrib.and.JNL->Alias=='VEN'",getvar("b")).or.Confirm(MsgContinue())
+
+setvar("b", {||DbfExport({oHst(), oFin(), oVen(), oGen(), oPar()},getvar("JnlIndex"),\
+  JNL->IdJnl+MemPer1,"HST->IdJnl+HST->Periode<='"+JNL->IdJnl+MemPer2+"'",".t.",\
+  "HST_FIN.EXP",NIL,getvar("pth")+"journal-"+lower(trim(JNL->IdJnl))+".csv").and.DlgPlus("count",1)})
+empty(getvar("DoFIN")).or.DbfScan({oJnl()},1,\
+  NIL,NIL,"'G'$JNL->Attrib.and.JNL->Alias=='FIN'",getvar("b")).or.Confirm(MsgContinue())
+
+// ChkPeriode(HST->Periode)==0
+
+SetMsg(utos(getvar("count"))+" Dateien wurden erstellt im Verzeichnis "+getvar("pth"))

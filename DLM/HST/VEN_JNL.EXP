@@ -1,0 +1,17 @@
+// [hidden] called from GL2CSV.ACT
+Delimiter     chr(9)
+Confirm       off
+#include "DOS2WIN.CVT"
+
+FieldUpdate   Periode   '"'+VEN->Periode+'"'
+FieldUpdate   Date    dtocf(VEN->Date,"yyyy-mm-dd")
+
+FieldUpdate   IdPar        '"'+VEN->IdPar+'"'
+FieldUpdate   ParName      trim(ParName(VEN->IdPar))
+
+// FieldUpdate   Jnl   VEN->IdJnl
+FieldUpdate   Doc   '"'+VEN->IdDoc+'"'
+
+FieldUpdate   Mont   mont2csv(VEN->Mont)
+
+
