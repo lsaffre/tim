@@ -1,5 +1,5 @@
 //
-// HST.QRY - generated 12.05.15
+// HST.QRY - generated 31.01.25
 // for HST.FOX
 //
 column 3 Jnl pict @K@!
@@ -25,4 +25,4 @@ column 7 Bezeichnung Konto
 column 5 Pos
 column 14 *
 column 15 Z
-order 6
+order 10

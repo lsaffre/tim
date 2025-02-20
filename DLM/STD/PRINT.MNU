@@ -70,6 +70,7 @@ MnuAddItem("Haupt~journal              ",{|| JnlCentral("LISTE",2,40," ") })
 MnuAddItem("~andere Listen...          ",{|| TplDlgPrint("LST") })
 MnuAddItem("Gesamt~historik            ",{|| RepPrint("HSTDATE","HSTDATE","Gesamthistorik") })
 MnuAddItem("Buchhaltung nach ~PDF",{|| ActExec("GL2PDF") })
+MnuAddItem("Buchhaltung nach ~CSV",{|| ActExec("GL2CSV") })
 
 #if HasDLM("HSI")
 MnuAddTitle("~Intrastat")

@@ -59,16 +59,16 @@ column header=utr("Doc.#","Dok.Nr","NøDoc") \
 column header="Per." width=4 text={||HST->Periode}
 column header="Match" width=6+LenIdJnl() text={||HST->Match}
 column header=utr("Debit ","Debit ","D‚bit ") \
-       width=LenMntF()  text={|x|ntomf(x)} \
+       width=LenMntF()  text={|x|ntomf(x)} type="N" \
        value={||HstMont(SetDevise())} \
        when={|grp|HST->DC == "D"} \
        xsum={|x,nTtl| if(nTtl==2,ntomf(x),SoldeD(x,ClnSum(1))) }
 column header=utr("Credit ","Kredit ","Cr‚dit ") \
-       width=LenMntF() text={|x|ntomf(x)} \
+       width=LenMntF() text={|x|ntomf(x)} type="N" \
        value={||HstMont(SetDevise())} \
        when={|grp|HST->DC == "C"} \
        xsum={|x,nTtl| if(nTtl==2,ntomf(x),SoldeC(ClnSum(-1),x)) }
-column header="*"     width=1            text={||HST->Satis}
+column header="*"     width=1            text={||HST->Satis} type="N" 
 #if len(trim(DlgValue("IdCtrList")))!=LenIdCtr()
   column header="Z"     width=LenIdCtr()   text={||HST->IdCtr}
 #endif

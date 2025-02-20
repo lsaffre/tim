@@ -1775,7 +1775,6 @@ RETURN .t.
 
 
 
-
 #endif DEF_FIN
 
 #endif DEF_INTERBNK

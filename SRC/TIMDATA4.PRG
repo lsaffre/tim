@@ -1891,6 +1891,36 @@ RETURN "NL" if cIdNat == "NL"
 RETURN "EE" if cIdNat == "EE"
 RETURN NatCountry(padr(cIdNat,3))
 
+FUNCTION nat2scheme(cIdNat)
+cIdNat := upper(alltrim(cIdNat))
+RETURN "9925" if cIdNat $ "B BE"
+RETURN "9930" if cIdNat $ "D DE"
+RETURN "9931" if cIdNat == "EE"
+RETURN "9938" if cIdNat $ "L LU"
+RETURN "9944" if cIdNat == "NL"
+RETURN "9957" if cIdNat $ "F FR"
+Warning("I don't know the scheme for '"+cIdNat+"'")
+RETURN cIdNat + "?!"
+
+FUNCTION xml_element(cName, cValue)
+RETURN "" if trim(cName) == ""
+RETURN "<"+cName+">"+escape(cValue)+"</"+cName+">"
+
+FUNCTION escape(c)
+RETURN dos2xml(c)
+
+FUNCTION vat2endpoint(cNoVat, lWithCountry)
+default lWithCountry to .f.
+cNoVat := strtran(cNoVat, " ", "")
+cNoVat := strtran(cNoVat, ".", "")
+if lWithCountry
+  RETURN cNoVat
+endif
+RETURN substr(cNoVat, 3)
+
+
+
+
 
 /*
  returns the ISO 2-letter country code

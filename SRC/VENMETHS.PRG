@@ -447,6 +447,13 @@ VnlRestore(a)
 RETURN .t. if ddLastKey() == K_F10
 RETURN .f.
 
+** 20241222:
+**
+FUNCTION VenWriteXml(cFilename)
+default cFilename to AppRoot() + "\" + trim(VEN->IdJnl) + VEN->IdDoc + ".xml"
+RETURN .f. if !fparse("VEN2BIS.XML",cFilename,"[]",NIL,.t.,NIL,NIL,"XML")
+RETURN cFilename
+
 #ifdef DEF_VNA
 
 STATIC FUNCTION has_selected(a)
@@ -4207,7 +4214,6 @@ RETURN SetMsg() if ! DbfScan(;
     .t.};
 )
 RETURN c
-
 
 
 #endif DEF_VEN
