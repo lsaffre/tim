@@ -1303,7 +1303,7 @@ open area oBud(), oMvi()
               if JNLATTR_N $ jnl[JNL_ATTRIB]
                 nMont := - nMont
               endif
-              if nMont != 0
+              if !is0(nMont)
                 if ! lPrinted
                   cLine := padr(SayIdBud(BUD->IdBud),18)
                   cLine += " " + trim(FcbName(BUD->IdFcb))
