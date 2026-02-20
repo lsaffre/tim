@@ -450,9 +450,10 @@ RETURN .f.
 ** 20241222:
 **
 FUNCTION VenWriteXml(cFilename)
-default cFilename to AppRoot() + "\" + trim(VEN->IdJnl) + VEN->IdDoc + ".xml"
-RETURN .f. if !fparse("VEN2BIS.XML",cFilename,"[]",NIL,.t.,NIL,NIL,"XML")
-RETURN cFilename
+default cFilename to AppRoot() + "\XMLOUT\" + trim(VEN->IdJnl) + VEN->IdDoc + ".xml"
+// RETURN .f. if !fparse("VEN2BIS.XML",cFilename,"[]",NIL,.t.,NIL,NIL,"XML")
+RETURN .f. if !fparse("VEN2BIS.XML",cFilename,"[]",NIL,.t.)
+RETURN .t.
 
 #ifdef DEF_VNA
 

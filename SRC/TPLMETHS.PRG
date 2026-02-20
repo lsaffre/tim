@@ -33,6 +33,7 @@
 
 static saTca := NIL // TCA : template code areas
 static saTpt := NIL // TPT : template types
+
 static scWarnStr := ""
 * static snParDebit  := 0
 * static snParCredit := 0

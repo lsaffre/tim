@@ -24,6 +24,10 @@
   static MSG_RENAME  := "Umbenennen  [Alt-F2]"
 #endif DEF_BIBLIO
 
+static saTax2Cat := NIL // tax2cat()
+static saNat2EAS := NIL // nat2eas()
+
+
 #ifdef DEF_JNL
 
 **
@@ -1891,22 +1895,40 @@ RETURN "NL" if cIdNat == "NL"
 RETURN "EE" if cIdNat == "EE"
 RETURN NatCountry(padr(cIdNat,3))
 
-FUNCTION nat2scheme(cIdNat)
+STATIC FUNCTION n2eRefresh()
+saNat2EAS := ReadArray("NAT2EAS.DBC",2)
+RETURN NIL
+
+FUNCTION nat2eas(cIdNat)
+local i
 cIdNat := upper(alltrim(cIdNat))
-RETURN "9925" if cIdNat $ "B BE"
-RETURN "9930" if cIdNat $ "D DE"
-RETURN "9931" if cIdNat == "EE"
-RETURN "9938" if cIdNat $ "L LU"
-RETURN "9944" if cIdNat == "NL"
-RETURN "9957" if cIdNat $ "F FR"
-Warning("I don't know the scheme for '"+cIdNat+"'")
-RETURN cIdNat + "?!"
+if saNat2EAS == NIL ; n2eRefresh() ; endif
+for i := 1 to len(saNat2EAS)
+  if cIdNat == saNat2EAS[i][2]
+    RETURN saNat2EAS[i][1]
+  endif
+next i
+RETURN ""
+
+//~ FUNCTION nat2eas(cIdNat)
+//~ cIdNat := upper(alltrim(cIdNat))
+//~ RETURN "9925" if cIdNat $ "B BE"
+//~ RETURN "9930" if cIdNat $ "D DE"
+//~ RETURN "9931" if cIdNat == "EE"
+//~ RETURN "9938" if cIdNat $ "L LU"
+//~ RETURN "9944" if cIdNat == "NL"
+//~ RETURN "9957" if cIdNat $ "F FR"
+//~ Warning("I don't know the scheme for '"+cIdNat+"'")
+//~ RETURN cIdNat + "?!"
 
 FUNCTION xml_element(cName, cValue)
 RETURN "" if trim(cName) == ""
 RETURN "<"+cName+">"+escape(cValue)+"</"+cName+">"
 
 FUNCTION escape(c)
+if c == NIL
+  RETURN ""
+endif
 RETURN dos2xml(c)
 
 FUNCTION vat2endpoint(cNoVat, lWithCountry)
@@ -1918,6 +1940,20 @@ if lWithCountry
 endif
 RETURN substr(cNoVat, 3)
 
+
+STATIC FUNCTION T2cRefresh()
+saTax2Cat := ReadArray("TAX2CAT.DBC",2)
+RETURN NIL
+
+FUNCTION tax2cat(cIdCtr, cIdTax)
+local i
+if saTax2Cat == NIL ; T2cRefresh() ; endif
+for i := 1 to len(saTax2Cat)
+  if empty(saTax2Cat[i][2]) .or. xparse(saTax2Cat[i][2])
+    RETURN saTax2Cat[i][1]
+  endif
+next i
+RETURN ""
 
 
 
