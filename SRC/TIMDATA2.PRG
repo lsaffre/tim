@@ -535,6 +535,7 @@ c := be2iban(ban[BAN_NBAN])
 RETURN !SetMsg("be2iban() sagt "+c+" statt "+ban[BAN_IBAN]) ;
   if c != ban[BAN_IBAN]
 c := be2bic(ban[BAN_NBAN])
+RETURN .t. if empty(c)
 RETURN !SetMsg("be2bic() sagt "+c+" statt "+ban[BAN_BIC]) ;
   if c != ban[BAN_BIC]
 RETURN .t.  
@@ -551,6 +552,7 @@ FUNCTION BicValidate(x)
 local cBicCountry
 RETURN .t. if empty(x)
 cBicCountry := BicCountry(x)
+RETURN .t. if empty(cBicCountry)
 RETURN !SetMsg(MsgBicExist(x)) if cBicCountry == NIL
 RETURN .t.
 * RETURN .t. if empty(cCountry)

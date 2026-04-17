@@ -1,0 +1,10 @@
+:date: 2026-04-16
+
+========================
+Thursday, April 16, 2026
+========================
+
+BqeValidate() schimpft jetzt nicht mehr, wenn be2bic() eine leere BIC zurück
+gibt. Dadurch können Romain und Anais einfach die BIC.DBF löschen und mit "tim
+/check" eine leere BIC.DBF generieren lassen, wodurch die Kontrolle der BIC
+abgeschaltet wird.
