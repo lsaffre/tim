@@ -249,7 +249,8 @@ local a := {}
   aadd(a, {  "SerTest", "Seriennummern", {|x| SerTest(x)    } } )
 #endif DEF_SER
 #ifdef DEF_PXT
-  aadd(a, {  "PxtTest", "Partner Extensions (PXS,...)", {|x| PxtTest(x)    } } )
+  // Disabled 20260420 because it caused alerts like "Partner should not have a PXS record."
+  // aadd(a, {  "PxtTest", "Partner Extensions (PXS,...)", {|x| PxtTest(x)    } } )
 #endif DEF_PXT
 ***
 *if lDlg .and. len(a) == 0
@@ -2187,10 +2188,11 @@ open area oMvi(), oPar(), oBud(), oImp(), oIml()
       elseif ! PerExist(MVI->Periode,MVI->IdJnl)
         it_warning("MVI-> " + MsgIdJnlDoc() + " : " + MVI->Periode + " : unbekannte Periode" )
         * nErrors++
-      elseif MVI->Mont != ntom(val(MVI->Mont),DevDecPos(DevDefault(MVI->Periode)))
-        it_warning("MVI-> " + MsgIdJnlDoc() + "." + MVI->Line ;
-          + ' : strange value "' + MVI->Mont + '"')
-        * nErrors++
+      // Disabled 20260420 because it caused false alerts in some cases, like "  -1867839"
+      // elseif MVI->Mont != ntom(val(MVI->Mont),DevDecPos(DevDefault(MVI->Periode)))
+      //  it_warning("MVI-> " + MsgIdJnlDoc() + "." + MVI->Line ;
+      //    + ' : strange value "' + MVI->Mont + '"')
+      //  * nErrors++
       else
         seek MVI->IdJnl + MVI->IdDoc in IMP
         if eof() in IMP
